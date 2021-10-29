@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<!-- 待归还页面 -->
+<div class="jia_cab_btn">
+	<a id="backNormal" href="javascript:void('0');" style="margin-right: 2vw" onclick="changeBack('backNormal')">常规归还</a>
+	<a id="backSort" href="javascript:void('0');" style="margin-right: 2vw" onclick="changeBack('backSort')">分类归还</a> 
+	<a id="backBatch" href="javascript:void('0');" onclick="changeBack('backBatch')">批量归还</a>
+</div>
+<div id="backKind" style="overflow-y: auto; height: 1550px;"></div>
+<input type="hidden" th:value="${backType}" id="backType">
+
+<script>
+$(document).ready(function() {
+	var backType = $("#backType").val();
+	$("#" + backType).addClass("jia_can_btn_on");
+	if (backType == 'backNormal') {
+		backNormal(1);
+	} else if(backType == 'backSort') {
+		backSort()
+	} else if(backType == 'backBatch') {
+		backBatch()
+    }
+});
+
+//获取常规归还页面
+function backNormal(pageNo){
+	$.ajax({
+		url : "/getBackNormalList",
+		type : "post",
+		async : false,
+		dataType : "html",
+		data: {
+			pageNo : pageNo
+		},
+		success : function(data) {
+			$("#backKind").html(data);
+		}
+	}); 
+};
+
+/**
+ * @description 刷新业务
+ * @param selectedType 选择类型
+ */
+function changeBack(backType) {
+	$(".jia_cab_btn a").removeClass("jia_can_btn_on");
+	$("#history").addClass("jia_can_btn_on");
+	$("#" + backType).addClass("jia_can_btn_on");
+	$("#backType").val(backType);
+	$("#returnBackType").val(backType);
+	if (backType == 'backNormal') { // 常规归还
+		backNormal(1);
+	}else if(backType == 'backSort'){// 分类归还
+		backSort()
+	}else if(backType == 'backBatch'){// 批量归还
+		backBatch()
+	}
+}
+
+/**
+ * 分类归还
+ */
+function backSort(){
+	$.ajax({
+        url : "/getBackSortList",
+        type : "post",
+        async : false,
+        dataType : "html",
+        success : function(data) {
+            $("#backKind").html(data);
+        }
+    }); 
+}
+
+/**
+ * 批量归还
+ */
+function backBatch(){
+	$.ajax({
+        url : "/getBackBatchList",
+        type : "post",
+        async : false,
+        dataType : "html",
+        success : function(data) {
+            $("#backKind").html(data);
+        }
+    }); 
+}
+
+/**
+ * @description 取消
+ */
+function cancel() {
+	$(".layer").hide();
+	$(".l-cover").hide();
+}
+</script>
+</html>

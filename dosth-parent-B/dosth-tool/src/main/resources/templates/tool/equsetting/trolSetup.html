@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>可控抽屉柜-参数</title>
+</head>
+<body>
+	<div class="ibox float-e-margins">
+		<div class="ibox-content">
+			<div class="form-horizontal" id="temForm" th:object="${cabinetSetup}">
+				<input type="hidden" id="equSettingId" name="equSettingId"
+					th:value="${equSettingId}"> <input type="hidden"
+					id="cabinetType" name="cabinetType" th:value="${cabinetType}">
+				<input type="hidden" id="maxId" th:value="${#lists.size(trolList)}">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label class="col-sm-2 control-label"><span
+								class="required">*</span>可控板端口</label>
+							<div class="col-sm-3">
+								<select class="form-control" id="TROL_COM" name="TROL_COM" 
+									th:value="${map['TROL_COM'] != null ? map['TROL_COM'].setupValue : ''}">
+									<option value=""></option>
+									<option
+										th:selected="${state.name()} eq ${map['TROL_COM'] != null ? map['TROL_COM'].setupValue : ''}"
+										th:each="state : ${T(com.dosth.tool.common.state.HardwareCom).values()}"
+										th:value="${state}" th:text="${state.message}"></option>
+								</select>
+							</div>
+							<label class="col-sm-2 control-label"><span
+								class="required">*</span>可控板波特率</label>
+							<div class="col-sm-3">
+								<select class="form-control" id="TROL_BAUD" name="TROL_BAUD"
+									th:value="${map['TROL_BAUD'] != null ? map['TROL_BAUD'].setupValue : ''}">
+									<option value=""></option>
+									<option
+										th:selected="${state.message} eq ${map['TROL_BAUD'] != null ? map['TROL_BAUD'].setupValue : ''}"
+										th:each="state : ${T(com.dosth.tool.common.state.BaudType).values()}"
+										th:value="${state.message}" th:text="${state.message}">
+									</option>
+								</select>
+							</div>
+							<div class="col-sm-1">
+								<a href="javascript:;" class="addInput"> <i
+									class="fa fa-plus fa-2x" aria-hidden="true"></i>
+								</a>
+							</div>
+						</div>
+						<div id="addDiv">
+							<div class="form-group" th:each="trol,sta:${trolList}">
+								<label class="col-sm-1 control-label">行号</label>
+								<div class="col-sm-2">
+									<input class="form-control" type="text" readonly="readonly"
+										id="rowNo" th:value="${sta.count}" />
+								</div>
+								<label class="col-sm-2 control-label">栈号</label>
+								<div class="col-sm-2">
+									<input class="form-control" type="text" id="boardNo"
+										th:value="${trol.boardNo}" />
+								</div>
+								<label class="col-sm-2 control-label">抽屉数</label>
+								<div class="col-sm-2">
+									<input class="form-control" type="text" id="colNo"
+										th:value="${trol.colNo}" />
+								</div>
+							</div>
+						</div>
+						<div id="editDiv" style="display: none;">
+							<div class="form-group">
+								<label class="col-sm-1 control-label">行号</label>
+								<div class="col-sm-2">
+									<input class="form-control" type="text" readonly="readonly"
+										id="rowNo" />
+								</div>
+								<label class="col-sm-2 control-label">栈号</label>
+								<div class="col-sm-2">
+									<input class="form-control" type="text" id="boardNo" />
+								</div>
+								<label class="col-sm-2 control-label">抽屉数</label>
+								<div class="col-sm-2">
+									<input class="form-control" type="text" id="colNo" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-10"
+						style="padding-top: 35px; padding-left: 12%">
+						<button type="button" class="btn btn-primary btn-outline"
+							onclick="trolSetup.close()" id="cancel">
+							<i class="fa fa-eraser"></i>&nbsp;取消
+						</button>
+						&nbsp;&nbsp;&nbsp;
+						<button type="button" class="btn btn-primary"
+							onclick="trolSetup.editSubmit()" id="ensure">
+							<i class="fa fa-check"></i>&nbsp;提交
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script th:inline="javascript">
+	var trolList = [[${trolList}]];
+</script>
+<script th:src="@{/static/modular/tool/equsetting/trolSetup.js}"></script>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>领用记录汇总</title>
+</head>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-lg-12 col-sm-12">
+								<div class="row">
+									<div class="col-lg-12 col-sm-12">
+										<div class="row" style="padding-top: 10px">
+											<div class="col-lg-3 col-sm-3">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">开始日期
+														</button>
+													</div>
+													<input type="text" class="form-control layer-date"
+														id="beginTime" name="beginTime" placeholder="开始日期" />
+												</div>
+											</div>
+											<div class="col-lg-3 col-sm-3">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">结束日期
+														</button>
+													</div>
+													<input type="text" class="form-control layer-date"
+														id="endTime" name="endTime" placeholder="结束日期" />
+												</div>
+											</div>
+											<div class="col-lg-3 col-sm-3">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">物料
+														</button>
+													</div>
+													<input type="text" class="form-control" id="matInfo"
+														placeholder="名称/编号/型号" />
+												</div>
+											</div>
+
+											<div class="col-lg-3 col-sm-3">
+												<div class="col-lg-12 col-sm-12">
+													<button type="button" class="btn btn-primary"
+														onclick="UseRecordSummary.search()" id="search">
+														<i class="fa fa-search"></i>&nbsp;搜索
+													</button>
+													&nbsp;&nbsp;
+													<button type="button" class="btn btn-primary button-margin"
+														onclick="UseRecordSummary.resetSearch()" id="trash">
+														<i class="fa fa-refresh"></i>&nbsp;重置
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<hr />
+								<button type="button" class="btn btn-primary btn-outline"
+									onclick="UseRecordSummary.exportRecordList()" id="btnExport">
+									<i class="fa fa-download"></i>&nbsp;导出
+								</button>
+								<table id="managerTable">
+									<thead th:include="/common/thead.html :: common_thead">
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/useRecordSummary/index.js}"></script>
+	<script>
+		laydate.render({
+			elem : '#beginTime',
+			trigger: 'click'
+		});
+		laydate.render({
+			elem : '#endTime',
+			trigger: 'click'
+		});
+	</script>
+</body>
+
+</html>

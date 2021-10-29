@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<div id="box">
+	<div class="j_table-tr" style="width:900px; position: fixed;">
+		<div class="j_table-th" style="width: 40px;">序号</div>
+		<div class="j_table-th" style="width:150px;">图片</div>
+		<div class="j_table-th" style="width:300px; white-space: pre-wrap;">物料</div>
+		<div class="j_table-th" style="width:75px;">包装数量</div>
+		<div class="j_table-th" style="width:75px;">归还方式</div>
+	    <div class="j_table-th">操作</div>
+	</div>
+ 	<div style="position:absolute; width:932px; height: 1480px; overflow-y: auto; top: 7.5vw; margin-top: 10vw;">
+		<div class="j_table-tr2" th:id="${mat.matUseBillId}" th:each="mat : ${matList}"
+		  th:name="${mat.matName} + ${mat.barCode} + ${mat.spec} + ${mat.receiveInfo}">
+	     	<div class="j_table-td" th:text="${matStat.count}" style="font-size: 25px; width: 40px;"></div>
+	     	<div class="j_table-td" style="width:150px;">
+	        	<span th:switch="${mat.pic}" style="width:12vw;" > 
+	            	<img class="img-zoomable" th:src="${mat.pic}"/>
+	        	</span>
+	        	<div class="layer pro-layer" th:id="'img_' + ${mat.matId}" style="display: none;">
+	        		<img th:src="${mat.pic}" style="width: 585px; height: 486px;"/>
+	       		</div>
+	     	</div>
+	     	<div style="display: table-cell; height: 100%; text-align: left; vertical-align: middle; line-height: 2vw;width: 300px; padding-left: 10px;">
+				<div th:text="'名称：' + ${mat.matName}"></div>
+				<div th:text="'编号：' + ${mat.barCode}"></div>
+				<div th:text="'型号：' + ${mat.spec}"></div>
+	       	</div>
+	     	<div class="j_table-td" th:text="${mat.packNum}" style="width:75px;"></div>
+			<div class="j_table-td jia_td_radio" style="width:75px;">
+				<p>
+					<span>盒</span> 
+					<input type="radio" th:name="${'borrowType_'+mat.matUseBillId}" value="PACK" checked="checked">
+				</p>
+			</div>
+			<div class="jia_cab_btn3">
+				<a href="javascript:void('0');"
+					th:onclick="'sortBack(\''+${mat.matUseBillId}+'\',\''+${mat.packNum}+'\',\''+${mat.matId}+'\',\''+${mat.useLife}+'\')'">归还</a>
+			</div>
+	   	</div>
+	</div>
+	<input type="hidden" th:value="${matType}" id="matType">
+</div>
+<script th:inline="javascript">
+ 
+    var layer;
+    //一般直接写在一个js文件中
+    layui.use([ 'layer' ], function() {
+        layer = layui.layer;
+    });
+    
+    /**
+	 * @description 物料归还
+	 * @param matUseBillId 物料借出信息
+	 * @param packNum 包装数量
+	 * @param matInfoId 物料信息
+	 */
+	function sortBack(matUseBillId, packNum, matInfoId, useLife) {
+    	var matType = $("#matType").val();
+		$.ajax({
+			type : "post",
+			url : "/initReturnBack",
+			data : {
+				"matUseBillId" : matUseBillId,
+				"packNum" : packNum,
+				"matInfoId" : matInfoId,
+				"useLife" : useLife,
+				"backWay" : "S"
+			},
+			dataType : "html",
+			success : function(data) {
+				$("#opener").css("width", "60vw");
+				$("#opener").html(data);
+				$("#opener").show();
+				$(".l-cover").show();
+			}
+		});
+	}
+ 
+</script>
+</html>

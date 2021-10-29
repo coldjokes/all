@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cnbaosi.cabinet.mapper.MesMapper">
+
+	<select id="getMaterialNamesByCode" resultType="java.lang.String">
+		SELECT 砂轮组 FROM mes_slz where 派工单号 = #{code}
+	</select>
+
+</mapper>

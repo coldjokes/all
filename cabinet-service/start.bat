@@ -1,0 +1,1 @@
+java -jar target/bsc-tool-box-drawer.jar --server.port=9001 --spring.profiles.active=dev

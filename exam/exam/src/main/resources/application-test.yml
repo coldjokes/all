@@ -1,0 +1,13 @@
+# 数据源
+spring:
+   datasource:
+      default:
+         url: jdbc:mysql://localhost:3306/exam?allowMultiQueries=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=true
+         driver-class-name: com.mysql.cj.jdbc.Driver
+         username: root
+         password: 123456
+      outer:
+         url: jdbc:mysql://localhost:3306/out_exam?allowMultiQueries=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=true
+         driver-class-name: com.mysql.cj.jdbc.Driver
+         username: root
+         password: 123456

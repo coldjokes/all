@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<h3>审核详情</h3>
+<div class="col-sm-12">
+	<table class="table" style="border-top:1px solid #ddd">
+		<thead>
+			<tr style="background-color:whitesmoke">
+				<th colspan="2" style="text-align: center;">物料信息</th>
+				<th style="text-align: center;">应还数量</th>
+				<th style="text-align: center;">归还详情</th>
+				<th style="text-align: center;">归还人员</th>
+				<th style="text-align: center;">归还时间</th>
+				<th style="text-align: center;">状态</th>
+			</tr>
+		</thead>
+		<tbody>
+			<p th:each="data : ${borrowInfo}">
+			<tr>
+				<td rowspan="3" style="width: 80px;"><img class="imgDetail"
+					th:src="${data.knifeImage}" style="width: 80px; height: 60px;" />
+				</td>
+				<td style="border: 0;" th:text="${'名称:' + data.knifeName}"></td>
+				<td style="text-align: center;" th:text="${data.num}"></td>
+				<td style="text-align: center;" th:text="${data.returnInfo}"></td>
+				<td style="text-align: center;" th:text="${data.username}"></td>
+				<td style="text-align: center;" th:text="${data.time}"></td>
+				<td style="text-align: center;"><span style="color: #1ab394;"
+					th:text="已通过"></span></td>
+			</tr>
+			<tr>
+				<td style="border: 0; width: 180px;"
+					th:text="${'编号:' + data.knifeId}"></td>
+			</tr>
+			<tr>
+				<td style="border: 0;" th:text="${'型号:' + data.knifeName}"></td>
+			</tr>
+			</p>
+		</tbody>
+	</table>
+</div>
+<script th:src="@{/static/modular/tool/recycReview/edit.js}"></script>
+
+</html>

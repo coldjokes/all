@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>暂存柜</title>
+<script th:src="@{/static/js/sockjs.min.js}"></script>
+<script th:src="@{/static/js/stomp.min.js}"></script>
+<script th:src="@{/static/js/jquery.min.js}"></script>
+<link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+<script th:src="@{/static/layui/layui.js}"></script>
+<style type="text/css">
+.open {
+	background-color: red;
+}
+</style>
+</head>
+<body>
+	<div class="layui-tab" style="margin: 0 auto;">
+		<div class="layer-title">
+			<div></div>
+			<h3>暂存柜</h3>
+			<a href="javascript:;" class="l-close"><img src="/static/images/l-close.jpg" alt=""></a>
+		</div>
+		<ul class="layui-tab-title" style="margin: 0 auto;">
+			<li th:each="sub,sta:${subCabinetBoxMap}" th:class="${sta.index==0} ? 'layui-this'" th:text="${sub.key}" th:id="${sub.key}" th:onclick="'selectSubCabinet(\''+${sub.key}+'\')'"></li>
+		</ul>
+		<div class="layui-tab-content" style="margin: 0; padding: 0;">
+			<div th:each="sub,sta:${subCabinetBoxMap}" th:id="${sub.key}" th:class="${sta.index==0} ? 'layui-tab-item layui-show' : 'layui-tab-item'" style="margin: 0 auto;">
+				<table class="layui-table" style="margin: 0;">
+					<tbody>
+						<tr th:each="row:${sub.value}">
+							<td th:each="col:${row.value}">
+								<button class="layui-btn layui-btn-primary" style="width: 100%; margin: 0 auto;" 
+									type="button" th:id="'btn_'+${col.lockIndex}"
+									th:text="${col.boxIndex<10?('00'+col.boxIndex):col.boxIndex<100?('0'+col.boxIndex):col.boxIndex}"
+									th:onclick="'openSubBox(\''+${col.boxIndex}+'\',\''+${col.boardNo}+'\',\''+${col.lockIndex}+'\')'">
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script th:inline="javascript">
+		/* 
+		var layer;
+		layui.use(['layer'], function(){
+		  layer = layui.layer;
+		});
+		
+		layui.use('element', function() {
+			var element = layui.element;
+		});
+		  */
+		var webSocket = null;
+		/**
+		 * @description 选择暂存柜
+		 * @param subCabinetName 暂存柜名称
+		 */
+		function selectSubCabinet(subCabinetName) {
+			$(".layui-tab-title li").removeClass("layui-this");
+			$(".layui-tab-title").find("li[id='"+subCabinetName+"']").addClass("layui-this");
+			
+			$(".layui-tab-content div").removeClass("layui-show");
+			$(".layui-tab-content").find("div[id='"+subCabinetName+"']").addClass("layui-show");
+		}
+		 
+		/**
+		 * @description 打开副柜
+		 * @param ip 副柜Ip地址
+		 * @param comm COMM口
+		 * @param boxIndex 盒子索引位
+		 * @param boardNo 栈号
+		 * @param lockIndex 锁针脚
+		 */
+		function openSubBox(boxIndex, boardNo, lockIndex) {
+			var url = "/cabinet/openBox";
+			$.ajax({
+				type : "post",
+				url : url,
+				data : {
+					"cabinetId":$("#mainCabinetId").val(),
+					"boxIndex":boxIndex,
+					"boardNo":boardNo,
+					"lockIndex":lockIndex
+				},
+				dataType : "json",
+				success : function(data) {
+			//		layer.msg(data.message);
+				}
+			});
+		}
+		
+		var cabinetId = [[${cabinetId}]];
+	    // 通过stompClient.subscribe（）订阅服务器的目标是'/user/' + userId + '/msg'接收一对一的推送消息,其中userId由服务端传递过来,用于表示唯一的用户,通过此值将消息精确推送给一个用户
+        webSocket = stompClient.subscribe('/modbus/' + cabinetId + '/status', function(response){
+            var msg = JSON.parse(response.body);	            
+            if (msg.msgType=='LOCKSTATUS'){
+	            if (msg.msgContent.lockStatus == 'OPEN') {
+	            	$("#btn_"+msg.msgContent.index).addClass('open');
+	            } else {
+	            	$("#btn_"+msg.msgContent.index).removeClass('open');
+	            }
+			} else if (msg.msgType=='TEXT') {
+				layer.msg(msg.msgContent);
+			}
+        });
+	</script>
+	<script>
+		$(function(){
+            $(".l-close").click(function(){
+                $(".layer").hide();
+                $(".l-cover").hide();
+                //取消订阅后台
+				webSocket.unsubscribe();
+            })
+        })
+    </script>
+</body>
+</html>

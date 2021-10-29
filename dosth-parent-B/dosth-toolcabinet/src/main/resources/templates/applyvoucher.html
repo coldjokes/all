@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+<title>我的申请单</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row" style="margin: 5px; margin-left: -10px;">
+            <div class="layui-col-xs8 layui-col-sm8 layui-col-md8">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <input id="search"
+                        style="width: 100%; margin-right：50px; line-height: 30px; height: 38px;"
+                        placeholder="搜索:申请单号" />
+                </div>
+            </div>
+            <div class="layui-col-xs1 layui-col-sm1 layui-col-md1">&nbsp;</div>
+            <div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
+                <button type="button" class="layui-btn" id="btnSearch" onclick="searchClsq()">搜索</button>
+                <button type="button" class="layui-btn" id="btnAddCart" onclick="clsqAddCart()">立即领取</button>
+                <button type="button" class="layui-btn" id="btnFinish" style="display: none;">取料完成</button>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 1px;" id="clsqList">
+            
+        </div>
+    </div>
+</body>
+<script th:inline="javascript">
+ 
+    var cabinetId  = [[${cabinetId}]];
+    var applyVoucherResult;
+ 
+    $(document).ready(function() {
+        searchClsq();
+    });
+    var stompClient = null;
+    var socket = new SockJS('/endpointModbusStatus'); //1连接SockJS的endpoint是“endpointWisely”，与后台代码中注册的endpoint要一样。
+    stompClient = Stomp.over(socket);//2创建STOMP协议的webSocket客户端。
+    stompClient.connect({}, function(frame) {//3连接webSocket的服务端。
+        //订阅后台消息
+        stompClient.subscribe('/modbus/' + cabinetId + '/status', function(response){
+            var msg = JSON.parse(response.body);
+            if(msg.msgType == 'DOOROPENED'){
+                setTimeout(function(){
+                    $("#btnFinish").removeClass("layui-btn-disabled");
+                    $("#btnFinish").bind("click", function() {
+                        closeClsqDoor();
+                    });
+                },2000);
+            } else if (msg.msgType == 'SUBALERTINFO') {
+            	applyVoucherResult = msg.msgContent;
+            }
+        });
+    });
+    
+    /**
+     * @description 关闭申请单取料门
+     */
+    function closeClsqDoor() {
+    	$.ajax({
+            url: '/cabinet/sendApplyVoucherResult',
+            type: 'get',//提交方式
+            data: {"applyVoucherResult" : applyVoucherResult},
+            success: function(result){
+            	$.ajax({
+        			url : '/cabinet/plcop',
+        			type : 'post',
+        			data: {
+        				"cabinetId":cabinetId,
+        				"opType":'ON_CLOSE_DOOR_COIL'
+        			},
+        			dataType : "json",
+        			success : function(result) {
+                        layer.msg("取料完成");
+                        logout();
+        			},
+        			error : function(err) {
+        				console.log(err);
+        			}
+        		});
+            },
+            error: function(err){//后台处理数据失败后的回调函数
+                layer.msg(err);
+            }
+        });
+    }
+    
+    /**
+     * @全选
+     * @param applyNo 申请单号
+     */
+    function selectAll(obj, applyNo) {
+    	var allFlag = $(obj).is(":checked");
+    	$("#clsqDiv_" + applyNo + " tr").each(function() {
+			if (allFlag) {
+				var remain = parseInt($(this).find("td").eq(4).text());
+				var borrow = parseInt($(this).find("td").eq(5).text());
+				$(this).find("input[type='checkbox']").eq(0).prop("checked", remain != 0);
+			} else {
+				$(this).find("input[type='checkbox']").eq(0).prop("checked", false);
+			}
+		});
+    	if (allFlag) {
+	    	// 取消所有非当前标签页的复选框
+	    	$(".layui-colla-item").each(function() {
+	    		var voucher = $(this).find("input[type='checkbox']").eq(0);
+	    		var voucherNo = $(voucher).attr("id");
+	    		console.log("申请单号:" + voucherNo);
+	    		if (voucherNo != applyNo) {
+		    		$("#"+voucherNo).prop("checked", false);
+		    		$("#clsqDiv_"+voucherNo).find("input[type='checkbox']").prop("checked", false);
+	    		}
+	    	});
+    	}
+    }
+    
+    /**
+     * @description 选择或取消单个
+     * @param obj 当前复选框
+     * @param applyNo 申请单号
+     * @param borrowNum 领取数量
+     * @param remainNum 库存数量
+     */
+    function selectSingle(obj, applyNo, borrowNum, remainNum) {
+        if (parseInt(remainNum) == 0) {
+            layer.msg("库存数量为零,请联系管理员!");
+            $(obj).prop("checked", false);
+        }
+        var selected = $(obj).is(":checked");
+        if (selected) {
+            var chknum = $("#clsqDiv_" + applyNo + " :checkbox").length;//选项总个数
+            var chk = 0;
+            $("#clsqDiv_" + applyNo + " :checkbox").each(function() {
+                if ($(this).prop("checked")) {
+                    chk++;
+                }
+            });
+            $("#"+applyNo).prop("checked", chknum == chk);
+        } else {
+            $("#"+applyNo).prop("checked", false);
+        }
+    }
+    
+    /**
+     * @description 搜索申请单
+     */
+    function searchClsq(obj) {
+        var url = "/getApplyMatDetailList";
+        $.ajax({
+            type : "post",
+            url : url,
+            data : {"search": $("#search").val()}, // 我的申请单默认条件
+            async : false,
+            dataType : "html",
+            success : function(data) {
+                $("#clsqList").html(data);
+            }
+        });
+    }
+    
+    /**
+     * @description 立即领取
+     */
+    function clsqAddCart() {
+        var cart = [];
+        $("#clsqDiv :checkbox").each(function() {
+            if ($(this).prop("checked")) {
+                var id = $(this).attr("id");
+                var arr = id.split('_');
+                var receiveType = "APPLYVOUCHER";
+                var receiveInfo = "申请单";
+                if (arr.length == 5) {
+                    var applyNo = id.split('_')[0];
+                    var matId = id.split('_')[1];
+                    var borrowNum = id.split('_')[3];
+                    var remainNum = id.split('_')[4];
+                    var borrowType = id.split('_')[2];
+                    selectedNum = {
+                        "applyNo" : applyNo,
+                        "matId" : matId,
+                        "borrowNum" : parseInt(borrowNum) > parseInt(remainNum) ? parseInt(remainNum) : parseInt(borrowNum),
+                        "borrowType" : borrowType,
+                        "receiveType" : receiveType,
+                        'receiveInfo' : receiveInfo
+                    };
+                    if (selectedNum.borrowNum > 0) {
+                        cart.push(selectedNum);
+                    }
+                }
+            }
+        });
+        if (cart.length > 0) {
+            $("#btnAddCart").addClass("layui-btn-disabled");
+            $("#btnAddCart").unbind("click");
+            $.ajax({
+                url : "/cabinet/sendApplyVoucherToServer",
+                type : "post",
+                dataType : "text",
+                data : {"cart" : JSON.stringify(cart)},
+                success : function(data) {
+                    $("#btnAddCart").hide();
+                    $("#btnFinish").addClass("layui-btn-disabled");
+                    $("#btnFinish").show();
+                }
+            }); 
+        } else {
+            layer.msg("请先选择需要领取的清单！");
+        }
+    }
+</script>
+</html>

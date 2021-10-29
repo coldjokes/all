@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>物料上下架</title>
+</head>
+<style type="text/css">
+.fixedColWidth {
+	width: 100px;
+}
+</style>
+<link th:href="@{/static/css/main.css}" rel="stylesheet" />
+<body class="gray-bg">
+	<input type="hidden" id="selCab" />
+	<input type="hidden" id="cabinetId" />
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-sm-12" style="padding-top: 10px">
+								<div class="col-lg-5 col-sm-5">
+									<div class="row row-lg" style="width:500px ! important">
+										<div class="col-lg-7 col-sm-7">
+											<div class="input-group">
+												<div class="input-group-btn">
+													<button data-toggle="dropdown"
+														class="btn btn-white dropdown-toggle" type="button">物料
+													</button>
+												</div>
+												<input type="text" class="form-control"
+													id="matNameBarCodeSpec" placeholder="名称 / 编号 / 规格" />
+											</div>
+										</div>
+											<button type="button" class="btn btn-primary"
+												style="margin: 0;" onclick="MatInOrOut.matSearch()"
+												id="matSearch">
+												<i class="fa fa-search"></i>&nbsp;搜索
+											</button>
+										</div>
+								</div>
+								<div class="col-lg-6 col-sm-6">
+									<div class="row row-lg">
+										<div class="col-lg-4 col-sm-5">
+											<div class="input-group">
+												<div class="input-group-btn">
+													<button data-toggle="dropdown"
+														class="btn btn-white dropdown-toggle" type="button">物料
+													</button>
+												</div>
+												<input type="text" class="form-control"
+													id="staMatNameBarCodeSpec" placeholder="名称 / 编号 / 规格" />
+											</div>
+										</div>
+										<div class="col-lg-5 col-sm-7">
+											<button type="button" class="btn btn-primary"
+												style="margin: 0;" onclick="MatInOrOut.staSearch()"
+												id="staSearch">
+												<i class="fa fa-search"></i>搜索
+											</button>
+											<button type="button" class="btn btn-warning" style="margin: 0;" onclick="MatInOrOut.matIn()" id="matInCab">
+												<i></i>物料上架
+											</button>
+											<button type="button" class="btn btn-warning btn-outline" style="margin: 0;" onclick="MatInOrOut.matCheck()" id="matOutCab">
+												<i></i>物料下架
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row row-lg">
+							<div class="col-sm-12 col-lg-12">
+								<div class="col-lg-4 col-sm-4">
+									<div class="ibox float-e-margins" id="matlist"></div>
+								</div>
+								<div class="col-lg-1 col-sm-1">
+								
+								</div>
+								<div class="col-lg-6 col-sm-6">
+									<div class="row row-lg" style="width:750px ! important">
+										<div class="col-lg-9 col-sm-6">
+											<div class="ibox float-e-margins" id="stalist"></div>
+										</div>
+										<div class="col-lg-3 col-sm-3" style="padding-top:5px;">
+											<div class="panel panel-default">
+												<div class="panel-heading">设备</div>
+												<div class="panel-body dept-tree">
+													<ul id="equInfoTree" class="ztree"></ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/matinorout/index.js}"></script>
+	<script th:src="@{/static/js/string.js}"></script>
+</body>
+</html>

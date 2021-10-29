@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>我要补料</title>
+<script th:src="@{/static/js/sockjs.min.js}"></script>
+<script th:src="@{/static/js/stomp.min.js}"></script>
+<script th:src="@{/static/js/jquery.min.js}"></script>
+<link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+<link th:href="@{/static/css/reset.css}" rel="stylesheet" />
+<link th:href="@{/static/css/jia_style.css}" rel="stylesheet" />
+<link th:href="@{/static/css/swiper.css}" rel="stylesheet" />
+<link th:href="@{/static/css/css.css}" rel="stylesheet" />
+<link th:href="@{/static/css/zTreeStyle.css}" rel="stylesheet" />
+<script th:src="@{/static/js/jquery.ztree.all.min.js}"></script>
+</head>
+<body>
+<div class="layui-tab" style="margin: 0 auto;">
+	<div class="layer-title">
+		<div></div>
+		<h3>我要补料</h3>
+		<a href="javascript:;" class="l-close"><img src="/static/images/l-close.jpg" alt=""></a>
+	</div>
+	<div class="layui-fluid">
+		<div class="layui-row layui-col-space10" style="width: 82.5vw;">
+			<div class="layui-col-xs2 layui-col-sm2 layui-col-md2" style="height: 105vw; overflow-y: auto;">
+				<ul class="layui-nav layui-nav-tree" lay-filter="test" th:each="feed:${feedingList}"
+					style="width: 150px;">
+					<li class="layui-nav-item" th:id="'li_'+${feed.id}">
+						<a href="javascript:void('0');" th:onclick="'selectFeed(\''+${feed.id} + '\')'" 
+							th:text="${feed.name}"></a>
+					</li>
+				</ul>
+			</div>
+			<div id="feedingDetail" class="layui-col-xs10 layui-col-sm10 layui-col-md10" style="height: 105vw; overflow-y: auto;"></div>
+		</div>
+		<div class="layui-row layui-col-space10" style="text-align: right;">
+			<button id="btn" class="layui-btn layui-btn-lg" onclick="finishFeeding()" style="display: none;">补料完成</button>
+		</div>
+	</div>
+	<input type="hidden" id="feedingListId" />
+</div>
+</body>
+<script th:inline="javascript">
+	var layer;
+	//一般直接写在一个js文件中
+	layui.use([ 'layer' ], function() {
+		layer = layui.layer;
+	});
+	
+	/**
+	 * @description 选择补料清单
+	 * @param feedingListId 补料清单Id
+	 */
+	function selectFeed(feedingListId) {
+		$("li.layui-nav-item").removeClass("layui-this");
+		$("#li_" + feedingListId).addClass("layui-this");
+		$.ajax({
+			url : "/selectFeed",
+			data : {
+				"feedingListId" : feedingListId
+			},
+			type : 'post',
+			success : function(data) {
+				$("#feedingListId").val(feedingListId);
+				$("#feedingDetail").html(data);
+				$("#btn").show();
+			},
+			error : function(data) {
+				layer.msg(data);
+			}
+		});
+	}
+
+	/**
+	 * @description 完成补料订单
+	 */
+	function finishFeeding() {
+		var feedingListId = $("#feedingListId").val();
+		if (feedingListId == '') {
+			layer.msg("请先选择补料的清单");
+			return;
+		}
+		var url = "/cabinet/finishFeedingList";
+		$.ajax({
+			type : "post",
+			url : url,
+			data : {
+				"feedingListId" : feedingListId
+			},
+			dataType : "json",
+			success : function(data) {
+				if (data.code == 200) {
+					$("#btn").hide();
+					$("#li_" + feedingListId).remove();
+					$("#feedingListId").val("");
+					$("#feedingDetail").html('');
+					$(".layui-nav-item a:first").click();
+					$.ajax({
+			            url: '/cabinet/syncFeedingList',
+			            type: 'get',//提交方式
+			            data: {"feedingListId" : feedingListId},
+			            success: function(result){
+			            	console.log("同步完成");
+			            }
+					});
+				}
+				layer.msg(data.message);
+			}
+		});
+	}
+
+	$(document).ready(function() {
+		$(".layui-nav-item a:first").click();
+	});
+</script>
+<script>
+	$(function() {
+		$(".l-close").click(function() {
+			$(".layer").hide();
+			$(".l-cover").hide();
+		})
+	})
+</script>
+</html>

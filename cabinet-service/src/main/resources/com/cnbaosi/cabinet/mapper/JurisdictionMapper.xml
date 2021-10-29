@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cnbaosi.cabinet.mapper.JurisdictionMapper">
+
+    <select id="getMaterials" parameterType="com.cnbaosi.cabinet.entity.modal.MaterialCategory" resultType="com.cnbaosi.cabinet.entity.modal.Dept">
+        SELECT
+            bm.id id,
+            bm. NAME text,
+            bmc.id pId,
+            'user' type
+        FROM
+            bs_material_category_map bmcm
+        LEFT JOIN bs_material bm ON bm.id = bmcm.material_id
+        LEFT JOIN bs_material_category bmc ON bmc.id = bmcm.category_id
+        WHERE
+            1 = 1
+        AND bm.delete_time IS NULL
+        AND bmc.delete_time IS NULL
+        And bmcm.category_id in
+            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item.id}
+            </foreach>
+    </select>
+
+    <select id="getUsers" parameterType="com.cnbaosi.cabinet.entity.modal.Dept" resultType="com.cnbaosi.cabinet.entity.modal.Dept">
+        SELECT
+        bm.id id,
+        bm. username text,
+        bmc.id pId,
+        'user' type
+        FROM
+        bs_dept_map bmcm
+        LEFT JOIN bs_user bm ON bm.id = bmcm.user_id
+        LEFT JOIN bs_dept bmc ON bmc.id = bmcm.dept_id
+        WHERE
+        1 = 1
+        AND bm.delete_time IS NULL
+        AND bmc.delete_time IS NULL
+        And bmcm.dept_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </select>
+<!--  判断用户是否有取料权限  -->
+    <select id="getRoles" parameterType="java.lang.String" resultType="java.lang.String">
+        select value from bs_user_material_map where 1=1
+        and select_id in
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+
+<!--  获取上级部门ID  -->
+    <select id="getPids" resultType="java.lang.String">
+        select dept_id from bs_dept_map where 1=1
+        <if test="userId != '' and userId != null">
+            and user_id = #{userId,jdbcType=VARCHAR}
+        </if>
+        limit 1
+    </select>
+
+    <select id="getDeptPId" resultType="java.lang.String">
+        select p_id from bs_dept where 1= 1
+        <if test="deptId != '' and deptId != null">
+            and id = #{deptId,jdbcType=VARCHAR}
+        </if>
+        and delete_time is null
+        and p_id is not null
+    </select>
+
+</mapper>

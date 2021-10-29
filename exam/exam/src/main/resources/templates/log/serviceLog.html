@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head th:include="common/header.html :: common_header"></head>
+
+	<script th:src="@{/static/custom/js/log/log.js}"></script>   
+	 
+	<style type="text/css">
+
+	</style>
+
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content">
+	        <div class="ibox">
+	            <div class="ibox-title">
+	                <h5>后台日志</h5>
+	            </div>
+	           
+	            <div class="ibox-content">
+	                <div class="row ">
+	                    <div class="col-sm-12">
+	                    	<div class="tableToolBar" >
+								<form role="form" class="form-inline" onsubmit="return false;" id="logSearchForm">
+									<div class="input-group">
+									    <div class="input-group-btn">
+									        <div class="btn searchKeyBtn">用户名</div>
+									    </div>
+									    <input type="text" name="username" class="form-control"  placeholder="请输入用户名">
+									</div>
+									<div class="input-group">
+									    <div class="input-group-btn">
+									        <div class="btn searchKeyBtn">日志类型</div>
+									    </div>
+									    <select class="form-control logType" name="logType"></select>
+									</div>
+									
+									<div class="input-group">
+									    <div class="input-group-btn">
+									    	<div class="input-group-btn">
+										        <div class="btn searchKeyBtn">记录时间</div>
+										    </div>
+									    </div>
+									    <input type="text" class="form-control daterangePicker">
+									    <input type="hidden" class="form-control" name="startTime">
+									    <input type="hidden" class="form-control" name="endTime">
+									</div>
+									<button class="btn btn-primary" id="logListSearchBtn">查询</button>
+		                        </form>	                    	
+	                    	</div>
+							<table id="serviceLogTbl" data-mobile-responsive="true"></table>
+	                    </div>
+	                </div>
+	            </div>
+			</div>	      
+        </div>
+	</body>
+</html>

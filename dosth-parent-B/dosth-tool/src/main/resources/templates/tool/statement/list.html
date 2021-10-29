@@ -1,0 +1,68 @@
+<table class="table table-condensed">
+	<thead>
+		<tr>
+			<th>
+				选择
+			</th>
+			<th>
+				序号
+			</th>
+			<th>
+				编码
+			</th>
+			<th>
+				名称
+			</th>
+			<th width="220px">
+				规格
+			</th>
+			<th>
+				上期结存
+			</th>
+			<th>
+				领料数量
+			</th>
+			<th>
+				暂存数量
+			</th>
+			<th>
+				核对数量
+			</th>
+			<th>
+				单价
+			</th>
+			<th>
+				金额
+			</th>
+			<th>
+				是否核对
+			</th>
+			<th>
+				核对人员
+			</th>
+			<th>
+				核对时间
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:each="statement,sta : ${list}" th:id="${statement.id}">
+			<td th:id="${statement.id}"><input type="radio" name="waitStatement" th:value="${statement.id}"/></td>
+			<td th:text="${sta.count}"></td>
+			<td th:text="${statement.matInfo.barCode}"></td>
+			<td th:text="${statement.matInfo.matEquName}"></td>
+			<td th:text="${statement.matInfo.spec}"></td>
+			<td th:text="${statement.balance}"></td>
+			<td style="display: none;" th:text="${#dates.format(statement.startDate, 'yyyy-MM-dd')}"></td>
+			<td style="display: none;" th:text="${#dates.format(statement.endDate, 'yyyy-MM-dd')}"></td>
+			<td th:text="${statement.outerNum}"></td>
+			<td th:text="${statement.tempNum}"></td>
+			<td th:text="${statement.balance + statement.outerNum - statement.tempNum}"></td>
+			<td th:text="${statement.price}"></td>
+			<td th:text="${statement.cost}"></td>
+			<td th:text="${statement.isHD.message}"></td>
+			<td th:text="${statement.account != null ? statement.account.userName : ''}"></td>
+			<td th:text="${#dates.format(statement.opDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+		</tr>
+	</tbody>
+</table>

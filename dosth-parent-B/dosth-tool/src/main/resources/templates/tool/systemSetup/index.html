@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>系统设置</title>
+</head>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-lg-12 col-sm-12">
+								<div class="row"
+									style="background-color: #F5F5F5; padding-top: 10px;">
+									<div class="col-sm-2 col-lg-1">
+										<p style="color: #000;font-size:16px"><b>物料金额数据</b></p>
+									</div>
+									<div class="col-sm-10 col-lg-11">
+										<table>
+											<tbody>
+												<tr th:each="systemSetup : ${systemList}">
+													<td><i id="btn"
+														th:class="${systemSetup.setupValue.toString()=='FALSE' ? 'fa fa-toggle-off text-navy fa-2x' : 'fa fa-toggle-on text-navy fa-2x'}"
+														th:onclick="'disable(\''+${systemSetup.id}+'\')'"></i></td>
+												</tr>
+											</tbody>
+										</table>
+										<p style="color: #999;">开启后金额以实际领取数量*包装数量*单价为准，关闭后金额以实际领取数量*单价为准，此开关将会影响金额数据。</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script th:src="@{/static/modular/tool/cleardata/index.js}"></script>
+		<script th:inline="javascript">
+		function disable(id) {
+			var type = false;
+			if ($("#btn").hasClass("fa-toggle-on")) {
+				type = true;
+			}
+			var operation = function() {
+				var ajax = new $ax("/systemSetup/update/" + id,
+					function(data) {
+						if (data.code == 200) {
+							Feng.success("设置成功!");
+							if (type) {
+								$("#btn").removeClass("fa-toggle-on").addClass("fa-toggle-off");
+							} else {
+								$("#btn").removeClass("fa-toggle-off").addClass("fa-toggle-on");
+							}
+						} else {
+							Feng.error(data.message);
+						}
+					}, function(data) {
+						Feng.error("设置失败!");
+					});
+				ajax.start();
+			};
+			Feng.confirm(type ? "是否停用当前开关?" : "是否启用当前开关?", operation);
+		}
+		</script>
+	</div>
+</body>
+
+</html>

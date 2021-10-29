@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>设置</title>
+</head>
+<body>
+<body class="gray-bg">
+<input type="hidden" id="editId" size="100">
+<input type="hidden" id="equSettingId" th:value="${equSettingId}">
+<input type="hidden" id="cabinetTyp" th:value="${cabinetType}">
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+					<div class="row row-lg">
+						<div class="col-sm-12">
+							<div class="col-lg-4 col-sm-3">
+								<div class="panel panel-default">
+									<div class="panel-heading">设备</div>
+									<div class="panel-body dept-tree">
+										<ul id="equInfoTree" class="ztree"></ul>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-8 col-sm-9">
+								<div class="ibox float-e-margins">
+									<label class="col-sm-5 control-label">编辑区</label>
+									<div id="editContent" class="ibox-content">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script th:src="@{/static/modular/tool/equsetting/setupInfo.js}"></script>
+</body>
+</html>

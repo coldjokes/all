@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>定时任务</title>
+</head>
+<body class="gray-bg">
+<input class="form-control" type="hidden" id="id">
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+					<div class="row row-lg">
+						<div class="col-lg-12 col-sm-12">
+							<div class="row">
+								<div class="col-lg-10 col-sm-9">
+									<div class="row" style="padding-top:10px">
+										<div class="col-lg-4 col-sm-4">
+											<div class="input-group">
+												<div class="input-group-btn">
+													<button data-toggle="dropdown"class="btn btn-white dropdown-toggle" 
+														type="button">收件人
+													</button>
+												</div>
+												<input class="form-control" id="userName" name="userName" placeholder="请选择收件人"
+                                                        type="text" readonly="readonly" onclick="TimeTask.showUserSelectTree(); return false;"
+                                                        style="background-color: #ffffff !important;"> 
+                                                <input class="form-control" type="hidden" id="id">
+                                                <input class="form-control" type="hidden" id="accountId">
+                                                <div id="userContent" class="menuContent" style="display: none; position: absolute; z-index: 200; top: 35px;width:70% ! important">
+                                                    <ul id="userTree" class="ztree tree-box" style="border:1px solid whitesmoke;background-color:#FFF;"></ul>
+                                                </div>
+											</div>
+										</div>
+										<div class="col-lg-4 col-sm-4">
+											<div class="input-group">
+												<div class="input-group-btn">
+													<button data-toggle="dropdown" class="btn btn-white dropdown-toggle" 
+															type="button">执行时间
+													</button>
+												</div>
+												<select class="form-control" id="executionTime">
+													<option value="0">0</option>
+													<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">3</option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="8">8</option>
+													<option value="9">9</option>
+													<option value="10">10</option>
+													<option value="11">11</option>
+													<option value="12">12</option>
+													<option value="13">13</option>
+													<option value="14">14</option>
+													<option value="15">15</option>
+													<option value="16">16</option>
+													<option value="17">17</option>
+													<option value="18">18</option>
+													<option value="19">19</option>
+													<option value="20">20</option>
+													<option value="21">21</option>
+													<option value="22">22</option>
+													<option value="23">23</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-4 col-sm-4">
+											<button type="button" class="btn btn-primary"
+												onclick="TimeTask.reset()" id="ensure">
+												 <i class="fa fa-refresh"></i>&nbsp;重置
+											</button>
+											&nbsp;&nbsp;&nbsp;
+											<button type="button" class="btn btn-primary"
+												onclick="TimeTask.saveAndFlush()" id="ensure">
+												<i class="fa fa-check"></i>&nbsp;保存
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+								<hr/>
+							<table id="managerTable"></table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script th:src="@{/static/modular/tool/timeTask/index.js}"></script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="common/header.html :: common_header"></head>
+<script th:src="@{/static/custom/js/cabinet/cabinet.js}"></script> 
+
+	<style type="text/css">
+		.cell{
+			display:inline;
+		}
+		.cellLabel{
+			width:50px;
+		}
+		.cellStack{
+			width:18px;
+		    text-align: center
+		}
+		.cellPin {
+		    width:30px;
+		    text-align: center
+		}
+		
+	</style>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content">
+		<div class="ibox">
+			<div class="ibox-title">
+				<h5>柜体列表</h5>
+			</div>
+			<div class="ibox-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="tableToolBar">
+							<form id="cabinetSearchForm" role="form" class="form-inline" onsubmit="return false;">
+								<div class="input-group">
+									<div class="input-group-btn">
+										<div class="btn searchKeyBtn">柜体名称</div>
+									</div>
+									<input type="text" name="name" class="form-control"
+										placeholder="请输入柜体名称">
+								</div>
+								<button class="btn btn-primary" id="cabinetListSearchBtn">查询</button>
+								<div class="btn-group" style="float: right">
+									<button type="button" class="btn btn-outline btn-default"  id="openCabinetAddBtn">
+	                                	<i class="fa fa-plus"></i> 新增
+	                                </button>
+								</div>
+							</form>
+						</div>
+						<table id="cabinetListTbl"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="cabinetModal">
+		<div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">柜体设置</h4>
+                </div>
+                <div class="modal-body">
+					<form class="form-horizontal" id="cabinetForm">
+						<input type="hidden" class="form-control" name="id">
+						<div class="row">
+	                     	<div class="form-group">
+	                             <label class="col-md-3 control-label">柜体名称：</label>
+	                             <div class="col-md-7">
+	                                 <input type="text" class="form-control" name="name">
+	                             </div>
+	                             <div class="col-md-2">
+	                                 <span class="help-block m-b-none">*必填</span>
+	                             </div>
+	                         </div>
+	                    </div>
+                                
+                        <div class="row">
+                       		<div class="form-group">
+                               <label class="col-md-3 control-label">主&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</label>
+
+                               <div class="col-md-7">
+                                   <select class="form-control computer" name="computerId"></select>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="row">
+	                     	<div class="form-group">
+	                             <label class="col-md-3 control-label">主机端口：</label>
+	                             <div class="col-md-7">
+	                                 <select class="form-control" name="computerPort">
+	                                 	<option value="/dev/ttyS0">/dev/ttyS0</option>
+	                                 	<option value="/dev/ttyS1">/dev/ttyS1</option>
+	                                 	<option value="/dev/ttyS2">/dev/ttyS2</option>
+	                                 	<option value="/dev/ttyS3">/dev/ttyS3</option>
+	                                 	<option value="/dev/ttyS4">/dev/ttyS4</option>
+	                                 	<option value="/dev/ttyS5">/dev/ttyS5</option>
+	                                 	<option value="/dev/ttyUSB0">/dev/ttyUSB0</option>
+	                                 	<option value="/dev/ttyUSB1">/dev/ttyUSB1</option>
+	                                 	<option value="/dev/ttyUSB2">/dev/ttyUSB2</option>
+	                                 	<option value="/dev/ttyUSB3">/dev/ttyUSB3</option>
+	                                 	<option value="/dev/ttyUSB4">/dev/ttyUSB4</option>
+	                                 	<option value="/dev/ttyUSB5">/dev/ttyUSB5</option>
+	                                 	<option value="/dev/ttyFIQ0">/dev/ttyFIQ0</option>
+	                                 </select>
+	                             </div>
+	                         </div>
+	                    </div>
+	                    
+	                    <div class="row">
+	                     	<div class="form-group">
+	                             <label class="col-md-3 control-label">波&nbsp;&nbsp;特&nbsp;&nbsp;率：</label>
+	                             <div class="col-md-7">
+	                                 <select class="form-control" name="computerBaudRate">
+	                                 	<option value="9600">9600</option>
+	                                 	<option value="14400">14400</option>
+	                                 	<option value="19200" selected>19200</option>
+	                                 	<option value="115200">115200</option>
+	                                 </select>
+	                             </div>
+	                         </div>
+	                    </div>
+                        
+						<div class="row">
+                        	<div class="form-group">
+                               	<label class="col-md-3 control-label">行&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数：</label>
+                                <div class="col-md-7">
+	                                 <input type="text" class="form-control" name="rowNum" placeholder="行数不能超过100" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+	                             </div>
+	                             <div class="col-md-2">
+	                                 <span class="help-block m-b-none">*必填</span>
+	                             </div>
+                            </div>
+                        </div>   
+                        <div id="rows"></div>
+					</form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="cabinetSaveBtn">保存</button>
+                </div>
+            </div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="cabinetCellModal">
+		<div class="modal-dialog" style="width:80%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">格口设置（格式为： 名称:栈号:针脚）</h4>
+                </div>
+                <div class="modal-body">
+					<form class="form-horizontal" id="cabinetCellForm">
+						<div class="row" id="rowSetting">
+	                    </div>
+					</form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="cabinetCellSaveBtn">保存</button>
+                </div>
+            </div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="cabinetDelModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title">确认信息</h4>
+				</div>
+				<div class="modal-body">
+					是否删除柜体【<span id="deleteNameText"></span>】？
+				</div>
+				<input type="hidden" id="deleteCabinetId">
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="cabinetDeleteBtn">确认</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

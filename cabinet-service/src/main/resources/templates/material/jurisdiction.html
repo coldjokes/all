@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head th:include="common/header.html :: common_header"></head>
+
+	<script th:src="@{/static/custom/js/material/jurisdiction.js}"></script>
+	<script th:src="@{/static/common/Feng.js}"></script>
+
+	<style type="text/css">
+
+	</style>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row row-lg">
+			<div class="col-sm-12">
+				<div class="col-lg-6 col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">员工帐号</div>
+						<div class="panel-body" style="height: 350px; overflow: auto;">
+							<div id="accountTree"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">取料权限</div>
+						<div class="panel-body" style="height: 350px; overflow: auto;">
+							<div id="categoryTree"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row btn-group-m-t">
+			<div class="col-sm-10">
+				<button type="button" class="btn btn-info" onclick="icBind()" id="ensure">
+					<i class="fa fa-check"></i>&nbsp;保存
+				</button>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/borrowPopedom/index.js}"></script>
+	<script th:src="@{/static/js/content.js}"></script>
+</body>
+</html>

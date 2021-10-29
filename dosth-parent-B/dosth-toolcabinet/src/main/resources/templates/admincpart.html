@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>管理员-C柜部分</title>
+</head>
+<body>
+<div class="l-manage-head">硬件测试</div>
+<ul class="manage-list">	
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_OPEN_DOOR_COIL\')'">
+			<div><i class="fa fa-envelope-open-o fa-5x" aria-hidden="true"></i></div>
+			<p>取料口开门</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_CLOSE_DOOR_COIL\')'">
+			<div><i class="fa fa-envelope-o fa-5x" aria-hidden="true"></i></div>
+			<p>取料口关门</p>
+		</a>
+	</li>
+</ul>
+</body>
+</html>

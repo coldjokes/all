@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<title>类型</title>
+</head>
+<body>
+	<div class="jia_left_type">
+		<p style="font-size:26px;">分类</p>
+		<ul class="jia_left_ul" th:each="name : ${list}" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+			<li th:id="${name.code}">
+				<a href="javascript:void('0');" th:onclick="'flushType(\''+${name.code}+'\')'" 
+					th:text="${name.name}"></a>
+			</li>
+		</ul>
+	</div>
+	<div class="j_table" style="width: 900px; margin-top: 2vw;" id="typeBackList"></div>
+</body>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".jia_left_ul a").eq(0).click();
+	});
+	/**
+	 * @params paramId 选中条件参数
+	 */
+	function flushType(receiveInfo) {
+		$(".jia_left_ul li").removeClass("j_type_on");
+		$(".jia_left_ul li[id='" + receiveInfo + "']").addClass("j_type_on");
+		$.ajax({
+			type : "post",
+			url : "/getMatListByType/" + receiveInfo,
+			async : false,
+			dataType : "html",
+			success : function(data) {
+				$("#typeBackList").html(data);
+			}
+		});
+	}
+
+</script>
+</html>

@@ -1,0 +1,105 @@
+
+[
+    {
+        "seq": "1",
+        "loginName":"admin",
+        "operateType": "领取",
+        "cabinetName": "智能工具柜1",
+        "boxName": "A1-2",
+        "materialName": "砂轮组A",
+        "operateTime": 1560238324486
+    },
+    {
+        "seq": "2",
+        "loginName":"zhangsan",
+        "operateType": "登录",
+        "cabinetName": "智能工具柜1",
+        "boxName": null,
+        "materialName": null,
+        "operateTime": 1560238324486
+    },
+    {
+        "seq": "3",
+        "loginName":"lisi",
+        "operateType": "存入",
+        "cabinetName": "智能工具柜1",
+        "boxName": "A1-21",
+        "materialName": "砂轮组A",
+        "operateTime": 1560238324486
+    },
+    {
+        "seq": "4",
+        "loginName":"admin",
+        "operateType": "登录",
+        "cabinetName": "智能工具柜1",
+        "boxName": null,
+        "materialName": null,
+        "operateTime": 1560238324486
+    },
+    {
+        "seq": "5",
+        "loginName":"admin",
+        "operateType": "领取",
+        "cabinetName": "智能工具柜1",
+        "boxName": "A1-2",
+        "materialName": "砂轮组A",
+        "operateTime": 1560238324486
+    },
+    {
+        "seq": "6",
+        "loginName":"admin",
+        "operateType": "领取",
+        "cabinetName": "智能工具柜1",
+        "boxName": "A1-2",
+        "materialName": "砂轮组A",
+        "operateTime": 1560238324486
+    },
+    {
+        "seq": "7",
+        "loginName":"admin",
+        "operateType": "领取",
+        "cabinetName": "智能工具柜1",
+        "boxName": "A1-2",
+        "materialName": "砂轮组A",
+        "operateTime": 1560238324486
+    },
+    {
+        "seq": "8",
+        "loginName":"admin",
+        "operateType": "领取",
+        "cabinetName": "智能工具柜1",
+        "boxName": "A1-2",
+        "materialName": "砂轮组A",
+        "operateTime": 1560238324486
+    },
+    {
+        "seq": "9",
+        "loginName":"admin",
+        "operateType": "领取",
+        "cabinetName": "智能工具柜1",
+        "boxName": "A1-2",
+        "materialName": "砂轮组A",
+        "operateTime": 1560238324486
+    },
+    {
+        "seq": "10",
+        "loginName":"admin",
+        "operateType": "领取",
+        "cabinetName": "智能工具柜1",
+        "boxName": "A1-2",
+        "materialName": "砂轮组A",
+        "operateTime": 1560238324486
+    },
+    {
+        "seq": "11",
+        "loginName":"admin",
+        "operateType": "领取",
+        "cabinetName": "智能工具柜1",
+        "boxName": "A1-2",
+        "materialName": "砂轮组A",
+        "operateTime": 1560238324486
+    }
+
+    
+    
+]

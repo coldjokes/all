@@ -1,0 +1,13 @@
+一、普通业务删除
+1、将ToolDataClean.bat和clean.sql拷贝到需要执行的机器上同目录下
+2、将ToolDataClean.bat中MYSQL_HOME变量修改成MYSQL实际安装路径
+3、双击ToolDataClean.bat执行
+
+其他:clean.sql中说明了清除数据内容,如有特殊业务需求,在此基础上根据实际情况修改
+
+二、普通业务以及物料删除
+1、将ToolDataMatClean.bat和clean_mat.sql拷贝到需要执行的机器上同目录下
+2、将ToolDataMatClean.bat中MYSQL_HOME变量修改成MYSQL实际安装路径
+3、将ToolDataMatClean.bat执行
+
+其他:clean_mat.sql中说明了清除数据内容,如有特殊业务需求,在此基础上根据实际情况修改

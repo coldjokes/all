@@ -1,0 +1,122 @@
+<button type="button" class="btn btn-primary btn-outline"
+	onclick="SubCabinetDetail.subcabinetDetailExport()"
+	id="exportExcel">
+	<i class="fa fa-cloud-download"></i>&nbsp;导出
+</button>
+<hr />
+<table id="ViceCabinetQueryTable">
+	<thead th:include="/common/thead.html :: common_thead">
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+<script>
+	$(document).ready(function() {
+		//SubCabinetDetail.freshTemp();
+		//SubCabinetDetail.search();
+		var that = this;
+	tbl = $("#ViceCabinetQueryTable").bootstrapTable({
+		url: "/viceCabinetQuery/list",
+		cache: false,
+		showColumns: true,
+		showRefresh: true,
+		clickToSelect: true,
+		pagination: true,
+		toolbar: '#exportExcel',
+		pageNumber: 1,
+		pageSize: 10,
+		sidePagination: "server",
+		columns: [
+			{
+				field: "subBoxName",
+				title: "暂存柜名称",
+				align: "center"
+			},
+			{
+				field: "position",
+				title: "货位",
+				align: "center"
+			},
+			{
+				field: "matInfoName",
+				title: "物料名称",
+				align: "center"
+			},
+			{
+				field: "barCode",
+				title: "物料编号",
+				align: "center"
+			},
+			{
+				field: "spec",
+				title: "物料型号",
+				align: "center"
+			},
+			{
+				field: "num",
+				title: "数量",
+				align: "center"
+			},
+			{
+				field: "borrowType",
+				title: "单位",
+				align: "center"
+			},
+			{
+				field: "price",
+				title: "单价（元）",
+				align: "center"
+			},
+			{
+				field: "money",
+				title: "金额（元）",
+				align: "center"
+			},
+			{
+				field: "userName",
+				title: "领用人员",
+				align: "center"
+			},
+			{
+				field: "inOrOut",
+				title: "暂存/取出",
+				align: "center",
+				formatter: function(value, index, row) {
+					var a = "";
+					if (value == "YES") {
+						var a = '<span style="color:#1ab394;">' + '暂存' + '</span>';
+					} else if(value == "NO"){
+						var a = '<span style="color:#FF0000;">' + '取出' + '</span>';
+					}
+					return a;
+				}
+			},
+			{
+				field: "opDate",
+				title: "操作时间",
+				align: "center"
+			},
+		],
+		responseHandler: function(res) {
+			return {
+				"total": res.totalElements,
+				"rows": res.content
+			};
+		},
+		queryParams: function(params) {
+			var temp = {
+				limit: params.limit,
+				offset: params.offset,
+				pageSize: this.pageSize,
+				pageNumber: this.pageNumber,
+				beginTime: $("#beginTime").val(),
+				endTime: $("#endTime").val(),
+				info: $("#info").val(),
+				subBoxName: $("#subBoxName").val(),
+				inOrOut: $("#inOrOut").val()
+			};
+			return temp;
+		},
+	})
+	});
+</script>

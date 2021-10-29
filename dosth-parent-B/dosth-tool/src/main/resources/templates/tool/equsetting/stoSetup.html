@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>参数</title>
+</head>
+<body>
+	<div class="ibox float-e-margins">
+		<div class="ibox-content">
+			<div class="form-horizontal" id="stoForm" th:object="${cabinetSetup}">
+				<input type="hidden" id="equSettingId" name="equSettingId"
+					th:value="${equSettingId}"> <input type="hidden"
+					id="cabinetType" name="cabinetType" th:value="${cabinetType}">
+				<input type="hidden" id="maxId">
+				<div class="row">
+					<div class="col-sm-12 col-lg-12">
+						<div class="form-group">
+							<label class="col-sm-2 control-label"><span
+								class="required">*</span>锁控板端口</label>
+							<div class="col-lg-3 col-sm-3">
+								<select class="form-control" id="STORE_COM" name="STORE_COM"
+									th:value="${map['STORE_COM'] != null ? map['STORE_COM'].setupValue : ''}">
+									<option value=""></option>
+									<option
+										th:selected="${state.name()} eq ${map['STORE_COM'] != null ? map['STORE_COM'].setupValue : ''}"
+										th:each="state : ${T(com.dosth.tool.common.state.HardwareCom).values()}"
+										th:value="${state}" th:text="${state.message}"></option>
+								</select>
+							</div>
+							<label class="col-sm-2 control-label"><span
+								class="required">*</span>锁控板波特率</label>
+							<div class="col-lg-3 col-sm-3">
+								<select class="form-control" id="STORE_BAUD" name="STORE_BAUD"
+									th:value="${map['STORE_BAUD'] != null ? map['STORE_BAUD'].setupValue : ''}">
+									<option value=""></option>
+									<option
+										th:selected="${state.message} eq ${map['STORE_BAUD'] != null ? map['STORE_BAUD'].setupValue : ''}"
+										th:each="state : ${T(com.dosth.tool.common.state.BaudType).values()}"
+										th:value="${state.message}" th:text="${state.message}">
+									</option>
+								</select>
+							</div>
+							<div class="col-lg-1 col-sm-2" style="padding-top:6px">
+								<a href="javascript:;" class="addInput"> <i
+									class="fa fa-plus fa-2x" aria-hidden="true"></i>
+								</a>
+							</div>
+						</div>
+						<div id="addDiv"></div>
+					</div>
+					<div class="col-sm-10"
+						style="padding-top: 35px; padding-left: 12%">
+						<button type="button" class="btn btn-primary btn-outline"
+							onclick="stoSetup.close()" id="cancel">
+							<i class="fa fa-eraser"></i>&nbsp;取消
+						</button>
+						&nbsp;&nbsp;&nbsp;
+						<button type="button" class="btn btn-primary"
+							onclick="stoSetup.editSubmit()" id="ensure">
+							<i class="fa fa-check"></i>&nbsp;提交
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script th:inline="javascript">
+	var stoList = [[${stoList}]];
+</script>
+<script th:src="@{/static/modular/tool/equsetting/stoSetup.js}"></script>
+</html>

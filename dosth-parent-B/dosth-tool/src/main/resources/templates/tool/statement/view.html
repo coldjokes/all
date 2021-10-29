@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>核对管理</title>
+</head>
+<body>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>序号</th>
+				<th>编码</th>
+				<th>名称</th>
+				<th>规格</th>
+				<th>数量</th>
+				<th>单价</th>
+				<th>金额</th>
+				<th>领用人</th>
+				<th>领用时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="record,sta : ${recordList}" th:id="${record.id}">
+				<td th:text="${sta.count}"></td>
+				<td th:text="${record.matInfo.barCode}"></td>
+				<td th:text="${record.matInfo.matEquName}"></td>
+				<td th:text="${record.matInfo.spec}"></td>
+				<td th:text="${record.packNum}"></td>
+				<td th:text="${record.price}"></td>
+				<td th:if="${record.matInfo.borrowType.code == 2}" th:text="${record.realNum * record.price}"></td>
+				<td th:if="${record.matInfo.borrowType.code == 1}" th:text="${record.realNum == 0 ? 0 : record.price}"></td>
+				<td th:text="${record.userName}"></td>
+				<td th:text="${#dates.format(record.opDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:fragment="common_header">
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="renderer" content="webkit">
+	
+	    <title>管理系统</title>
+	
+	    <meta name="keywords" content="">
+	    <meta name="description" content="">
+	
+	    <!--[if lt IE 9]>
+	    <meta http-equiv="refresh" content="0;ie.html" />
+	    <![endif]-->
+	
+		<!-- <link th:href="@{/static/custom/images/favicon4.ico}" rel="shortcut icon"/> -->
+		
+		<!-- jquery -->
+		<script th:src="@{/static/common/jquery/1.11.1/jquery-1.11.1.min.js}"></script>    
+	    
+	   	<!-- bootstap库 -->
+		<link th:href="@{/static/common/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" />
+		<script th:src="@{/static/common/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+		
+		<!-- underscore工具库 -->
+		<script th:src="@{/static/common/underscore/1.9.1/underscore-min.js}"></script>
+		
+	   	<!-- font awesome图标库 -->
+		<link th:href="@{/static/common/font-awesome/4.7.0/css/font-awesome.min.css}" rel="stylesheet" />
+	    
+	    <!-- h+主题框架 -->
+	    <link th:href="@{/static/common/h+/4.0/css/style.css}" rel="stylesheet" />
+		<script th:src="@{/static/common/h+/4.0/js/hplus.js}"></script>
+		<script th:src="@{/static/common/h+/4.0/js/contabs.js}"></script>
+		<script th:src="@{/static/common/h+/4.0/js/content.js}"></script>
+		
+	    <!-- 动画特效 -->
+	    <link th:href="@{/static/common/animate/3.7.2/animate.css}" rel="stylesheet" />
+	    
+	    <!-- 动态侧边导航 -->
+		<script th:src="@{/static/common/metisMenu/1.1.3/jquery.metisMenu.js}"></script>
+		
+		<!-- 滚动条 -->
+		<script th:src="@{/static/common/slimscroll/1.3.0/jquery.slimscroll.min.js}"></script>
+		
+		<!-- 弹层组件 -->
+		<script th:src="@{/static/common/layer/layer.min.js}"></script>
+		
+		<!-- 加载进度 -->
+		<script th:src="@{/static/common/pace/0.5.1/pace.min.js}"></script>
+		
+	    <!-- bootstrap table -->
+		<link th:href="@{/static/common/bootstrap-table/1.14.2/bootstrap-table.min.css}" rel="stylesheet" />
+	    <script th:src="@{/static/common/bootstrap-table/1.14.2/bootstrap-table.min.js}"></script>
+	    <script th:src="@{/static/common/bootstrap-table/1.14.2/locale/bootstrap-table-zh-CN.min.js}"></script>
+	    
+		<!-- 时间格式化moment -->
+		<script th:src="@{/static/common/momentjs/2.13.0/moment.min.js}"></script>
+		
+	    <!-- 时间范围选择插件 -->
+		<link th:href="@{/static/common/daterangepicker/3.0.5/daterangepicker.css}" rel="stylesheet" />
+	    <script th:src="@{/static/common/daterangepicker/3.0.5/daterangepicker.js}"></script>
+	    
+	    <!-- 范围滑块插件 -->
+		<link th:href="@{/static/common/jquery-bar-rating/1.2.2/themes/bars-square.css}" rel="stylesheet" />
+	    <script th:src="@{/static/common/jquery-bar-rating/1.2.2/jquery.barrating.min.js}"></script>
+
+	    <!-- 提示效果框 -->
+		<link th:href="@{/static/common/sweetalert/sweetalert.css}" rel="stylesheet" />
+	    <script th:src="@{/static/common/sweetalert/sweetalert.min.js}"></script>
+
+	    <!-- 文件上传插件 -->
+		<link th:href="@{/static/common/bootstrap-fileinput/5.0.4/css/fileinput.min.css}" rel="stylesheet" />
+	    <script th:src="@{/static/common/bootstrap-fileinput/5.0.4/js/fileinput.min.js}"></script>
+	    <script th:src="@{/static/common/bootstrap-fileinput/5.0.4/js/locales/zh.js}"></script>
+		<link th:href="@{/static/common/bootstrap-fileinput/5.0.4/themes/explorer-fa/theme.min.css}" rel="stylesheet" />
+	    <script th:src="@{/static/common/bootstrap-fileinput/5.0.4/themes/explorer-fa/theme.min.js}"></script>
+
+	    <!-- 图片查看插件 -->
+		<link th:href="@{/static/common/viewer/css/viewer.min.css}" rel="stylesheet" />
+	    <script th:src="@{/static/common/viewer/js/viewer.min.js}"></script>
+	    <!-- <script th:src="@{/static/common/viewer/js/viewer-jquery.min.js}"></script> -->
+
+	    <!-- 表单验证 -->
+	    <script th:src="@{/static/common/jquery-validation/1.14.0/jquery.validate.min.js}"></script>
+	    <script th:src="@{/static/common/jquery-validation/1.14.0/localization/messages_zh.min.js}"></script>
+	    
+	    <!-- toastr通知插件 -->
+	    <link th:href="@{/static/common/toastr/2.1.4/toastr.min.css}" rel="stylesheet" />
+	    <script th:src="@{/static/common/toastr/2.1.4/toastr.min.js}"></script>
+	    
+	    <!-- jstree树形视图 -->
+	    <link th:href="@{/static/common/jstree/3.3.8/themes/default/style.min.css}" rel="stylesheet" />
+	    <script th:src="@{/static/common/jstree/3.3.8/jstree.min.js}"></script>
+
+		<!-- switch切换按钮 -->
+		<link th:href="@{/static/common/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css}" rel="stylesheet" />
+		<script th:src="@{/static/common/bootstrap-switch/3.3.4/js/bootstrap-switch.js}"></script>
+
+	    <!-- 用户自定义样式 -->
+	    <link th:href="@{/static/custom/css/common.css}" rel="stylesheet" />
+
+		<!-- 用户自定义Js -->
+		<script th:src="@{/static/custom/js/common/initAjax.js}"></script>
+	    <script th:src="@{/static/custom/js/common/api.js}"></script>
+	    <script th:src="@{/static/custom/js/common/siteConfig.js}"></script>
+	    <script th:src="@{/static/custom/js/common/dict.js}"></script>
+		<script th:src="@{/static/custom/js/common/initConstant.js}"></script>
+		<script th:src="@{/static/custom/js/common/initPlugins.js}"></script>
+		<script th:src="@{/static/custom/js/common/initDiyMethod.js}"></script>
+
+	</head>
+</html>

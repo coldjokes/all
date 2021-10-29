@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<!-- 批量归还页面 -->
+<div class="jia_cab_div" style="clear: both">
+	<ul class="jia_cab_ul">
+		<li class="l-sub-item"  th:each="val : ${backBatchList}" th:id="${val.matId}"
+		  th:name="${val.matName} + ${val.barCode} + ${val.spec} + ${val.receiveInfo}">
+			<div class="jia_cab_list">
+				<div class="jia_cab_left" style="width:177px; height:177px;">
+					<img th:src="${val.pic}" th:title="${val.matName}" onerror="imgerrorfun();"/>
+				</div>
+				<div class="jia_sub_left">
+					<ul class="jia_cab_r_ul">
+						<li>名称：<span th:text="${val.matName}"></span></li>
+						<li>编号：<span th:text="${val.barCode}"></span></li>
+						<li>规格：<span th:text="${val.spec}"></span></li>
+						<li>单位：<span th:text="${val.borrowTypeName}"></span></li>
+						<li>待还数量：<span th:text="${val.borrowNum}" th:id="'waitBackNum_'+${val.matId}"></span></li>
+						<li>归还数量： 
+							<a href="javascript:void('0');" th:onclick="'subNum(\''+${val.matId}+'\')'">-</a>
+							<span th:id="'nums_'+${val.matId}" style="text-align: center; width: 20px;">1</span>
+							<a href="javascript:void('0');" th:onclick="'addNum(\''+${val.matId}+'\')'">+</a>
+						</li>
+					</ul>
+				</div>
+				<div class="jia_cab_btn3">
+					<a href="javascript:void('0');" style="margin-right: 1vw" th:onclick="'backBatch(\''+${val.matId}+'\',\''+${val.useLife}+'\')'">归还</a>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+<script th:inline="javascript">
+	
+	$(function(){
+		 //订阅后台消息
+	    webSocket = stompClient.subscribe('/modbus/' + $("#mainCabinetId").val() + '/status', function(response){
+	        var msg = JSON.parse(response.body);
+	        if (msg.msgType == 'TIME_OUT') {
+	        	layer.msg(msg.msgContent, {time:3000});
+	        }
+	    });
+	});
+	
+	/**
+	 * @description 归还
+	 * @param matInfoId 暂存盒子Id
+	 */
+	function backBatch(matId, useLife) {
+		var waitBackNum = parseInt($("#waitBackNum_"+ matId).html());
+		var backNum = parseInt($("#nums_"+ matId).html());
+		if(backNum > waitBackNum){
+			layer.msg("待还数量不足，请重新确认");
+			return;
+		}
+		$.ajax({
+			type : "post",
+			url : "/initReturnBack",
+			data : {
+				"matUseBillId" : "",
+				"packNum" : backNum,
+				"matInfoId" : matId,
+				"useLife" : useLife,
+				"backWay" : "M"
+			},
+			dataType : "html",
+			success : function(data) {
+				$("#opener").css("width", "60vw");
+				$("#opener").html(data);
+				$("#opener").show();
+				$(".l-cover").show();
+			}
+		});
+	}
+	
+	/**
+	 * @description 添加
+	 */
+	function addNum(matId) {
+		var curNum = parseInt($("#nums_"+ matId).html()) + 1;
+		var waitBackNum = parseInt($("#waitBackNum_"+ matId).html());
+		if (curNum <= waitBackNum) {
+			$("#nums_"+ matId).html(curNum);
+		}else{
+			layer.msg("待还数量不足，无法增加");
+		}
+	}
+	
+	/**
+	 * @description 减少
+	 */
+	function subNum(matId) {
+		var curNum = parseInt($("#nums_"+ matId).html()) - 1;
+		if (curNum > 0) {
+			$("#nums_"+ matId).html(curNum);
+		}
+	}
+
+</script>
+
+</html>

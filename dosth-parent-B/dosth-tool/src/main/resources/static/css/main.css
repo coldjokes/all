@@ -1,0 +1,70 @@
+.imgDetail {
+	width: 120px;
+	height: 120px;
+	border: 1px window solid;
+	padding: 2px;
+}
+.boxInfo {
+	width: 120px;
+	font-size: 16px;
+	font-weight: bolder;
+	text-align: center;
+}
+
+.boxInfo span {
+	width: 120px;
+}
+
+.equStatus {
+	width: 120px; 
+	height: 25px; 
+	line-height: 25px;
+	text-align: center;
+}
+
+.equNum {
+	float: left;
+	width: 28px;
+	margin-left: 2px;
+}
+
+.microswitch { 
+	float: left;
+	width: 56px;
+	margin: 0 2px;
+	color: orange;
+}
+
+.overload { 
+	float: left;
+	width: 56px;
+	margin: 0 2px;
+	color: #FF6633; 
+}
+
+.openfault { 
+	float: left;
+	width: 56px;
+	margin: 0 2px;
+	color: rgb(255,255,0); 
+}
+
+.shorttrouble { 
+	float: left;
+	width: 56px;
+	margin: 0 2px;
+	color:  rgb(255,0,0); 
+}
+
+.none { 
+	float: left;
+	width: 56px;
+	margin: 0 2px;
+	color: green; 
+}
+
+.setting {
+	float: left;
+	width: 28px;
+	margin-right: 2px;
+}

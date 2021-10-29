@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>库位补料</title>
+</head>
+<link th:href="@{/static/css/main.css}" rel="stylesheet" />
+<body class="gray-bg">
+	<input type="hidden" id="equId" />
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>库位补料</h5>
+					</div>
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-sm-12">
+								<div class="col-lg-2 col-sm-2">
+									<div class="panel panel-default">
+										<div class="panel-heading">设备</div>
+										<div class="panel-body dept-tree">
+											<ul id="equInfoTree" class="ztree"></ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-10 col-sm-10">
+									<div class="ibox float-e-margins">
+										<button type="button" class="btn btn-primary" id="getFeedList"
+											onclick="WareHouseFeed.getFeedList()">
+											<i class="fa fa-edit"></i>&nbsp;获取入库单
+										</button>
+										<button type="button" class="btn btn-warning" id="feedListBtn"
+											onclick="WareHouseFeed.buildList()">
+											<i class="fa fa-edit"></i>&nbsp;生成补料清单
+										</button>
+									</div>
+									<div class="ibox-content">
+										<table id="infos"></table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/warehouseFeed/index.js}"></script>
+	<script th:src="@{/static/js/string.js}"></script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+.jia_left_type {
+	width: 11.5vw;
+	text-align: center;
+	margin-top: 2vw;
+	float: left;
+}
+
+.jia_left_ul li {
+	height: 5vw;
+	vertical-align: middle;
+	background: #f4f8ff;
+}
+
+.jia_left_type p {
+	display: block;
+	height: 5vw;
+	line-height: 5vw;
+	background: #f4f8ff;
+}
+
+.jia_left_ul li a {
+	color: #333333;
+	font-size: 1.7vw;
+	line-height: 5vw;
+}
+
+.j_table {
+	display: table;
+	width: 86vw;
+	border-collapse: collapse;
+	float: right;
+	margin-top: 1vw
+}
+
+.j_table-tr {
+	display: table-row;
+	height: 5.6vw;
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.j_table-th {
+	display: table-cell;
+	height: 5.6vw;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #f4f8ff;
+	color: #333333;
+	font-size: 1.3vw
+}
+
+.j_table-tr2 {
+	display: table-row;
+	height: 12.8vw;
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.j_table-td {
+	display: table-cell;
+	height: 100%;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 12.8vw
+}
+
+.j_table-tr2 img {
+	vertical-align: middle;
+}
+
+.j_table-td input {
+	width: 2vw;
+	height: 2vw;
+}
+
+.jia_td_radio {
+	line-height: 5vw;
+}
+
+.jia_td_radio input {
+	margin-left: 1.5vw;
+	line-height: 5vw;
+}
+
+.j_table-td_add_btn a {
+	display: inline-block;
+	height: 3vw;
+	width: 3vw;
+	font-size: 2vw;
+	border: 0.1vw solid #666;
+	/* padding: 0.1vw 0.6vw; */
+	line-height: 2.5vw;
+	cursor: pointer;
+	background: #ececec;
+}
+
+.j_table-td_add_btn {
+	display: table-cell;
+	height: 100%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.j_type_on {
+	background: #9bbeff !important;
+}
+
+.jia_left_count {
+	color: #ff7575;
+}
+
+.jia_tip_layer {
+	font-size: 1.45vw;
+	color: #666;
+}
+
+.jia_layer_main {
+	border-bottom: 1px solid #f3f3f3;
+	text-align: center;
+	padding-top: 2vw;
+	padding-bottom: 2.8vw;
+}
+
+.jia_type_layer {
+	width: 56.6vw;
+	padding: 2vw 4vw 2.7vw;
+}
+
+.jia_tip_btn {
+	display: flex;
+	justify-content: space-around;
+}
+
+.jia_tip_btn a {
+	margin-top: 2.8vw;
+	display: inline-block;
+	width: 10vw;
+	height: 4.5vw;
+	line-height: 4.5vw;
+	text-align: center;
+	border-radius: 1vw;
+	font-size: 1.5vw;
+	background: #3476ee;
+	color: white;
+}
+
+.jia_tip_btn a:nth-of-type(1) {
+	
+}
+/*我的暂存柜*/
+.jia_cab_btn {
+	display: flex;
+	justify-content: center;
+	padding-top: 3vw;
+}
+
+.jia_cab_btn a {
+	display: inline-block;
+	border: 1px solid #3476ee;
+	color: #3476ee;
+	width: 10vw;
+	height: 3vw;
+	font-size: 1.5vw;
+	text-align: center;
+	line-height: 3vw;
+}
+
+.jia_cab_btn2 {
+	float: right;
+}
+
+.jia_cab_btn2 {
+	font-size: 1.7vw;
+	color: #0d59e7;
+	padding-right: 5vw;
+	padding-bottom: 1vw;
+}
+
+.jia_cab_list {
+	width: 98vw;
+	height: 25vw;
+	border-bottom: 10px solid #f3f3f3;
+}
+
+.jia_cab_left {
+	float: left;
+	width: 35vw;
+	margin-top: 6vw;
+	margin-left: 4vw;
+}
+
+.jia_cab_right {
+	float: right;
+	width: 57vw;
+	margin-top: 3.5vw;
+}
+
+.jia_cab_r_ul li {
+	float: left;
+	min-width: 12vw;
+	margin-right: 9vw;
+	margin-top: 2.5vw;
+	font-size: 1.45vw;
+	color: #333333;
+}
+
+.jia_cab_r_ul li:nth-of-type(2n) {
+	margin-right: 0vw;
+	text-align: right;
+}
+
+.jia_sub_left{
+    float: left;
+    width: 50vw;
+    margin-left: 2.5vw;
+    margin-top: 3.5vw;
+}
+
+.jia_sub_left .jia_cab_r_ul li a {
+	margin-left: 2vw; 
+	width: 2.5vw; 
+	height: 2.5vw;
+	border: 1px solid #aeaeae;
+	text-align: center;
+	line-height: 2vw;
+	display: inline-block;
+}
+
+.jia_cab_btn3 {
+	padding-top: 5.5vw;
+	display: flex;
+	justify-content: center;
+}
+
+.jia_cab_btn3 a {
+	display: block;
+	width: 9vw;
+	height: 4vw;
+	background: #3476ee;
+	text-align: center;
+	line-height: 4vw;
+	color: white;
+	border-radius: 1vw;
+}
+
+.jia_cab_btn4{
+   padding-top: 5.5vw;
+    display: flex;
+    justify-content: center;
+}
+.jia_cab_btn4 a{
+    display: block;
+    width: 9vw;
+    height: 4vw;
+    background: #80b280;
+    text-align: center;
+    line-height: 4vw;
+    color: white;
+    border-radius: 1vw;
+}
+
+.jia_can_btn_on {
+	border: 1px solid white;
+	color: white !important;
+	background: #3476ee;
+}
+
+.jia_type_layer {
+	width: 75vw;
+}
+
+/*t暂存弹窗1*/
+.jia_type_layer2 {
+	width: 75vw;
+}
+
+.jia_layer_main2 {
+	border-bottom: 1px solid #f3f3f3;
+	text-align: center;
+	padding-top: 2.5vw;
+	height: 29vw;
+	padding-bottom: 2.8vw;
+}
+
+.jia_dialog_left {
+	float: left;
+}
+
+.jia_dialog_right {
+	float: right;
+	width: 45vw;
+}
+
+.jia_dialog_right ul li {
+	float: left;
+	min-width: 11.7vw;
+	margin-right: 8vw;
+	text-align: left;
+	font-size: 1.58vw;
+	color: #333333;
+	margin-bottom: 3vw;
+}
+
+.jia_dialog_right ul li a {
+	display: inline-block;
+	width: 2vw;
+	height: 2vw;
+	border: 1px solid #aeaeae;
+	text-align: center;
+	line-height: 2vw;
+}
+
+.jia_tip_btn2 {
+	display: flex;
+	justify-content: center;
+}
+
+.jia_tip_btn2 a {
+	margin-top: 2.8vw;
+	display: inline-block;
+	width: 10vw;
+	height: 4.5vw;
+	line-height: 4.5vw;
+	text-align: center;
+	border-radius: 1vw;
+	font-size: 1.5vw;
+	background: #3476ee;
+	color: white;
+}
+
+.jia_tip_btn2 a:nth-of-type(2) {
+	margin-left: 2.5vw;
+}
+/*暂存2*/
+.jia_cab_h3 {
+	font-size: 1.58vw;
+	text-align: left;
+	color: #333333;
+	padding-left: 1vw;
+	border-left: 0.5vw solid #3476ee;
+	margin-bottom: 2.5vw;
+	margin-top: 2.5vw;
+}
+
+.jia_layer_main3 {
+	border-bottom: 1px solid #f3f3f3;
+	text-align: center;
+	height: 30vw;
+}
+
+.jia_dialog2_right {
+	width: 40vw;
+	float: right;
+	text-align: left;
+}
+
+.jia_dialog2_ul li {
+	float: left;
+	min-width: 13vw;
+	margin-right: 13vw;
+	margin-bottom: 2.5vw;
+}
+
+.jia_dialog2_ul li:nth-of-type(3) {
+	margin-right: 0;
+}
+
+.jia_dialog2_ul li a {
+	display: inline-block;
+	width: 2vw;
+	height: 2vw;
+	border: 1px solid #aeaeae;
+	text-align: center;
+	line-height: 2vw;
+}
+
+.jia_dialog2_select {
+	margin-top: 1.5vw;
+	width: 40vw;
+	height: 5vw;
+	outline: none;
+	border: 1px solid #aeaeae;
+	padding-left: 2vw;
+	color: #333333;
+}
+
+.jia_dialog2_select option {
+	
+}

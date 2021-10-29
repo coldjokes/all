@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head th:insert="common/header.html :: common_header"></head>
+	<style type="text/css">
+		#content-main {
+		    height: calc(100% - 80px);
+		    overflow: hidden;
+		}
+		
+		.nav-header{
+			padding:21px;
+		}
+		
+		.nav-header .profile-element{
+			color:#a7b1c2;
+			font-size:17px;
+		}
+	</style>
+	
+	<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+	    <div id="wrapper">
+	        <!--左侧导航开始-->
+	        <nav class="navbar-default navbar-static-side" role="navigation">
+	            <div class="nav-close"><i class="fa fa-times-circle"></i>
+	            </div>
+	            <div class="sidebar-collapse">
+	                <ul class="nav" id="side-menu">
+	                    <li class="nav-header">
+	                        <div class="dropdown profile-element" style="text-align:center">
+	                            <span>
+	                           		 <a class="navbar-minimalize">首页</a>
+	                            </span>
+	                        </div>
+	                        <div class="logo-element">
+								 <img alt="image" src="/static/custom/images/logo/logo3.png" style="width:22px;height:22px;"/>
+	                        </div>
+	                    </li>
+						<li class="hide nav-organizational">
+							<a href="" class="J_menuItem">
+								<i class="fa fa-users"></i>
+								<span class="nav-label">人员管理</span>
+								<span class="fa arrow"></span>
+							</a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a class="J_menuItem" href="/user/list" data-index="0">人员列表</a>
+								</li>
+							</ul>
+						</li>
+
+	                    
+	                     <li class="hide nav-log">
+	                        <a class="J_menuItem" href="/log/serviceLog"><i class="fa fa-users"></i> <span class="nav-label">日志管理</span></a>
+	                    </li>
+	                    
+	                     <li class="hide nav-setting">
+	                        <a class="J_menuItem" href="/setting/list"><i class="fa fa-gear"></i> <span class="nav-label">系统设置</span></a>
+	                    </li>
+	                    
+	                    <!-- <li>
+	                        <a href="/log/cabinetLog" class="J_menuItem">
+	                            <i class="fa fa-file-text-o"></i>
+	                            <span class="nav-label">日志管理</span>
+	                            <span class="fa arrow"></span>
+	                        </a>
+	                        <ul class="nav nav-second-level">
+	                            <li>
+	                                <a class="J_menuItem" href="/log/cabinetLog" data-index="0">柜体日志</a>
+	                            </li>
+	                            <li>
+	                                <a class="J_menuItem" href="/log/serviceLog" data-index="0">后台日志</a>
+	                            </li>
+	                        </ul>
+	                    </li> -->
+	                </ul>
+	            </div>
+	        </nav>
+	        <!--左侧导航结束-->
+	        <!--右侧部分开始-->
+	        <div id="page-wrapper" class="gray-bg dashbard-1">
+	            <div class="row content-tabs">
+	                <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
+	                </button>
+	                <nav class="page-tabs J_menuTabs">
+	                    <div class="page-tabs-content">
+	                        <!-- <a href="javascript:;" class="active J_menuTab" data-id="index_v1.html">首页</a> -->
+	                    </div>
+	                </nav>
+	                <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
+	                </button>
+	                <div class="btn-group roll-nav roll-right">
+	                    <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>
+	
+	                    </button>
+	                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
+	                        <li class="J_tabShowActive"><a>定位当前选项卡</a>
+	                        </li>
+	                        <li class="divider"></li>
+	                        <li class="J_tabCloseAll"><a>关闭全部选项卡</a>
+	                        </li>
+	                        <li class="J_tabCloseOther"><a>关闭其他选项卡</a>
+	                        </li>
+	                    </ul>
+	                </div>
+	                <a href="#" class="roll-nav roll-right J_tabExit" id="loginOutBtn"><i class="fa fa fa-sign-out"></i> 退出</a>
+	            </div>
+	            <div class="row J_mainContent" id="content-main">
+	                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/user/list" frameborder="0" data-id="home" seamless></iframe>
+	            </div>
+	            <div class="footer">
+	                <div class="pull-right">&copy; <a href="http://www.cnbaosi.com/cn/index.php" >苏州鲍斯智能制造技术有限公司</a>
+	                </div>
+	            </div>
+	        </div>
+	        <!--右侧部分结束-->
+	    </div>
+	</body> 
+	<script type="text/javascript">
+		$(function(){
+			$("#loginOutBtn").on("click", function(){
+				$.deleteJSON(Api.url("login"), {}, function(data){
+					if(data.code == 200){
+						toastr.success("退出成功")
+						location.href = "";
+
+					}else{
+						toastr.success("退出失败，请刷新！")
+					}
+				})
+			})
+			
+ 			$(".nav-organizational").removeClass("hide");
+ 			$(".nav-user").removeClass("hide");
+			$(".nav-log").removeClass("hide");
+			$(".nav-setting").removeClass("hide");
+			
+		})
+	</script>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+    <title>角色信息</title>
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>角色信息</h5>
+					</div>
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-sm-12">
+								<div class="col-lg-4 col-sm-3">
+									<div class="panel panel-default">
+										<div class="panel-heading">角色树</div>
+										<div class="panel-body dept-tree">
+											<ul id="roleTree" class="ztree"></ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-8 col-sm-9">
+									<div class="ibox float-e-margins">
+										<label class="col-sm-5 control-label">编辑区</label>
+										<div class="ibox-content">
+											<div class="row" th:include="/admin/role/edit.html :: role_edit">	
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/admin/role/role.js}"></script>
+</body>
+<script th:src="@{/static/js/content.js}"></script>
+</html>

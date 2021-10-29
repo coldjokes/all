@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>清理数据</title>
+</head>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-lg-12 col-sm-12">
+								<div class="row">
+									<h4 style="color: #000000; padding-top: 20px;padding-left:25px">物料数据清理</h4>
+									<div class="col-lg-7 col-sm-7"
+										style="background-color: #F5F5F5; padding-top: 20px;">
+											<div class="col-sm-4 col-lg-2">
+											<button type="button" class="btn btn-primary"
+												onclick="ClearData.clearMat()" id="search">
+												<i class="fa fa-trash"></i>清理物料
+											</button>
+										</div>
+										<div class="col-lg-3 col-sm-7">
+											<h4 style="color: #000000; padding-top: 5px">清理所有物料以及相关信息</h4>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<h4 style="color: #000000; padding-top: 20px;padding-left:25px">柜体数据清理</h4>
+									<div class="col-lg-7 col-sm-7"
+										style="background-color: #F5F5F5; padding-top: 20px;">
+											<div class="col-sm-4 col-lg-2">
+											<button type="button" class="btn btn-primary button-margin"
+												onclick="ClearData.clearEqu()" id="trash">
+												<i class="fa fa-trash"></i>清理柜体
+											</button>
+										</div>
+										<div class="col-lg-3 col-sm-7">
+											<h4 style="color: #000000; padding-top: 5px">清理所有设备以及相关信息</h4>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<h4 style="color: #000000; padding-top: 20px;padding-left:25px">人员数据清理</h4>
+									<div class="col-lg-7 col-sm-7"
+										style="background-color: #F5F5F5; padding-top: 20px;">
+										<div class="col-sm-4 col-lg-2">
+											<button type="button" class="btn btn-primary button-margin"
+												onclick="ClearData.clearUser()" id="trash">
+												<i class="fa fa-trash"></i>清理人员
+											</button>
+										</div>
+										<div class="col-lg-3 col-sm-7">
+											<h4 style="color: #000000; padding-top: 5px">清理所有人员以及相关信息</h4>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<h4 style="color: #000000; padding-top: 20px;padding-left:25px">恢复出厂数据</h4>
+									<div class="col-lg-7 col-sm-7"
+										style="background-color: #F5F5F5; padding-top: 20px;">
+											<div class="col-sm-4 col-lg-2">
+											<button type="button" class="btn btn-primary button-margin"
+												onclick="ClearData.resetInit()" id="trash">
+												<i class="fa fa-trash"></i>恢复出厂
+											</button>
+										</div>
+										<div class="col-lg-3 col-sm-7">
+											<h4 style="color: #000; padding-top: 5px">一键恢复出厂数据</h4>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script th:src="@{/static/modular/tool/cleardata/index.js}"></script>
+	</div>
+</body>
+
+</html>

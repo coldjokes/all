@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="col-sm-12">
+	<table class="table">
+		<thead>
+			<tr style="display: table;width: 100%;table-layout: fixed;">
+				<th style="width: 65px;">
+					<input class='awsui-checkbox' type='checkbox' id='checkAll' onclick="infoDlg.checkAll()"/>
+				</th>
+				<th style="width: 65px;">序号</th>
+				<th style="width: 160px;">物料名称</th>
+				<th style="width: 160px;">物料编号</th>
+				<th style="width: 240px;">物料规格</th>
+				<th style="width: 160px;">物料类型</th>
+				<th>包装数量</th>
+			</tr>
+		</thead>
+		<tbody style="display: block;height: 500px;overflow-y: scroll;">
+			<tr style="display: table;width: 100%;table-layout: fixed;" class="tableCheck" 
+				th:each="mat : ${matInfoList}" th:name="${mat.matEquName == null ? '' : mat.matEquName}
+					+ ${mat.barCode == null ? '' : mat.barCode} + ${mat.spec == null ? '' : mat.spec}">
+				<td style="width: 65px;">
+					<input class='awsui-checkbox' type="checkbox" name="checkOne" th:id="${mat.id}"/>
+				</td>
+				<td style="width: 65px;" th:text="${matStat.index+1}"></td>
+				<td style="width: 160px;" th:text="${mat.matEquName == null ? '' : mat.matEquName}"></td>
+				<td style="width: 160px;" th:text="${mat.barCode == null ? '' : mat.barCode}"></td>
+				<td style="width: 240px;" th:text="${mat.spec == null ? '' : mat.spec}"></td>
+				<td style="width: 160px;" th:text="${mat.matEquType == null ? '' : mat.matEquType.typeName}"></td>
+				<td th:text="${mat.num == null ? 0 : mat.num}"></td> 
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script th:src="@{/static/modular/tool/lowerFrameMgr/index.js}"></script>
+<script th:src="@{/static/modular/tool/lowerFrameMgr/edit.js}"></script>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>每日限额</title>
+</head>
+<body>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row" style="padding-top:10px">
+							<div class="col-lg-3 col-sm-4">
+								<div class="input-group">
+									<div class="input-group-btn">
+										<button data-toggle="dropdown"
+											class="btn btn-white dropdown-toggle" type="button">员工姓名
+										</button>
+									</div>
+									<input class="form-control" id="userName" name="userName" placeholder="请选择员工"
+                                         type="text" readonly="readonly" onclick="DailyLimit.showUserSelectTree(); return false;"
+                                         style="background-color: #ffffff !important;"> 
+                                     <input class="form-control" type="hidden" id="accountId"/>
+                                    <div id="userContent" class="menuContent"
+										style="display: none; position: absolute; z-index: 200; border: 1px solid #ddd; background-color: white; top:35px;width: 78%;">
+										<ul id="userTree" class="ztree tree-box" style=" max-height: 300px; overflow-y: auto"></ul>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-2 col-sm-3">
+								<div class="row">
+									<div class="col-lg-12 col-sm-12">
+										<button type="button" class="btn btn-primary"
+											onclick="DailyLimit.dataSync()" id="search">
+											<i class="fa fa-search"></i>搜索
+										</button>
+										&nbsp;&nbsp;
+										<button type="button" class="btn btn-primary "
+											onclick="DailyLimit.resetSearch()" id="trash">
+											 <i class="fa fa-refresh"></i>&nbsp;重置
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ibox-title">
+						<h5>限额设置</h5>
+					</div>
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-lg-12 col-sm-12">
+								<div class="row">
+									<div class="col-lg-10 col-sm-10">
+										<div class="row">
+											<div class="col-lg-3 col-sm-4">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">开始时间
+														</button>
+													</div>
+													<input class="form-control" id="startTime" type="text" placeholder="开始时间">
+												</div>
+											</div>
+											<div class="col-lg-3 col-sm-4">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">结束时间
+														</button>
+													</div>
+													<input class="form-control" id="endTime" type="text" placeholder="结束时间"> 
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-lg-3 col-sm-4">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">限额总数
+														</button>
+													</div>
+													<input class="form-control" id="limitSumNum" type="text" placeholder="限额总数"
+														onkeyup="value=value.replace(/^(-1+)|[^\d]+/g,'')" maxlength="3">
+												</div>
+											</div>
+											<div class="col-lg-3 col-sm-4">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">未还限额总数
+														</button>
+													</div>
+													<input class="form-control" id="notReturnLimitNum" type="text" placeholder="未还限额总数" 
+														onkeyup="value=value.replace(/^(-1+)|[^\d]+/g,'')" maxlength="3">
+												</div>
+											</div>
+											<div class="col-lg-3 col-sm-3">
+												<div class="input-group">
+													<div class="col-lg-1 col-sm-1">
+														<button type="button" class="btn btn-primary" onclick="infoDlg.editSubmit()" style="display: none;" id="ensure">
+															<i class="fa fa-check"></i>保存
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="editContent" class="ibox-content">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/dailyLimit/index.js}"></script>
+	<script>
+		laydate.render({
+			elem : '#startTime',
+			type : 'time',
+			trigger: 'click'
+		});
+		laydate.render({
+			elem : '#endTime',
+			type : 'time',
+			trigger: 'click'
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>权限设置</title>
+</head>
+
+<body class="gray-bg">
+	<div class="ibox-content">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row " style="padding-top: 10px; padding-left: 6%;">
+				<div class="col-lg-12 col-sm-12">
+					<div class="col-lg-6 col-sm-6"></div>
+					<div class="col-lg-3 col-sm-3 ">
+						<button type="button" class="btn btn-primary" onclick="icBind()"
+							id="ensure">
+							<i class="fa fa-check"></i>&nbsp;保存
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="row row-lg">
+				<div class="col-sm-12">
+					<div class="col-lg-6 col-sm-6 "
+						style="border-right: 1px solid #ccc; padding-left: 10%; padding-top: 20px; padding-right: 4%;">
+						<div class="panel panel-default">
+							<div class="panel-heading">员工帐号</div>
+							<div class="panel-body" style="height: 350px; overflow: auto;">
+								<ul id="accountTree" class="ztree"></ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-6 col-sm-6 "
+						style="border-left: 1px solid #ccc; padding-left: 4%; padding-top: 20px; padding-right: 10%;">
+						<div class="panel panel-default">
+							<div class="panel-heading">取料权限</div>
+							<div class="panel-body" style="height: 350px; overflow: auto;">
+								<ul id="roleTree" class="ztree"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/borrowPopedom/index.js}"></script>
+	<script th:src="@{/static/js/content.js}"></script>
+</body>
+
+</html>

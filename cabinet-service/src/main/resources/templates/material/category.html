@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head th:include="common/header.html :: common_header"></head>
+
+	<script th:src="@{/static/custom/js/material/category.js}"></script>   
+	 
+	<style type="text/css">
+
+	</style>
+
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content">
+	        <div class="ibox">
+	            <div class="ibox-title">
+	                <h5>类别列表</h5>
+	            </div>
+	            <div class="ibox-content">
+	                <div class="row">
+	                    <div class="col-sm-3">
+	                    	<div class="categoryTreeContent">
+		                    	<div id="categoryTree"></div>
+	                    	</div>
+	                    </div>
+	                    <div class="col-sm-9">
+	                    	<div class="materialContent">
+	                    		<div class="btn-group updateCategoryMapBtn">
+									<input name="status" type="checkbox"  checked>
+								</div>
+								
+
+		                    	<div class="btn-group updateCategoryMapBtn">
+									<button type="button" class="btn btn-outline btn-default" id="updateCategoryMapBtn">
+	                                	<i class="fa fa-plus"></i> 保存
+	                                </button>
+								</div>
+								<table id="matList" data-mobile-responsive="true"></table>
+	                    	</div>
+	                    
+	                    	<!-- <div class="btn-group" style="float: right;margin-bottom:5px">
+								<button type="button" class="btn btn-outline btn-default"  id="openCategoryAddBtn">
+                                	<i class="fa fa-plus"></i> 新增
+                                </button>
+							</div>
+							<table id="matCategoryList" data-mobile-responsive="true"></table> -->
+	                    </div>
+	                </div>
+	            </div>
+			</div>	      
+        </div>
+
+		<div class="modal fade" id="matCategoryDeleteModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">确认信息</h4>
+                    </div>
+                    <div class="modal-body">
+						是否删除类别？
+                    </div>
+					<input type="hidden" id="deleteCategoryId">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="categoryDeleteBtn">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>	            
+	</body>
+</html>

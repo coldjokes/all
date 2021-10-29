@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<div class="layer jia_type_layer">
+	<div class="layer-title">
+		<div></div>
+		<h3>温馨提示</h3>
+		<a href="javascript:;" class="l-close">
+			<img src="/static/images/l-close.jpg" alt="">
+		</a>
+	</div>
+	<div class="jia_layer_main">
+		<p class="jia_tip_layer">
+			<span class="jia_left_count" id="subalertinfo"></span>
+		</p>
+	</div>
+	<div class="jia_tip_btn">
+		<a href="javascript:;" onclick="goToTmpcabinet()">去暂存柜</a>
+		<a href="javascript:;" onclick="conUse">继续领用</a>
+		<a href="javascript:;" onclick="cancel()" >取消</a>
+	</div>
+	<div>
+		<input type="hidden" th:value="${curNum}" />
+	</div>
+</div>
+
+<script th:inline="javascript">
+	function goToTmpcabinet() {
+		$(this).addClass("nav-on").siblings().removeClass("");
+		$.ajax({
+			url : "/cart/goToBorrandstor",
+			type : 'post',//提交方式
+			dataType : "html",
+			success : function(result) {
+				$("#cart").hide();
+				$("#tipMessage").hide();
+				$("#content").html(result);
+				$(".l-cover").hide();
+			},
+			error : function(err) {
+				layer.msg(err);
+			}
+		});
+	}
+	
+	//	取消
+	function cancel() {
+		$("#tipMessage").hide();
+	}
+</script>
+</html>

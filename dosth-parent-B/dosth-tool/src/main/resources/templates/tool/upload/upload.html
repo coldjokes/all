@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head th:include="/common/header.html :: common_header(~{::title})">
+<meta charset="UTF-8">
+</head>
+
+
+<body>
+	<form method="POST" enctype="multipart/form-data"
+		action="/importExcel/upload" id="uploadForm">
+		<div class="col-sm-12">
+			<div class="col-sm-12" style="padding-top: 20px;">
+				<button type="button" class="btn btn-primary btn-outline" onclick="userTemplate()">
+					<i class="fa fa-download"></i>&nbsp;下载模板
+				</button>
+			</div>
+			<div class="col-sm-2 col-lg-1" style="padding-top: 20px;">
+				<a type="button" class="btn btn-primary btn-outline"> 
+				<input style="overflow: hidden; position: absolute; opacity: 0;" class="a-upload" type="file" name="file"
+					accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+					<i class="fa fa-upload"></i>&nbsp;上传文件
+				</a>
+			</div>
+			 
+			<div class="col-sm-4" style="padding-top: 35px">
+				<span id="showFileName"></span>
+			</div>
+			<div class="col-sm-12" style="padding-top: 3%;">
+				<button type="button" class="btn btn-primary btn-outline" onclick="infoDlg.close()" id="cancel">
+					<i class="fa fa-eraser"></i>&nbsp;取消
+				</button>
+				&nbsp;&nbsp;&nbsp;
+				<button type="button" class="btn btn-primary" onclick="upload()" id="ensure">
+					<i class="fa fa-check"></i>&nbsp;导入
+				</button>
+			</div>
+		</div>
+	</form>
+</body>
+<script>
+	$(".a-upload").on("change", function() {
+		var filePath = $(this).val();
+		if (filePath.length > 0) {
+			var arr = filePath.split('\\');
+			var fileName = arr[arr.length - 1];
+			$("#showFileName").html(fileName);
+		} else {
+			$("#showFileName").html("");
+			return false
+		}
+	})
+
+	function upload() {
+		var file = $("#showFileName").html();
+		if(file == ""){
+			Feng.error("文件不能为空");
+			return;
+		}
+		$.ajax({
+			url : '/importExcel/upload',
+			type : 'post',
+			cache : false,
+			processData : false,
+			contentType : false,
+			data : new FormData($("#uploadForm")[0]),
+			success : function(data) {
+				if(data.code == 200){
+					Feng.success(data.message);
+					setTimeout(function (){
+	                    infoDlg.close();
+	                }, 700);
+					window.parent.tbl.bootstrapTable('refresh');
+				} else {
+					Feng.error(data.message);
+				}
+			},
+			error : function(data) {
+				Feng.error(data);
+			}
+		});
+	}
+
+	// 物料导入模板
+	function userTemplate() {
+		window.location.href = "/static/download/物料导入模板.xls";
+	};
+</script>
+<script th:src="@{/static/js/plugins/webuploader/webuploader.min.js}"></script>
+<script th:src="@{/static/js/common/web-upload-object.js}"></script>
+<script th:src="@{/static/modular/tool/matequinfo/index.js}"></script>
+<script th:src="@{/static/modular/tool/matequinfo/edit.js}"></script>
+
+</html>

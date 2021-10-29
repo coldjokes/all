@@ -1,0 +1,80 @@
+######################################################
+##################  所有profile共有的配置  #################
+######################################################
+
+others:
+   serialNo: "001"                                            # 刀具柜序列号
+   version: v2.0.4                                              # 软件版本号
+   # bsc 鲍斯智能; ahno 阿诺; knowwhy 诺尔为; binuo 比诺; tianxi 天熙; mlmw 模来模往 ; manroo 迈诺; guohong 国宏;
+   # ld 绿点; zhengtian 正天
+   logo: bsc 
+   
+   audioPath: d:/AudioConfig/AUDIO_F                          # 音频路径
+   tmpUploadPath: d:/tmp/                                     # 上传临时文件夹
+   uploadPath: d:/upload/                                     # 附件存储路径
+   iconsPath: d:/icons/                                       # excel上传时图片文件路径   
+   applyVoucherUrl: # http://192.168.8.127:8080/applyVoucher/list # 领料单请求路径
+   applyVoucherResultUrl: # http://192.168.8.127:8080/applyVoucher/result #领料单领取结果
+   syncFeedingListUrl: # http://192.168.8.127:8080/syncFeedingList/result #同步补料单
+   warehouseFeedUrl: # http://125.46.78.164:8085/jeecg-boot/djkInterface/queryErp # 获取入库单
+   warehouseResultUrl: # http://125.46.78.164:8085/jeecg-boot/djkInterface/addEwInErp #入库单确认
+   borrowPostUrl: # http://125.46.78.164:8085/jeecg-boot/djkInterface/addEwOutErp #领用推送
+
+mail:
+   mailHost: smtp.exmail.qq.com                                      # 邮箱服务器 
+   mailProtocol: smtp                                         # 协议
+   mailSender: 鲍斯智能技术部                                      #  发送人
+   mailAddr: toolbox@cnbaosi.com                              # 发送邮箱
+   mailAuthorCode: GEfLsM2xR3Zo6TUf                               # 邮箱授权码
+   
+face:
+   appId: 3FWHq3yTeuDS3bWg22wEQ8rzPS74aYgPoHAZVPhAoHxs        # APP ID 官网注册
+   sdkKey: 3UU9qDMhfHPApmRVo2HWT7CNpCua3XJ8aoZdPF259Hiq       # SDK KEY 官网注册
+   sdkLibPath: d:/arcsoft_lib                                 # dll文件路径
+   passRate: 80                                               # 相似度
+
+redis:
+   password: 123                                           # 密码
+   
+port:
+   admin: 8081
+   tool: 8082
+   thirdfeign: 8083
+   toolcabinet: 8888
+   redis: 6379
+   eurekaServer: 8761
+   nettyServer: 9000
+   
+ip:
+   server: localhost
+   client: localhost
+
+   redis: ${ip.server}
+   eurekaServer: ${ip.server}
+   nettyServer: ${ip.server}
+   
+   eurekaClient: ${ip.client}
+   nettyClient: ${ip.client}
+   
+   externalServerHost: http://47.112.20.176:4001              # 请求外部接口地址
+
+datasource:
+   url: localhost:3306
+   username: root                                          # 数据库用户名
+   password: 123456                                        # 数据库密码
+   type: mysql                                             # mysql or sqlserver
+jpa: 
+   database-platform: org.hibernate.dialect.MySQL5Dialect  # 要操作的目标数据库的名称
+   hibernate:
+      ddl-auto: none                                     # 更新架构时，使用
+   show-sql: true                                          # 是否启用SQL语句的日志记录
+  
+logging:
+   level:
+      root: info                                           # 日志级别严重性映射
+      com.dosth: info
+      com.cnbaosi: info
+      com.dosth.netty: error
+   path: logs/                                             # 日志文件的位置 
+
+---

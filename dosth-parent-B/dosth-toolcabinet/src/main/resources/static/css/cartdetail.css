@@ -1,0 +1,15 @@
+th {
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+}
+
+/**购物车顶部样式*/
+.top {
+	width: 100%;
+	height: 60px;
+	position: fixed;
+	top: 0px;
+	z-index: 9999;
+	background-color: whitesmoke;
+}

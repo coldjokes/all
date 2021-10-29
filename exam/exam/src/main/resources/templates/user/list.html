@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head th:include="common/header.html :: common_header"></head>
+	<script th:src="@{/static/custom/js/user/user.js}"></script>    
+	
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content">
+	        <div class="ibox">
+	            <div class="ibox-title">
+	                <h5>人员列表</h5>
+	            </div>
+	           
+	            <div class="ibox-content">
+	                <div class="row">
+	                    <div class="col-sm-12">
+	                    	<div class="tableToolBar">
+								<form role="form" class="form-inline" onsubmit="return false;" id="userSearchForm">
+									<div class="input-group">
+									    <div class="input-group-btn">
+									        <div class="btn searchKeyBtn">人员搜索</div>
+									    </div>
+									    <input type="text" name="text" class="form-control" placeholder="用户名、姓名或IC卡号">
+									</div>
+									<div class="input-group">
+										<div class="input-group-btn">
+											<div class="btn searchKeyBtn">状态</div>
+										</div>
+										<select class="form-control status" name="status">
+											<option value="">全部</option>
+										</select>
+									</div>
+									<div class="input-group">
+										<div class="input-group-btn">
+											<div class="btn searchKeyBtn">数据来源</div>
+										</div>
+										<select class="form-control source" name="source">
+											<option value="">全部</option>
+										</select>
+									</div>
+									<button class="btn btn-primary" id="userListSearchBtn">查询</button>
+									<div class="btn-group" style="float:right">
+										<button type="button" class="btn btn-outline btn-default"  id="openUserAddBtn">
+	                                       <i class="fa fa-plus"></i> 新增
+	                                   </button>
+	                                   
+	                                  	<button data-toggle="dropdown" class="btn btn-outline btn-default dropdown-toggle">
+	                                  		<i class="fa fa-folder" aria-hidden="true"></i> 导入 <span class="caret"></span>
+		                                </button>
+		                                <ul class="dropdown-menu">
+		                                    <li><a href="#" id="userImport"><i class="fa fa-folder-open" aria-hidden="true"></i>&nbsp;&nbsp;文件导入</a>
+		                                    </li>
+		                                    <li><a href="#" id="userImportTemplate"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;模板下载</a>
+		                                    </li>
+		                                </ul>
+	                               </div> 
+									<input type="file" id="userImportInput" class="hide" accept="application/vnd.ms-excel">
+		                        </form>
+	                    	</div>
+							<table id="userListTbl"></table>
+                        </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+		<div class="modal fade" id="userModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">账号设置</h4>
+                    </div>
+                    <div class="modal-body">
+						<form class="form-horizontal" id="userForm">
+							<input type="hidden" class="form-control" name="id">
+							<div class="row">
+	                        	<div class="form-group">
+	                                <label class="col-sm-3 control-label">用&nbsp;&nbsp;户&nbsp;&nbsp;名：</label>
+	
+	                                <div class="col-sm-7">
+	                                    <input type="text" class="form-control" name="username" placeholder="只能包括中文字、英文字母、数字和下划线">
+	                                </div>
+	                                <div class="col-sm-2">
+	                                    <span class="help-block m-b-none">*必填</span>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div id="passwordArea">
+								<div class="row">
+		                        	<div class="form-group">
+		                                <label class="col-sm-3 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+		
+		                                <div class="col-sm-7">
+		                                    <input type="password" class="form-control" name="password" placeholder="请输入6到12位密码">
+		                                </div>
+		                                <div class="col-sm-2">
+		                                    <span class="help-block m-b-none">*必填</span>
+		                                </div>
+		                            </div>
+		                        </div>
+								<div class="row">
+		                        	<div class="form-group">
+		                                <label class="col-sm-3 control-label">确认密码：</label>
+		
+		                                <div class="col-sm-7">
+		                                    <input type="password" class="form-control" name="confirmPassword" placeholder="再次输入密码">
+		                                </div>
+		                                <div class="col-sm-2">
+		                                    <span class="help-block m-b-none">*必填</span>
+		                                </div>
+		                            </div>
+		                        </div>
+	                        </div>
+	                        <div class="row">
+	                        	<div class="form-group">
+	                                <label class="col-sm-3 control-label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label>
+	
+	                                <div class="col-sm-7">
+	                                    <input type="text" class="form-control" name="fullname" placeholder="姓名长度不能超过12位">
+	                                </div>
+	                                <div class="col-sm-2">
+	                                    <span class="help-block m-b-none">*必填</span>
+	                                </div>
+	                            </div>
+	                        </div>
+							<div class="row">
+	                        	<div class="form-group">
+	                                <label class="col-sm-3 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</label>
+	
+	                                <div class="col-sm-7">
+	                                    <input type="text" class="form-control" name="email">
+	                                </div>
+	                            </div>
+	                        </div>
+							<div class="row">
+	                        	<div class="form-group">
+	                               	<label class="col-sm-3 control-label">账户状态：</label>
+	                                <div class="col-sm-7">
+	                                    <div class="radio-inline">
+	                                        <label><input type="radio" value="1" name="status" checked> 启用 </label>
+	                                    </div>
+	                                    <div class="radio-inline">
+	                                        <label><input type="radio" value="2" name="status"> 禁用 </label>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+						</form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="userSaveBtn">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>	    
+		<div class="modal fade" id="userDeleteModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">确认信息</h4>
+                    </div>
+                    <div class="modal-body">
+						是否删除用户【<span id="deleteNameText"></span>】？
+                    </div>
+					<input type="hidden" id="deleteUserId">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="userDeleteBtn">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>	    
+		<div class="modal fade" id="userPassUpdateModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">密码修改</h4>
+                    </div>
+                    <div class="modal-body">
+						<form class="form-horizontal" id="userPassUpdateForm">
+							<input type="hidden" class="form-control" name="id" id="passUpdateUserId">
+							<div class="row">
+	                        	<div class="form-group">
+	                                <label class="col-sm-3 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+	
+	                                <div class="col-sm-7">
+	                                    <input type="password" class="form-control" name="password" placeholder="请输入6到12位密码">
+	                                </div>
+	                                <div class="col-sm-2">
+	                                    <span class="help-block m-b-none">*必填</span>
+	                                </div>
+	                            </div>
+	                        </div>
+							<div class="row">
+	                        	<div class="form-group">
+	                                <label class="col-sm-3 control-label">确认密码：</label>
+	
+	                                <div class="col-sm-7">
+	                                    <input type="password" class="form-control" name="confirmPassword" placeholder="再次输入密码">
+	                                </div>
+	                                <div class="col-sm-2">
+	                                    <span class="help-block m-b-none">*必填</span>
+	                                </div>
+	                            </div>
+	                        </div>
+						</form>
+                    </div>
+					<input type="hidden" id="passUpdateId">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="userPassUpdateBtn">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>	    
+	</body>
+</html>

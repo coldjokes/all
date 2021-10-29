@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>异常确认</title>
+<link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}"
+		type="text/css" />
+</head>
+<body>
+	<div class="ibox float-e-margins">
+		<div class="ibox-content">
+			<div class="form-horizontal" id="infoForm">
+				<input type="hidden" id="matReturnBackId"
+					th:value="${matReturnBackId}" />
+				<div class="row">
+					<div class="col-lg-12 col-sm-12">
+						<div class="form-group">
+							<label class="col-lg-1 col-sm-2 control-label"><span class="required">*&nbsp;</span>实际数量</label>
+							<div class="col-lg-3 col-sm-5">
+								<input class="form-control" id="num" type="text" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-1 col-sm-2 control-label">审核状态</label>
+							<div class="col-lg-3 col-sm-5">
+								<select class="form-control" id="auditStatus">
+									<option
+										th:each="auditStatus : ${T(com.dosth.tool.common.state.AuditStatus).values()}"
+										th:value="${auditStatus}" th:text="${auditStatus.message}">
+									</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-1 col-sm-2 control-label">备注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-lg-3 col-sm-5">
+								<textarea class="form-control" rows="5" cols="80" id="remark"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-10"
+						style="padding-left: 70px; padding-top: 35px">
+						<button type="button"  class="btn btn-primary btn-outline"
+							onclick="infoDlg.close()" id="cancel">
+							<i class="fa fa-eraser"></i>取消
+						</button>
+						&nbsp;&nbsp;&nbsp;
+						<button type="button"  class="btn btn-primary"
+							onclick="infoDlg.editSubmit()" id="ensure">
+							<i class="fa fa-check"></i>提交
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script
+		th:src="@{/static/modular/tool/matReturnBackBill/abnormalView.js}"></script>
+</body>
+</html>

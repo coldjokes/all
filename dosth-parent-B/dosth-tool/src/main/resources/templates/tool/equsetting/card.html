@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="form-horizontal" id="infoForm"
+	style="height: 540px; overflow-y: auto;">
+	<input type="hidden" id="cabinetId" th:value="${cabinetId}" />
+	<table class="table">
+		<thead>
+			<tr>
+				<th width="50px">序号</th>
+				<th>设置名称</th>
+				<th>起始地址</th>
+				<th>默认值</th>
+				<th>实际值</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="setting,sta : ${settingList}" th:id="${setting.id}">
+				<th th:text="${sta.count}"></th>
+				<td th:text="${setting.plcSetting.plcName}"></td>
+				<td th:text="${setting.plcSetting.address}"></td>
+				<td th:text="${setting.plcSetting.defaultValue}"></td>
+				<td><input type="text" size="3"
+					th:value="${setting.settingVal}" /></td>
+				<td th:id="${setting.plcSetting.id}"><input
+					class="btn btn-primary" type="button" value="√ 保存"/></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script th:src="@{/static/modular/tool/equsetting/card.js}"></script>
+</html>

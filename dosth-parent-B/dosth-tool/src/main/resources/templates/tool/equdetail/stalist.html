@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="col-sm-10">
+<table class="table table-bordered">
+  <thead>
+  	<tr>
+  		<th style="width: 70px;">物料位置</th>
+  		<th style="text-align:center" colspan="2">物料信息</th>
+  		<th style="width: 95px;">库位最大存储</th>
+  		<th style="width: 70px;">当前数量</th>
+  		<th style="width: 85px;">待确认数量</th>
+  		<th style="width: 80px; text-align:center">补料数量</th>
+  		<th style="width: 30px; text-align:center">操作</th>
+  	</tr>
+  </thead>
+  <tbody id="staList">
+  	<p th:each="sta:${staList}">
+	  	<tr th:id="${sta.id}" th:attr="position=${sta.position},matInfoId=${sta.matInfoId},maxReserve=${sta.maxReserve},curNum=${sta.curNum},waitFeedingNum=${sta.waitFeedingNum}">
+	  		<td style="padding-left:20px" rowspan="3" th:text="${sta.position}"></td>
+	  		<td rowspan="3" style="width: 80px;"><img th:if="${sta.matInfoId != ''}" style="width: 80px; height: 60px;" th:src="${'/'+netPath+'/'+sta.icon}"/></td>
+	  		<td style="border:0" th:text="${sta.matInfoId != '' ? '名称：' + sta.matInfoName : '-'}"></td>
+	  		<td style="text-align:center" rowspan="3" th:text="${sta.matInfoId != '' ? sta.maxReserve : '-'}"></td>
+	  		<td style="text-align:center" rowspan="3" th:text="${sta.matInfoId != '' ? sta.curNum : '-'}"></td>
+	  		<td style="text-align:center" rowspan="3" th:text="${sta.matInfoId != '' ? sta.waitFeedingNum : '-'}"></td>
+	  		<td rowspan="3"><input type="text" class="form-control" style="width: 80px;" placeholder="请输入..." th:id="${'feedingNum_'+sta.id}"></td>
+	  		<td rowspan="3"><button class='btn btn-xs btn-primary' type='button' th:onclick="'MgrEquDetail.editView(\''+${sta.id}+'\')'"><i class='fa fa-plus'>设置存储</i> </button></td>
+	  	</tr>
+	  	<tr>
+	  		<td style="border:0" th:text="${sta.barCode == null ? '-' : '编号：' + sta.barCode}"></td>
+	  	</tr>
+	  	<tr>
+	  		<td style="border:0" th:text="${sta.spec == null ? '-' : '型号：' +sta.spec}"></td>
+	  	</tr>
+  	</p>
+  </tbody>
+</table>
+</div>

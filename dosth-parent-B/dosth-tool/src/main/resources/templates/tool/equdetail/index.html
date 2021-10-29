@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>库位补料</title>
+</head>
+<link th:href="@{/static/css/main.css}" rel="stylesheet" />
+<body class="gray-bg">
+	<input type="hidden" id="equInfoId" />
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-sm-12">
+								<div class="col-lg-2 col-sm-3" style="padding-top:10px">
+									<div class="panel panel-default">
+										<div class="panel-heading">设备</div>
+										<div class="panel-body dept-tree">
+											<ul id="equInfoTree" class="ztree"></ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-10 col-sm-9">
+									<div class="row row-lg" style="padding-top:10px">
+										<div class="col-lg-3 col-sm-4">
+											<div class="input-group">
+												<div class="input-group-btn">
+													<button data-toggle="dropdown"
+														class="btn btn-white dropdown-toggle" type="button">物料
+													</button>
+												</div>
+												<input type="text" class="form-control"
+													id="matInfo" placeholder="名称 / 编号 / 规格" />
+											</div>
+										</div>
+										<div class="col-lg-5 col-sm-5">
+											<div class="row">
+												<div class="col-lg-12 col-sm-12">
+													<button type="button" class="btn btn-primary"
+														onclick="MgrEquDetail.search()" id="search">
+														<i class="fa fa-search"></i>&nbsp;搜索
+													</button>
+													&nbsp;&nbsp;
+													<button type="button" class="btn btn-primary button-margin"
+														onclick="MgrEquDetail.resetSearch()" id="trash">
+														<i class="fa fa-refresh"></i>&nbsp;重置
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<hr />
+									<div class="row row-lg">
+										<div class="col-lg-8 col-sm-8">
+											<div class="input-group">
+												<button type="button" class="btn btn-primary"
+													onclick="MgrEquDetail.fillFull()">
+													<i class="fa fa-plus"></i>&nbsp;一键补满
+												</button>
+												&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary"
+													id="feedListBtn" onclick="MgrEquDetail.feedList()">
+													<i class="fa fa-upload"></i>&nbsp;生成补料清单
+												</button>
+											</div>
+										</div>
+									</div>
+									<div id="equInfos" class="row"></div>
+									<table id="managerTable"></table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/equdetail/index.js}"></script>
+	<script th:src="@{/static/js/string.js}"></script>
+</body>
+</html>

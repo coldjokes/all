@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+<title>前台补料</title>
+</head>
+<body>
+	<div class="layer-title">
+		<div></div>
+		<h3>前台补料</h3>
+		<a href="javascript:void('0');" class="l-close"><img src="/static/images/l-close.jpg" alt=""></a>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="layui-col-xs7 layui-col-sm7 layui-col-md7">
+				<div class="layui-input-block" style="margin-left:10px;">
+					<select id="query" style="width: 250px;line-height: 30px; height: 38px;" placeholder="请选择柜体" onclick="selectSearch()">
+						<option th:each="cabinet:${cabinetList}" th:value="${cabinet.cabinetId}" 
+							th:text="${cabinet.cabinetName}">
+						</option>
+					</select>
+					<input id="search" style="width: 200px;line-height: 30px; height: 38px;" placeholder="搜索:名称/编码/规格"/>
+				</div>
+			</div>
+			<div class="layui-col-xs5 layui-col-sm5 layui-col-md5">
+				<button type="button" class="layui-btn" id="btnSearch" onclick="search()">搜索</button>&nbsp;&nbsp;<button type="button" class="layui-btn" id="onKeyFull" onclick="onKeyFull()">一键补满</button>&nbsp;&nbsp;<button class="layui-btn" id="btnOk" onclick="feed()">确认补料</button>
+			</div>
+		</div>
+		<div class="row" style="margin-top: 2px;">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md12"
+				style="height: 105vw; overflow-y: auto;" id="staList"></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+$(function() {
+	$(".l-close").click(function() {
+		$("#layerAdmin").hide();
+		$(".l-cover").hide();
+		revokeSession();
+		 $("#opener").hide();
+	});
+	search();
+});
+
+// 刀具柜变更刷新库存列表
+function selectSearch() {
+	var query = $("#query");
+	query.data("last", query.val()).change(function () {
+	    var oldvalue = query.data("last"); //这次改变之前的值
+	    query.data("last", query.val()); //每次改变都附加上去，以便下次变化时获取 改变之前获取并保存
+	    var newvalue = query.val(); //当前选中值
+	
+	    if(oldvalue != newvalue){
+	 	   search();
+	    }
+    });
+}
+
+// 搜索
+function search() {
+	var url = "/staList";
+	$.ajax({
+		type : "post",
+		url : url,
+		data: {"query":$("#query").val(), "search":$("#search").val()},
+		async : false,
+		dataType : "html",
+		success : function(data) {
+			$("#staList").html(data);
+		}
+	});
+}
+
+// 一键补满
+function onKeyFull() {
+	$("#staList tr").each(function() {
+		var staId = $(this).attr("id");
+		var waitNum = parseInt($(this).find("td").eq(7).text());
+		if (waitNum > 0) {
+			$("#nums_"+staId).val(waitNum);
+		}
+	});
+}
+
+/**
+ * @description 补料减量
+ * @param staId 弹簧Id
+ * @param curNum 当前数量
+ */
+function subFeed(staId, curNum) {
+	var txt = $("#staList").find("input[id='nums_"+staId+"']").val();
+	if (txt == '') {
+		txt = "0";
+	}
+	var val = parseInt(txt);
+	if (Math.abs(val) < curNum || val > 0) {
+		$("#nums_"+staId).val(val - 1);
+	}
+}
+
+/**
+ * @description 补料加量
+ * @param staId 弹簧Id
+ * @param canNum 可补数量
+ */
+function addFeed(staId, canNum) {
+	var txt = $("#staList").find("input[id='nums_"+staId+"']").val();
+	if (txt == '') {
+		txt = "0";
+	}
+	var val = parseInt(txt);
+	if (val < canNum) {
+		$("#nums_"+staId).val(val + 1);
+	}
+}
+
+/**
+ * @description 单项补满
+ */
+function fullFeed(staId, canNum) {
+    if (canNum > 0) {
+        $("#nums_"+staId).val(canNum);
+    }
+}
+
+/**
+ * @description 补料确认
+ */
+function feed() {
+	var feed = "";
+	$("#staList input").each(function() {
+		var txt = $(this).val();
+		if (txt != '' && txt != 0) {
+			var staId = $(this).attr("id").substring(5);
+			feed += staId + ',' + txt + ";";
+		}
+	});
+	if (feed.length == 0) {
+		layer.msg("没有可操作的数据");
+		return;
+	}
+	var url = "/cabinet/feed";
+	$.ajax({
+		type : "post",
+		url : url,
+		data: {"query":$("#query").val(), "feed":feed},
+		async : false,
+		dataType : "json",
+		success : function(data) {
+			layer.msg(data.message);
+			search();
+		}
+	});
+}
+</script>
+</html>

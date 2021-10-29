@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="infos">
+	<div class="form-horizontal" id="roleInfoForm">
+		<div class="col-lg-12 col-sm-12">
+			<input type="hidden" id="id" name="id">
+			<div>
+				<table class="table">
+					<thead>
+						<tr
+							style="display: table; width: 100%; table-layout: fixed; background-color: whitesmoke">
+							<th style="width: 30%;"><input type="checkbox"
+								class="i-checks" id="selectAll" name="selectAll"></th>
+							<th style="width: 70%;">物料信息</th>
+						</tr>
+					</thead>
+					<tbody
+						style="display: block; height: 500px; overflow-y: scroll; width: 100%;">
+						<p th:each="row : ${matEquInfo}">
+						<tr>
+							<td rowspan="3" style="border-bottom: 1px solid #ccc;"><input
+								type="checkbox" class="i-checks" name="input" th:id="${row.id}"
+								th:value="${row.flag}"></td>
+							<td style="padding-left: 100px; border-bottom: 1px solid #ccc;"
+								rowspan="3"><img style="width: 80px; height: 60px;"
+								th:src="${'/'+netPath+'/'+row.icon}" /></td>
+
+							<td style="border: 0; width: 100%"
+								th:text="${'名称:' + (row.matEquName != null ? row.matEquName : '')}"></td>
+						</tr>
+						<tr>
+							<td style="border: 0;"
+								th:text="${'编号:' + (row.barCode != null ? row.barCode : '')}"></td>
+						</tr>
+						<tr style="border-bottom: 1px solid #ccc;">
+							<td style="border: 0;"
+								th:text="${'型号:' + (row.spec != null ? row.spec : '')}"></td>
+						</tr>
+						</p>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/matCategory/infos.js}"></script>
+</div>
+<style type="text/css">
+tr:hover {
+	background: whiteSmoke;
+}
+</style>
+
+</html>

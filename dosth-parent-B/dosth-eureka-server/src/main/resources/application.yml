@@ -1,0 +1,14 @@
+spring:
+   profiles:
+      active: config
+server: 
+   port: ${port.eurekaServer}                 # 端口号
+
+eureka: 
+   instance:
+      hostname: ${ip.eurekaServer}    # 主机名，不配置的时候将根据操作系统的主机名来获取
+   client: 
+      register-with-eureka: false              # 实例是否在eureka服务器上注册自己的信息以供其他服务发现，默认为true
+      fetch-registry: false                    # 客户端是否获取eureka服务器注册表上的注册信息
+   serviceUrl:                                # 与Eureka注册服务中心的通信zone和url地址
+         defaultZone: http://${ip.eurekaServer}:${port.eurekaServer}/eureka/

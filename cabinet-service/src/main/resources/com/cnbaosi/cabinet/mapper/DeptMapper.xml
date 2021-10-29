@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cnbaosi.cabinet.mapper.DeptMapper">
+
+<!--    <update id="setDeptId" parameterType="com.cnbaosi.cabinet.entity.modal.User">-->
+<!--        update bs_user set dept_id = #{deptId}-->
+<!--        where 1=1-->
+<!--        and id = #{id}-->
+
+<!--    </update>-->
+
+<!--  获取用户已绑定部门IDList  -->
+    <select id="selectByUserId" parameterType="java.lang.String" resultType="java.lang.String">
+        select dept_id from bs_dept_map where 1=1
+        and user_id = #{userId}
+    </select>
+
+    <select id="selectByDeptId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            id
+        FROM
+            bs_dept
+        WHERE
+            delete_time IS NULL
+        AND p_id = #{deptId}
+        and p_id &lt;&gt;  "-1"
+    </select>
+</mapper>

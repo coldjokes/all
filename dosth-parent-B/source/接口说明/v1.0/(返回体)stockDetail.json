@@ -1,0 +1,1086 @@
+{
+    "code": 200,
+    "message": "获取物料库存成功",
+    "resultList": [
+        {
+            "feignStockMat": {
+                "matName": "242691 PWP interchangeab",
+                "barCode": "40-00056A",
+                "spec": "tip with profile 17*5*26",
+                "packNum": 3,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Shave tool Solid Carbide",
+                "barCode": "40-00021A",
+                "spec": "233883 AWN20/B15/H19",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Form Insert JV-EXP-00646",
+                "barCode": "40-00018A",
+                "spec": "PTC-1244-10059-D4",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Core Drill D3.35",
+                "barCode": "40-00043A",
+                "spec": " ",
+                "packNum": 2,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "FORM 1# POS",
+                "barCode": "40-00051A",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "钻头修磨",
+                "barCode": "40-00073AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "端铣刀修模",
+                "barCode": "40-00010AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "PWP Interchangeable tip",
+                "barCode": "40-00007B",
+                "spec": "with profile 13*3*16",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 9,
+            "supplyNum": 7
+        },
+        {
+            "feignStockMat": {
+                "matName": "246068 PWP interchangeab",
+                "barCode": "40-00055A",
+                "spec": "with profilr 9*3*16.5 ty",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Form Insert JV-EXP-00645",
+                "barCode": "40-00025A",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "241548 PWP interchangeta",
+                "barCode": "40-00049A",
+                "spec": "tip with profile 17*5*26",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "CenterDrill φ3.1  721.3",
+                "barCode": "40-00060A",
+                "spec": ".00578 (new coating)",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Back Work Century Tool",
+                "barCode": "40-00015A",
+                "spec": "CSI-45",
+                "packNum": 5,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "EXP-13549 Form修磨",
+                "barCode": "40-00008AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "刀片修磨钝化",
+                "barCode": "40-00050AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "铰刀（X-WXWF-磨避空）",
+                "barCode": "40-00037AR",
+                "spec": "整体HM;6刃",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "割刀 DGR 1500J-8D IC328",
+                "barCode": "40-00014A",
+                "spec": "Iscar",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "端面铣刀 315.0054.7876-2",
+                "barCode": "40-00038A",
+                "spec": "TN36  Horn",
+                "packNum": 2,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Counterbore EXP-13556B",
+                "barCode": "40-00010A",
+                "spec": "30face&amp;45finish form",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "242687 WEP indexable tip",
+                "barCode": "40-00059A",
+                "spec": "with profile L=23,60 d=7",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "PVX.00834 Pilot drill",
+                "barCode": "40-00065A",
+                "spec": "with IC φ4.4",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Insert finish form",
+                "barCode": "40-00024A",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "ASAP 2.835X0.059",
+                "barCode": "40-00013A",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "INSERT CARBIDE COATED",
+                "barCode": "40-00070A",
+                "spec": "1244-10093-D4TST",
+                "packNum": 5,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "∮2.64铰刀修磨",
+                "barCode": "40-00054AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "CrazyDrill φ13.3 left",
+                "barCode": "40-00073A",
+                "spec": "CDX.01862.S",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "PWP Interchangeable tlp",
+                "barCode": "40-00009A",
+                "spec": "with profile 22x5x26",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Shave",
+                "barCode": "40-00044A",
+                "spec": "COATED CARBIDE INSERT-P4",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Insert Holder WH1050",
+                "barCode": "40-00028A",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Met cut stycle reamer",
+                "barCode": "40-00011A",
+                "spec": "EXP-13971",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "端外圆粗车刀10.36&amp;10.18",
+                "barCode": "40-00035A",
+                "spec": "Nr.243058.Granit 2000",
+                "packNum": 3,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer 8.42",
+                "barCode": "40-00020A",
+                "spec": "JV-EXP-00574",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer with 4.625 Dia",
+                "barCode": "40-00078a",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "FORM 3# POS",
+                "barCode": "40-00052A",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Shave coated carbide",
+                "barCode": "40-00017A",
+                "spec": "insert PTC-1244-10048-D4",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "PWP interchangeable",
+                "barCode": "40-00031A",
+                "spec": "240367  22*5*26",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Back Form",
+                "barCode": "40-00042A",
+                "spec": "COATED CARBIDE INSERT-P2",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "INSERT CARBIDE COATED",
+                "barCode": "40-00058A",
+                "spec": "1244-10163-D4",
+                "packNum": 5,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "PWP interchangeable tip",
+                "barCode": "250105211",
+                "spec": "with profile 233471",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "端外圆粗车刀片 10.26",
+                "barCode": "40-00033A",
+                "spec": "Nr.243056.Granit 2000",
+                "packNum": 3,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Deburing tool left",
+                "barCode": "40-00067A",
+                "spec": "726.3.00038",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "EXP-13551 Finish Form",
+                "barCode": "40-00009AR",
+                "spec": "修磨",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "内冷铰刀修磨整体HM2刃",
+                "barCode": "40-00071AR",
+                "spec": "D4.5/12.4 L=80 SD14.0 Ti",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Form Insert JV-EXP-00647",
+                "barCode": "40-00019A",
+                "spec": "PTC-1244-10058-D4",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer 20°",
+                "barCode": "40-00061A",
+                "spec": "742.3.1041.1",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "255302 WEP indexable tip",
+                "barCode": "40-00075A",
+                "spec": "with profile L=23,60 d=7",
+                "packNum": 2,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer D3.475",
+                "barCode": "40-00045A",
+                "spec": " ",
+                "packNum": 2,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "反向倒角刀",
+                "barCode": "40-00040A",
+                "spec": "2.720.3.0694.0",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "242684 PWP interchangeab",
+                "barCode": "40-00062A",
+                "spec": "tip with profile 19*5*26",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "PWP interchangeable",
+                "barCode": "40-00030A",
+                "spec": "240366  22*5*26",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer EXP-11653",
+                "barCode": "40-00007A",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "钻头修磨",
+                "barCode": "40-00072AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer ∮2.64",
+                "barCode": "40-00054A",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "刀片修磨",
+                "barCode": "40-00074AR",
+                "spec": " ",
+                "packNum": 2,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Shave insert-P5",
+                "barCode": "40-00053A",
+                "spec": "PTC-1244-10041-A",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "刀片修磨",
+                "barCode": "40-00075AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer 11.018",
+                "barCode": "40-00064A",
+                "spec": "766.3.00006.1",
+                "packNum": 2,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "233200 PWP interchangeta",
+                "barCode": "40-00050A",
+                "spec": "tip with profile 17*5*26",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "233472H PWP Tip holder",
+                "barCode": "250202137",
+                "spec": "with profile 12*12*130",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "INSERT CARBIDE COATED",
+                "barCode": "40-00076A",
+                "spec": "1244-10174-D4",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "槽刀片修磨 3004-3.2-5R",
+                "barCode": "43-00244R",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 7,
+            "supplyNum": 9
+        },
+        {
+            "feignStockMat": {
+                "matName": "孔口铰刀修磨",
+                "barCode": "40-00061AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Step Reamers ∮3.84/4.2",
+                "barCode": "40-00036A",
+                "spec": "757.3.0028.0",
+                "packNum": 2,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "PWP interchangeable",
+                "barCode": "40-00022A",
+                "spec": "tip with profile 241548",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamers ∮4.91",
+                "barCode": "40-00037A",
+                "spec": "764.3.1503.1",
+                "packNum": 2,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Form Insert 刀片修磨",
+                "barCode": "40-00016AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Special Tool",
+                "barCode": "40-00046A",
+                "spec": "720.3.0695.0",
+                "packNum": 2,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Special CrazyDrillφ3.7",
+                "barCode": "40-00034A",
+                "spec": "CDX.01630.IC",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer φ13.5 left",
+                "barCode": "40-00072A",
+                "spec": "726.3.00028",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "成型刀修磨整体HM2刃",
+                "barCode": "40-00060AR",
+                "spec": "40-00060A(R);L=70;SD6.0;",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "PWP Interchangeable tlp",
+                "barCode": "40-00008A",
+                "spec": "with profile 22x5x26",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Pre-reamersφ10.9",
+                "barCode": "40-00063A",
+                "spec": "726.3.00029",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer φ12.4",
+                "barCode": "40-00071A",
+                "spec": "726.3.00026",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "D4.615绞刀 适用于",
+                "barCode": "40-00068A",
+                "spec": "19-01502",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "254362 PWP interchangeab",
+                "barCode": "40-00074A",
+                "spec": "tip with profile 25*5*26",
+                "packNum": 2,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "INSERT CARBIDE COATED",
+                "barCode": "40-00057A",
+                "spec": "1244-10164-D4",
+                "packNum": 5,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "peterson刀片修磨",
+                "barCode": "40-00077AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Shave 刀片修磨",
+                "barCode": "40-00017AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "INSERT CARBIDE COATED",
+                "barCode": "40-00077A",
+                "spec": "1244-10175-D4",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer EXP-11655",
+                "barCode": "250202093",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer 7.800Dia,Same",
+                "barCode": "40-00026A",
+                "spec": "Geomentry as 40-04971",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "inserts Tin",
+                "barCode": "40-00012A",
+                "spec": "coated carbide",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "peterson刀片修磨",
+                "barCode": "40-00076AR",
+                "spec": " ",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "INSERTS COATED CARBIDE",
+                "barCode": "40-00023A",
+                "spec": "EXP-14105",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "INSERT CARBIDE COATED",
+                "barCode": "40-00069A",
+                "spec": "1244-10095-D4TST",
+                "packNum": 5,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Reamer φ4.625",
+                "barCode": "40-00066A",
+                "spec": "736.3.00095",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Front Form",
+                "barCode": "40-00041A",
+                "spec": "COATED CARBIDE INSERT-P1",
+                "packNum": 5,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "243059 PWP",
+                "barCode": "40-00039A",
+                "spec": "tip with  13*3*16",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "中心钻/Spot drill 4.7",
+                "barCode": "40-00032A",
+                "spec": "CDX.01423.IC",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        },
+        {
+            "feignStockMat": {
+                "matName": "Form Insert PTC-1244-",
+                "barCode": "40-00016A",
+                "spec": "10047-D4",
+                "packNum": 1,
+                "brand": ""
+            },
+            "maxStockNum": 16,
+            "curStockNum": 5,
+            "supplyNum": 11
+        }
+    ]
+}

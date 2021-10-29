@@ -1,0 +1,114 @@
+{
+    "code": 200,
+    "message": "获取物料库存成功",
+    "resultList": [
+        {
+            "equId": "297e5a8667960b070167969f51620013",
+            "equName": "主柜T01",
+            "rowNum": 9,
+            "colNum": 10,
+            "staList": [
+                {
+                    "staId": "1",
+                    "rowNo": 1,
+                    "colNo": 1,
+                    "curNum": 16,
+                    "waitNum": 0,
+                    "maxReserve": 16,
+                    "status": "启用",
+                    "matInfo": {
+                        "manufacturerName": "未定义",
+                        "manufacturerNo": "ewrwer",
+                        "matId": "4028947a6d4d4aa7016d4d70b1570403",
+                        "matName": "槽刀片修磨 3004-3.2-5R",
+                        "barCode": "43-00244R",
+                        "spec": " ",
+                        "packNum": 1,
+                        "stotePrice": null,
+                        "brand": "",
+                        "icon": "",
+                        "borrowType": ""
+                    },
+                    "warnVal": 3
+                },
+                {
+                    "staId": "10",
+                    "rowNo": 1,
+                    "colNo": 10,
+                    "curNum": 16,
+                    "waitNum": 0,
+                    "maxReserve": 16,
+                    "status": "启用",
+                    "matInfo": {
+                        "manufacturerName": "未定义",
+                        "manufacturerNo": "ewrwer",
+                        "matId": "4028947a6d4d4aa7016d4d70a4600007",
+                        "matName": "PWP interchangeable tip",
+                        "barCode": "250105211",
+                        "spec": "with profile 233471",
+                        "packNum": 1,
+                        "stotePrice": null,
+                        "brand": "",
+                        "icon": "",
+                        "borrowType": ""
+                    },
+                    "warnVal": 3
+                }
+            ]
+        },
+        {
+            "equId": "297e5a8667960b070167969f51620014",
+            "equName": "副柜T03",
+            "rowNum": 9,
+            "colNum": 10,
+            "staList": [
+                {
+                    "staId": "f7100fe5-5f57-11ea-992c-00e04c36075e",
+                    "rowNo": 1,
+                    "colNo": 1,
+                    "curNum": 0,
+                    "waitNum": 0,
+                    "maxReserve": 16,
+                    "status": "启用",
+                    "matInfo": {
+                        "manufacturerName": "",
+                        "manufacturerNo": "",
+                        "matId": "",
+                        "matName": "",
+                        "barCode": "",
+                        "spec": "",
+                        "packNum": null,
+                        "stotePrice": null,
+                        "brand": "",
+                        "icon": "",
+                        "borrowType": ""
+                    },
+                    "warnVal": 3
+                },
+                {
+                    "staId": "f711cc42-5f57-11ea-992c-00e04c36075e",
+                    "rowNo": 1,
+                    "colNo": 2,
+                    "curNum": 0,
+                    "waitNum": 0,
+                    "maxReserve": 16,
+                    "status": "启用",
+                    "matInfo": {
+                        "manufacturerName": "",
+                        "manufacturerNo": "",
+                        "matId": "",
+                        "matName": "",
+                        "barCode": "",
+                        "spec": "",
+                        "packNum": null,
+                        "stotePrice": null,
+                        "brand": "",
+                        "icon": "",
+                        "borrowType": ""
+                    },
+                    "warnVal": 3
+                }
+            ]
+        }
+    ]
+}

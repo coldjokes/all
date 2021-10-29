@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>设置</title>
+</head>
+<body>
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="form-horizontal" id="infoForm"
+                th:object="${equDetailSta}">
+                <input type="hidden" id="id" th:field="*{id}"> <input
+                    type="hidden" id="equDetailId" th:field="*{equDetailId}" /> <input
+                    type="hidden" id="colNo" th:field="*{colNo}" />
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="form-group">
+                            <label class="col-sm-2 col-lg-1 control-label">总存储量</label>
+                            <div class="col-sm-4 col-lg-3">
+                                <input class="form-control" id="maxReserve" name="maxReserve"
+                                    type="text" th:field="*{maxReserve}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="form-group">
+                            <label class="col-sm-2 col-lg-1 control-label">警告阀值</label>
+                            <div class="col-sm-4 col-lg-3">
+                                <input class="form-control" id="warnVal" name="warnVal"
+                                    type="text" th:field="*{warnVal}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 35px;padding-left:4%">
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="row btn-group-m-t">
+                            <div class="col-sm-10">
+                                <button type="button" class="btn btn-primary btn-outline"
+                                    onclick="infoDlg.close()" id="cancel">
+                                    <i class="fa fa-eraser"></i>&nbsp;取消
+                                </button>
+                                &nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary"
+                                    onclick="infoDlg.editSubmit()" id="ensure">
+                                    <i class="fa fa-check"></i>&nbsp;保存
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/static/modular/tool/equdetail/index.js}"></script>
+    <script th:src="@{/static/modular/tool/equdetail/edit.js}"></script>
+</body>
+</html>

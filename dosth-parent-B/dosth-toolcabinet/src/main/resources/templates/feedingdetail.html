@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<style type="text/css">
+.txt {
+	color: red;
+}
+/*模拟对角线*/
+.out {
+	border-top: 59px #D6D3D6 solid; /*上边框宽度等于表格第一行行高*/
+	width: 0px; /*让容器宽度为0*/
+	height: 0px; /*让容器高度为0*/
+	border-left: 111px #BDBABD solid; /*左边框宽度等于表格第一行第一格宽度*/
+	position: relative; /*让里面的两个子容器绝对定位*/
+}
+
+b {
+	font-style: normal;
+	display: block;
+	position: absolute;
+	top: -40px;
+	left: -40px;
+	width: 35px;
+}
+
+em {
+	font-style: normal;
+	display: block;
+	position: absolute;
+	top: -25px;
+	left: -110px;
+	width: 55x;
+}
+</style>
+<div class="layui-row">
+	<table class="layui-table" style="text-align: center; border: 1px solid gray;">
+		<thead>
+			<tr th:each="card, cardSta:${cards}" th:if="${cardSta.first}">
+				<th>
+					<div class="out">
+						<b>列号</b> <em>行号</em>
+					</div>
+				</th>
+				<th th:each="lattice,sta:${card.latticeList}" th:text="${sta.count}"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="card:${cards}">
+				<td style="font-weight: bolder; font-size: 14px; padding:1px 1px;"
+					th:text="${card.rowNo}"></td>
+				<td th:each="lattice,sta:${card.latticeList}" th:class="${lattice.curReserve > 0} ? 'txt'">
+					<p>名称：</p>
+					<p><span th:text="${lattice.matInfo.name}"></span></p>
+					<p>编号：</p>
+					<p><span th:text="${lattice.matInfo.barCode}"></span></p>
+					<p>数量：<span th:text="${lattice.curReserve}"></span></p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</html>

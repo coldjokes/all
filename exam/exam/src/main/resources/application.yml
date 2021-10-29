@@ -1,0 +1,47 @@
+server: 
+   port: 8080
+spring: 
+   profiles:
+      active: dev
+   thymeleaf:
+      #check-template: false
+      cache: false #热部署文件，页面不产生缓存，及时更新
+      prefix: classpath:/templates/
+      suffix: .html
+      mode: HTML
+      encoding: UTF-8
+      content-type: text/html
+   mvc:
+      static-path-pattern: /static/** #静态资源访问路径
+   resources: #静态资源指向的路径，多个使用英文逗号隔开
+      static-locations:  classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/download/ 
+   devtools: 
+      restart:
+         enabled: true #是否开启开发者工具（true/false）
+         additional-paths: src/main/java
+         exclude: static/**,WEB-INF/view/**
+   flyway: #数据库版本管理工具
+      enabled: true #启用或禁用 flyway 
+      locations: classpath:/db #设定 SQL 脚本的目录,多个路径使用逗号分隔, 比如取值为 classpath:db/migration,filesystem:/sql-migration 
+      validate-on-migrate: true # 是否开启校验
+   servlet:
+      multipart: #文件上传限制
+         max-file-size: 20MB #单个文件的大小
+         max-request-size: 100MB #单次请求的文件的总大小
+
+exam:
+   projectLocation: D:/exam   #项目路径
+   filePath: /file   #文件路径
+   tempPath: /temp/   #文件上传临时路径
+   picturePath: ${exam.filePath}/picture/ #物料图片
+   blueprintPath: ${exam.filePath}/blueprint/ #物料图纸
+   stockPath: ${exam.filePath}/stock/ #库存邮件
+   
+   mail:
+      host: smtp.exmail.qq.com                                 # 邮箱服务器地址
+      port: 465                                                # 邮箱端口
+      protocol: smtp                                           # 邮箱协议
+      sender: test@test.com                                    # 邮箱发件箱地址
+      senderName: 邮件提醒                                     # 邮箱发件箱昵称
+      authcode: GEfLsM2xR3Zo6TUf                               # 邮箱授权码
+   

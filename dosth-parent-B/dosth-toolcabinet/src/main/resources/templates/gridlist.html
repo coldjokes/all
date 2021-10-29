@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<style type="text/css">
+   .warnGrid {
+      background-color: yellow !important;
+   }
+   .emptyGrid {
+      background-color: red !important;
+   }
+</style>
+<input type="hidden" id="cabinetId" th:value="${cabinetId}"/> 
+<ul class="l-floor-list">
+    <li class="l-floor-item" style="width: 100%;" th:each="card:${cardList}">
+        <h3 class="l-floor-title" th:text="${card.rowNo}" th:classappend="${logo == 'knowwhy'?'knowwhytitle':''}"></h3>
+        <ul class="l-pro-list" style="width: 100%;">
+            <li class="l-pro-item" style="width: 100%;" th:each="lattice,sta:${card.latticeList}"
+                th:name="${lattice.barCode} + ',' + ${lattice.name} + ',' + ${lattice.spec}">
+                <input type="hidden" th:id="${'matId_'+lattice.staId}" th:value="${lattice.matId}">
+                <input type="hidden" th:id="${lattice.staId}" th:value="${lattice.staId}">
+                <div class="l-pro-img" th:switch="${lattice.icon}"
+                    th:onclick="'openPro(\''+${lattice.matId}+'\',\''+${lattice.staId}+'\',\''+${cabinetType}+'\',\''+${lattice.comm}+'\',\''+${lattice.boardNo==null?'':lattice.boardNo}+'\',\''+${lattice.lockIndex==null?'':lattice.lockIndex}+'\',\''+${lattice.boxIndex== null ? '' : lattice.boxIndex}+'\',\''+${card.rowNo}+'\',\''+${lattice.remainNum}+'\',\''+${lattice.interval}+'\')'">
+                    <img th:src="${lattice.icon}" onerror="imgerrorfun();" style="width: 100%; height: 100%;"/>
+                    <div style="width: 20px; height: 15px; background: white; color:black; left: 75px; top: 10px; position: absolute; border-radius:10px; font-weight: normal;" th:text="${lattice.colNo}"></div>
+                </div>
+                <div class="l-pro-info"
+                    th:onclick="'openPro(\''+${lattice.matId}+'\',\''+${lattice.staId}+'\',\''+${cabinetType}+'\',\''+${lattice.comm}+'\',\''+${lattice.boardNo==null?'':lattice.boardNo}+'\',\''+${lattice.lockIndex==null?'':lattice.lockIndex}+'\',\''+${lattice.boxIndex== null ? '' : lattice.boxIndex}+'\',\''+${card.rowNo}+'\',\''+${lattice.remainNum}+'\',\''+${lattice.interval}+'\')'">
+                    <h3 th:text="${lattice.name}"></h3>
+                    <!-- <p>品牌：<span th:text="${lattice.brand}"></span></p> -->
+                    <p><span th:text="${lattice.barCode}" style="white-space: nowrap;"></span></p>
+                   	<p style="height: 30px; text-overflow: -o-ellipsis-lastline; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical;" >
+                    	<span th:text="${lattice.spec}" style="word-wrap:break-word;"></span>
+                    </p>
+                    <p class="l-pro-num" th:id="'tr_'+${lattice.staId}">
+                        <input type="hidden" th:id="${'warnVal_'+lattice.staId}" th:value="${lattice.warnVal}"/>
+                        <span th:id="'curReserve_'+${lattice.staId}"
+                            th:text="${lattice.curReserve == null ? 0 : lattice.curReserve}"></span>/
+                        <span th:id="'totalReserve_'+${lattice.staId}"
+                            th:text="${lattice.maxReserve == null ? 0 : lattice.maxReserve}"></span>
+                    </p>
+                </div>
+                <div style="text-align: center;" th:if="${cabinetType == 'VIRTUAL_WAREHOUSE'}" th:text="${lattice.staName}">
+                </div>
+				<div style="text-align: center;" th:if="${cabinetType == 'STORE_CABINET'}" th:text="${'CT-' + (lattice.boxIndex > 100 ? '' : lattice.boxIndex > 10 ? '0' : '00') + lattice.boxIndex}">
+                </div>
+                <div>
+                    <input type="hidden" id="hostHidden" th:value="${card.host}" /> 
+                    <input type="hidden" id="portHidden" th:value="${card.port}" /> 
+                    <input type="hidden" id="rowHidden" th:value="${card.rowNo}" /> 
+                    <input type="hidden" id="remainNum" th:value="${lattice.remainNum}" /> 
+                    <input type="hidden" id="imgHidden" th:value="${lattice.icon}" /> 
+                    <input type="hidden" id="latticeIdHidden" th:value="${lattice.staId}" /> 
+                    <input type="hidden" id="colHidden" th:value="${lattice.colNo}" /> 
+                    <input type="hidden" id="matIdHidden" th:value="${lattice.matId}" /> 
+                    <input type="hidden" id="matNameHidden" th:value="${lattice.name}" /> 
+                    <input type="hidden" id="barCodeHidden" th:value="${lattice.barCode}" />
+                    <input type="hidden" id="specHidden" th:value="${lattice.spec}" />
+                    <input type="hidden" id="typeCodeHidden" th:value="${lattice.typeCode}" /> 
+                </div>
+                <div class="l-out-cover" th:id="'shortage_'+${lattice.staId}"
+                    th:if="${lattice.curReserve == null || lattice.curReserve <= 0}">
+                </div>
+                <div class="l-out-cover fault-cover" th:if="${lattice.equSta!='NONE'}">
+                    <div>
+                        <img src="/static/images/fault-icon.png" alt="">
+                        <p>故障</p>
+                    </div>
+                </div> 
+            </li>
+        </ul>
+    </li>
+</ul>
+<script>
+    $(function() {
+        initLatticeValue();
+    });
+ 
+    //刀具详情
+    function openPro(matId, latticeId, cabinetType, comm, boardNo, lockIndex, boxIndex, rowNo, remainNum, interval) {
+        if(matId == null || matId == ""){
+            layer.msg("未上架物料！");
+            return;
+        }
+        var num = $("#curReserve_" + latticeId).html();
+        $.ajax({
+            url : '/cart/pro',
+            type : 'post',//提交方式
+            dataType : "html",
+            data : {
+                "matId" : matId,
+                "num" : num,
+                "remainNum" : remainNum,
+                "cabinetId":$("#cabinetId").val(),
+                "latticeId" : latticeId,
+                'type' : 'PACK',
+                'cabinetType': cabinetType,
+                'comm':comm,
+                'boardNo':boardNo,
+                'lockIndex':lockIndex,
+                'boxIndex':boxIndex,
+                'rowNo':rowNo,
+                'interval':interval
+            },
+            success : function(result) {
+				$("#opener").css("width", "60vw");
+                $("#opener").html(result);
+                $("#opener").show();
+                $(".l-cover").show();
+            },
+            error : function(err) {//后台处理数据失败后的回调函数
+                layer.msg(err);
+            }
+        });
+        document.body.style.overflow = "hidden";
+        $("body").css('height', '100vh');
+        $("html").css('height', '100vh');
+        $("html").css('overflow', 'hidden');
+    }
+ 
+    //初始化全部刀具信息
+    function initLatticeValue() {
+        var cabinetId = $("#cabinetId").val();
+        var url = '/cabinet/getLatticeValueMap';
+        $.ajax({
+            url : url,
+            type : 'get',//提交方式
+            dataType : 'json',
+            data : {
+                "cabinetId" : cabinetId,
+            },
+            success : function(data) {
+                for ( var latticeId in data) {
+                    var sourceValue = data[latticeId];
+                    var warnValue = parseInt($("#warnVal_" + latticeId).val());
+                    var matId = $("#matId_"+latticeId).val();
+                    
+                    $("#curReserve_" + latticeId).html((sourceValue < 10 ? ' ' : '') + sourceValue);
+                    
+                    //格口对象
+                    var target = $("#" + latticeId).parents(".l-pro-item").find(".l-pro-num");
+                    if(sourceValue > 0){
+                        if(sourceValue <= warnValue){ //库存到阈值
+                            target.addClass("warnGrid")
+                        }
+                    } else {
+                        if(matId == null || matId == ""){ //无物料上架
+                            $("#shortage_" + latticeId).hide();
+                        }else{ //有物料，但是库存为空
+                            $("#shortage_" + latticeId).show();
+                            target.addClass("emptyGrid");
+                        }
+                    }
+                }
+            },
+            error : function(data) {//后台处理数据失败后的回调函数
+                layer.msg(data);
+            }
+        });
+    }
+</script>
+</html>

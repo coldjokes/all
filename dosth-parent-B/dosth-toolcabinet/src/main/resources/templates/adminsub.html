@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>管理员-副柜</title>
+</head>
+<body>
+<div class="l-manage-head">硬件测试</div>
+<ul class="manage-list">	
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_UP_COIL\')'">
+			<div><i class="fa fa-level-up fa-5x" aria-hidden="true"></i></div>
+			<p>料斗上升</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_DOWN_COIL\')'">
+			<div><i class="fa fa-level-down fa-5x" aria-hidden="true"></i></div>
+			<p>料斗下降</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_RESET_LIFT_COIL\')'">
+			<div><i class="fa fa-sort fa-5x" aria-hidden="true"></i></div>
+			<p>料斗复位</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_OPEN_DOOR_COIL\')'">
+			<div><i class="fa fa-envelope-open-o fa-5x" aria-hidden="true"></i></div>
+			<p>取料口开门</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_CLOSE_DOOR_COIL\')'">
+			<div><i class="fa fa-envelope-o fa-5x" aria-hidden="true"></i></div>
+			<p>取料口关门</p>
+		</a>
+	</li>
+</ul>
+<div class="l-manage-head">故障恢复</div>
+<ul class="manage-list">
+	<li th:if="${plcOrDet == 'PLC'}">
+		<a href="javascript:void('0');" th:onclick="'resetDoorErr(\'' + ${cabinetId} + '\')'">
+			<div><i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i></div>
+			<p>门故障恢复</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'resetProblem(\'' + ${cabinetId} + '\')'">
+			<div><i class="fa fa-wrench fa-5x" aria-hidden="true"></i></div>
+			<p>故障状态恢复</p>
+		</a>
+	</li>
+</ul>
+</body>
+</html>

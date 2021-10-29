@@ -1,0 +1,141 @@
+<button type="button" class="btn btn-primary btn-outline"
+	onclick="SubCabinetDetail.subcabinetDetailExport()"
+	id="exportExcel">
+	<i class="fa fa-cloud-download"></i>&nbsp;导出
+</button>
+<hr />
+<table id="managerTable">
+	<thead th:include="/common/thead.html :: common_thead">
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+<script>
+	$(document).ready(function() {
+		var that = this;
+		tbl = $("#managerTable").bootstrapTable({
+			url: "/stock/listMain",
+			toolbar: "#exportExcel",//设置自定义工具栏容器ID，也可以是容器样式类名.toolbar
+			cache: false,
+			showColumns: true,
+			showRefresh: true,
+			clickToSelect: true,
+			pagination: true,
+			pageNumber: 1,
+			pageSize: 10,
+			sidePagination: "server", columns: [
+				{
+					field: "rowNo",
+					title: "行号",
+					align: "center"
+				},
+				{
+					field: "colNo",
+					title: "列号",
+					align: "center"
+				},
+				{
+					field: "matInfoName",
+					title: "物料名称",
+					align: "center",
+					formatter: function(value, index, row) {
+						if (value == "") {
+							return '-';
+						}
+						return value;
+					}
+				},
+				{
+					field: "barCode",
+					title: "物料编号",
+					align: "center",
+					formatter: function(value, index, row) {
+						if (value == "") {
+							return '-';
+						}
+						return value;
+					}
+				},
+				{
+					field: "spec",
+					title: "物料型号",
+					align: "center",
+					formatter: function(value, index, row) {
+						if (value == "") {
+							return '-';
+						}
+						return value;
+					}
+				},
+				{
+					field: "curNum",
+					title: "当前数量",
+					align: "center"
+				},
+				{
+					field: "packUnit",
+					title: "包装单位",
+					align: "center"
+				},
+				{
+					field: "price",
+					title: "单价",
+					align: "center"
+				},
+				{
+					field: "sumPrice",
+					title: "金额",
+					align: "center"
+				},
+				{
+					field: "maxReserve",
+					title: "最大存储",
+					align: "center"
+				},
+				{
+					field: "warnVal",
+					title: "警告阀值",
+					align: "center"
+				},
+				{
+					field: "lastFeedTime",
+					title: "最后上架时间",
+					align: "center"
+				},
+				{
+					field: "equSta",
+					title: "状态",
+					align: "center",
+					formatter: function(value, index, row) {
+						var a = "";
+						if (value == "NONE") {
+							var a = '<span style="color:#1ab394;">' + '正常' + '</span>';
+						} else if (value == "ENABLE") {
+							var a = '<span style="color:#FF0000;">' + '故障' + '</span>';
+						}
+						return a;
+					}
+				},
+			],
+			responseHandler: function(res) {
+				return {
+					"total": res.totalElements,
+					"rows": res.content
+				};
+			},
+			queryParams: function(params) {
+				var temp = {
+					limit: params.limit,
+					offset: params.offset,
+					pageSize: this.pageSize,
+					pageNumber: this.pageNumber,
+					matInfo: $("#matInfo").val(),
+					rowNo: $("#rowNo").val(),
+					colNo: $("#colNo").val(),
+					cabinetId: $("#cabinetId").val(),
+				};
+				return temp;
+			},
+		})
+	});
+</script>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<!-- 待归还页面 -->
+<div class="l-return-list" th:each="subCabinet : ${map}">
+	<div class="l-return-head">
+		<div class="l-return-date" th:text="${subCabinet.key}"></div>
+	</div>
+	<ul class="l-return-w">
+		<li class="l-return-item" th:each="val,sta : ${subCabinet.value}"
+			th:id="${val.matUseBillId}" th:name="${val.matName} + ${val.barCode} + ${val.spec} + ${val.receiveInfo}">
+			<div class="l-r-img" style="width: 177px; height: 177px;" th:switch="${val.pic}">
+				<img th:src="${val.pic}" onerror="imgerrorfun();" />
+			</div>
+			<div class="l-r-info">
+				<ul class="l-r-info-txt">
+					<li th:text="'物料名称：' + ${val.matName}"></li>
+					<li th:text="'借出时间：' + ${#dates.format(val.borrowTime, 'HH:mm')}"></li>
+					<li th:text="'包装数量：' + ${val.packNum} + '支/盒'"></li>
+					<li th:text="'借出数量：' + ${val.borrowNum}+'盒'"></li>
+					<li th:text="'编号：' + ${val.barCode}" style="width: 100%"></li>
+					<li th:text="'型号：' + ${val.spec}" style="width: 100%"></li>
+					<li th:text="'领取途径：' + ${val.receiveInfo}" style="width: 100%; white-space: pre-wrap;"></li>
+				</ul>
+				<a class="l-return-btn" href="javascript:void('0');"
+					th:onclick="'returnBack(\''+${val.matUseBillId}+'\',\''+${val.packNum}+'\',\''+${val.matId}+'\',\''+${val.useLife}+'\')'">归还物料</a>
+			</div>
+		</li>
+	</ul>
+</div>
+<div style="width:100%; height:5px; background-color: #f0f0f0; margin:15px 0px;"></div>
+<div style="text-align:center">
+	<ul id="returnPage"></ul>
+</div>
+<div class="l-cover" style="display: none;"></div>
+
+<script>
+	var totalPages = [[${totalPages}]];
+	var currentPage = [[${currentPage}]];
+	
+	$(document).ready(function() {
+		//分页插件
+		$('#returnPage').bootstrapPaginator({    
+		    size: "large",
+		    alignment: "center",
+		    currentPage: currentPage,
+		    numberOfPages: 5,
+		    totalPages: totalPages,
+		    bootstrapMajorVersion: 3,
+		    onPageClicked: function(event, originalEvent, type, pageNo){
+		    	backNormal(pageNo);
+			}
+		});
+	});
+	
+	/**
+	 * @description 物料归还
+	 * @param matUseBillId 物料借出信息
+	 * @param packNum 包装数量
+	 * @param matInfoId 物料信息
+	 */
+	function returnBack(matUseBillId, packNum, matInfoId, useLife) {
+		$.ajax({
+			type : "post",
+			url : "/initReturnBack",
+			data : {
+				"matUseBillId" : matUseBillId,
+				"packNum" : packNum,
+				"matInfoId" : matInfoId,
+				"useLife": useLife,
+				"backWay" : "S"
+			},
+			dataType : "html",
+			success : function(data) {
+				$("#opener").css("width", "60vw");
+				$("#opener").html(data);
+				$("#opener").show();
+				$(".l-cover").show();
+			}
+		});
+	}
+</script>
+</html>

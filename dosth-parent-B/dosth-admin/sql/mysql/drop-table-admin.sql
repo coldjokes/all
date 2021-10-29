@@ -1,0 +1,12 @@
+DROP TABLE if exists users;
+DROP TABLE if exists account_role;
+DROP TABLE if exists account;
+DROP TABLE if exists relation;
+DROP TABLE if exists menu;
+DROP TABLE if exists system_info;
+DROP TABLE if exists roles;
+DROP TABLE if exists dept;
+DROP TABLE if exists dict;
+DROP TABLE if exists notice;
+DROP TABLE if exists operation_log;
+DROP TABLE if exists login_log;

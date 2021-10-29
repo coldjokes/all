@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>物料关联</title>
+</head>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<input type="hidden" id="typeTreeId" size="100"> <input
+						type="hidden" id="parentTreeId" size="100">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-sm-12">
+								<div class="col-lg-3 col-sm-3" style="padding-top: 1.5%;">
+									<div class="panel panel-default">
+										<div class="panel-heading">分类</div>
+										<div class="panel-body dept-tree" style="overflow-x: auto;">
+											<ul id="categoryTree" class="ztree"></ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-9 col-sm-9">
+									<div class="row row-lg" style="padding-top: 20px;">
+										<div class="col-lg-4 col-sm-4">
+											<div class="input-group">
+												<div class="input-group-btn">
+													<button data-toggle="dropdown" class="btn btn-white dropdown-toggle" style="border-color:#ccc;" type="button">视图切换
+													</button>
+												</div>
+												<div> 
+													<input type="checkbox" name="status" id="onoffswitch">
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-3 col-sm-4">
+											<div class="input-group">
+												<div class="input-group-btn">
+													<button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">物料
+													</button>
+												</div>
+												<input type="text" class="form-control" id="knifeInfo" placeholder="名称 / 编号 / 规格">
+											</div>
+										</div>
+										<div class="col-lg-3 col-sm-4">
+											<button type="button" class="btn btn-primary button-margin" onclick="MatCategory.search()" id="search">
+												<i class="fa fa-search"></i>搜索
+											</button>
+											&nbsp;&nbsp;
+											<button type="button" class="btn btn-primary button-margin" onclick="MatCategory.resetSearch()" id="resetSearch">
+												<i class="fa fa-refresh"></i>&nbsp;重置
+											</button>
+										</div>
+									</div>
+									<hr />
+									<div class="row row-lg">
+										<div class="col-lg-12 col-sm-12">
+											<button type="button" class="btn btn-primary" onclick="MatCategory.submit()" id="trash">
+												<i class="fa fa-check"></i>保存
+											</button>
+										</div>
+									</div>
+									<div class="row row-lg" style="padding-top:10px">
+										<div class="col-lg-12 col-sm-12">
+											<div id="infos" class="row"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="myModal">
+			<div style="width: 200px; height: 20px; z-index: 20000; position: absolute; text-align: center; left: 50%; top: 50%; margin-left: -100px; margin-top: -10px">
+				<div class="progress progress-striped active"
+					style="margin-bottom: 0;">
+					<div class="progress-bar" style="width: 100%;"></div>
+				</div>
+				<h5 style="color: black">
+					<strong>物料绑定中，请等待...</strong>
+				</h5>
+			</div>
+		</div>
+		<script th:src="@{/static/modular/tool/matCategory/index.js}"></script>
+		<script th:src="@{/static/modular/tool/matCategory/category.js}"></script>
+	</div>
+</body>
+<script type="text/javascript">
+	$('[name="status"]').bootstrapSwitch({  
+	    onColor: "primary",  
+	    offColor: "default", 
+	    offText:"全",
+		onText:"选",
+	    size: "noraml",
+		onSwitchChange:function(event,state){  
+			var typeTreeId = $("#typeTreeId").val();
+			if (typeTreeId == "") {
+				Feng.info("请先选择关联类型");
+				return;
+			} else {
+				if ($("#onoffswitch").is(':checked') && state == true) {
+					MatCategory.dipCheck(typeTreeId);
+					layer.msg("只表示选中项");
+				} else {
+					MatCategory.search();
+					layer.msg("全部表示");
+				}
+			}
+	    }  
+	});
+</script>
+</html>

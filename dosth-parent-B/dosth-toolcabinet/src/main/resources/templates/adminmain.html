@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>主柜管理员</title>
+</head>
+<body>
+<div class="l-manage-head">业务操作</div>
+<ul class="manage-list">
+	<li>
+		<a href="javascript:void('0');" onclick="testOp('FACE')">
+			<div><i class="fa fa-address-card-o fa-5x" aria-hidden="true"></i></div>
+			<p>人员设定</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" onclick="testOp('AffirmFeeding')">
+			<div><i class="fa fa-paper-plane fa-5x" aria-hidden="true"></i></div>
+			<p>补料确认</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" onclick="testOp('FEEDING')">
+			<div><i class="fa fa-paper-plane-o fa-5x" aria-hidden="true"></i></div>
+			<p>前台补料</p>
+		</a>
+	</li>
+	<li th:if="${printComm != null}">
+		<a href="javascript:void('0');" onclick="testOp('RESETPRINT')">
+			<div><i class="fa fa-file-o fa-5x" aria-hidden="true"></i></div>
+			<p>重置打印纸</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" onclick="testOp('RESETRECOVERY')">
+			<div><i class="fa fa fa-trash-o fa-5x" aria-hidden="true"></i></div>
+			<p>重置回收仓</p>
+		</a>
+	</li>
+</ul>
+<div class="l-manage-head">硬件测试</div>
+<ul class="manage-list">	
+	<li th:if="${printComm != null}">
+		<a href="javascript:void('0');" onclick="testOp('PRINT')">
+			<div><i class="fa fa-print fa-5x" aria-hidden="true"></i></div>
+			<p>打印机测试</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_UP_COIL\')'">
+			<div><i class="fa fa-level-up fa-5x" aria-hidden="true"></i></div>
+			<p>料斗上升</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_DOWN_COIL\')'">
+			<div><i class="fa fa-level-down fa-5x" aria-hidden="true"></i></div>
+			<p>料斗下降</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_RESET_LIFT_COIL\')'">
+			<div><i class="fa fa-sort fa-5x" aria-hidden="true"></i></div>
+			<p>料斗复位</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_OPEN_DOOR_COIL\')'">
+			<div><i class="fa fa-envelope-open-o fa-5x" aria-hidden="true"></i></div>
+			<p>取料口开门</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'ON_CLOSE_DOOR_COIL\')'">
+			<div><i class="fa fa-envelope-o fa-5x" aria-hidden="true"></i></div>
+			<p>取料口关门</p>
+		</a>
+	</li>
+</ul>
+<div class="l-manage-head">故障恢复</div>
+<ul class="manage-list">
+	<li th:if="${recovery == 'Y'}">
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'RETURN_BACK_DOOR_REST\')'">
+			<div><i class="fa fa-recycle fa-5x" aria-hidden="true"></i></div>
+			<p>回收口复位</p>
+		</a>
+	</li>
+	<li th:if="${plcOrDet == 'PLC'}">
+		<a href="javascript:void('0');" th:onclick="'resetDoorErr(\'' + ${cabinetId} + '\')'">
+			<div><i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i></div>
+			<p>门故障恢复</p>
+		</a>
+	</li>
+	<li th:if="${printComm != null && plcOrDet == 'PLC'}">
+		<a href="javascript:void('0');" th:onclick="'hardTest(\''+${cabinetId}+'\',\'RESTART_PRINTER\')'">
+			<div><i class="fa fa-refresh fa-5x" aria-hidden="true"></i></div>
+			<p>重置打印机</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" onclick="testOp('RESTART_COMPUTER')">
+			<div><i class="fa fa-power-off fa-5x" aria-hidden="true"></i></div>
+			<p>重启电脑</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void('0');" th:onclick="'resetProblem(\'' + ${cabinetId} + '\')'">
+			<div><i class="fa fa-wrench fa-5x" aria-hidden="true"></i></div>
+			<p>故障状态恢复</p>
+		</a>
+	</li>
+</ul>
+</body>
+</html>

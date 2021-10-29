@@ -1,0 +1,52 @@
+<div class="layui-collapse" id="clsqDiv">
+	<div class="layui-colla-item" th:each="voucher:${voucherList}">
+		<h2 class="layui-colla-title" th:text="${'申请单号:' + voucher.applyNo}"></h2>
+		<div class="layui-colla-content layui-show">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+				<table class="layui-table"
+					style="text-align: center; border: 1px solid gray;">
+					<thead>
+						<tr>
+							<th width="30">
+								<div class="l-back-new">
+									<p>
+										<input type="checkbox"  th:id="${voucher.applyNo}" th:onclick="'selectAll(this, \''+${voucher.applyNo}+'\')'">
+									</p>
+								</div>
+							</th>
+							<th width="150">物料名称</th>
+							<th>物料编号</th>
+							<th width="150">规格型号</th>
+							<th width="90">库存数量</th>
+							<th width="90">领取数量</th>
+						</tr>
+					</thead>
+					<tbody th:id="${'clsqDiv_'+voucher.applyNo}">
+						<tr th:each="detail:${voucher.detailList}" th:id="${detail.matId}">
+							<td>
+								<div class="l-back-new">
+									<p>
+										<input
+											type="checkbox"
+											th:onclick="'selectSingle(this, \''+${voucher.applyNo}+'\',\''+${detail.borrowNum}+'\',\''+${detail.remainNum}+'\')'"
+											th:id="${voucher.applyNo} + '_' + ${detail.matId} + '_' + ${detail.borrowType} + '_' + ${detail.borrowNum} + '_' + ${detail.remainNum}">
+									</p>
+								</div>
+							</td>
+							<td th:text="${detail.matName}"></td>
+							<td th:text="${detail.barCode}"></td>
+							<td th:text="${detail.spec}"></td>
+							<td th:text="${detail.remainNum}"></td>
+							<td th:text="${detail.borrowNum}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	layui.use('element', function(){
+	  var element = layui.element;
+	});
+</script>

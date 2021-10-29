@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<!-- 我要暂存 -->
+<div class="layer-title">
+	<div></div>
+	<h3>我要暂存</h3>
+	<a href="javascript:void('0');" class="l-close"><img src="/static/images/l-close.jpg" alt=""></a>
+</div>
+<div class="jia_layer_main3" id="selectMat">
+	<h3 class="jia_cab_h3">图片详情</h3>
+	<div class="jia_dialog_left">
+		<img style="max-width: 375px; max-height: 235px; margin-bottom: 2.5vw;" id="img" />
+	</div>
+	<div class="jia_dialog2_right">
+		<p>名称</p>
+		<select class="jia_dialog2_select" id="selectDetial">
+			<option th:each="detail : ${unSubDetailList}" th:value="${detail.matId}" 
+				th:text="${detail.matName} + '  ' + ${detail.barCode} + '  ' + ${detail.spec}"></option>
+		</select>
+	</div>
+</div>
+<div style="clear: both" id="outSub">
+	<h3 class="jia_cab_h3">产品详情</h3>
+	<ul class="jia_dialog2_ul">
+		<li>料号：<span id="barCode"></span></li>
+		<li>规格/型号：<span id="spec"></span></li>
+		<li>包装数量：<span id="remNum"></span></li>
+		<li>单位：<span id="borrowTypeName"></span></li>
+		<li>暂存：
+			<a href="javascript:void('0');" style="margin-left: 2vw; width: 2.5vw; height: 2.5vw;" onclick="sub()">-</a>
+			<span id="storNum" style="font-size: 1.58vw;">1</span>
+			<a href="javascript:void('0');" style="margin-right: 2vw; width: 2.5vw; height: 2.5vw;" onclick="add()">+</a>
+		</li>
+	</ul>
+	<input type="hidden" id="subBoxId">
+    <input type="hidden" id="lockIndex">
+</div>
+<div class="jia_tip_btn2" style="clear: both">
+	<a href="javascript:void('0');" onclick="checkStor()">确定暂存</a> 
+	<a href="javascript:void('0');" onclick="cancel()">取消</a>
+</div>
+<script th:inline="javascript">
+	
+	$(function() {
+		$(".l-close").click(function() {
+			$(".layer").hide();
+			$(".l-cover").hide();
+		});
+		$("#selectDetial").change(function() {
+			getMatDetail($(this).val());
+		});
+	});
+	
+	/**
+	 * @description 校验暂存柜余量
+	 */
+	function checkStor() {
+		var matId = $("#selectDetial").val();
+		$.ajax({
+			type : "post",
+			url : "/cabinet/checkNewSubCabinet",
+			data : {
+                "matId" : matId
+            },
+			dataType : "json",
+			success : function(data) {
+				if (data.code == 200) {
+					$("#selectMat").css('pointer-events', 'none');
+					$("#outSub").css('pointer-events', 'none');
+					var storType = data.message;
+					tempStor(storType);
+				} else {
+					layer.msg(data.message);
+				}
+			}
+		});
+	}
+	
+	/**
+	 * @description 确认暂存
+	 */
+	function tempStor(storType){
+		var matId = $("#selectDetial").val();
+		var matNum = $("#storNum").html();
+		$.ajax({
+			type : "post",
+			url : "/cabinet/tmpNewStor",
+			data : {
+                "matId" : matId,
+                "matNum" : matNum,
+                "storType" : storType
+            },
+			dataType : "json",
+			success : function(data) {
+				openBox(data.cabinetId, data.boxIndex, data.boardNo, data.lockIndex);
+			}
+		});
+	} 
+	
+	/**
+	 * @description 打开抽屉
+	 */
+	function openBox(cabinetId, boxIndex, boardNo, lockIndex){
+		$.ajax({
+			type : "post",
+			url : "/cabinet/openBox",
+			data : {
+                "cabinetId" : cabinetId,
+                "boxIndex" : boxIndex,
+                "boardNo" : boardNo,
+                "lockIndex" : lockIndex
+            },
+			dataType : "json",
+			success : function(data) {
+				layer.msg("暂存成功！");
+				flushBusiness('subcabinet');
+				$(".layer").hide();
+				$(".l-cover").hide();
+			}
+		});
+	}
+	
+	/**
+	 * @description 添加暂存数量
+	 */
+	function add() {
+		var val = parseInt($("#storNum").html());
+		var maxVal = parseInt($("#remNum").html());
+		if (val < maxVal) {
+			$("#storNum").html(val + 1);
+		}
+	}
+
+	/**
+	 * @description 减少暂存数量
+	 */
+	function sub() {
+		var val = parseInt($("#storNum").html());
+		if (val > 1) {
+			$("#storNum").html(val - 1);
+		}
+	}
+
+	/**
+	 * @description 获取物料详情
+	 * @param subReturnId 
+	 */
+	function getMatDetail(matId) {
+		var url = "/cabinet/getMatDetail";
+		$.ajax({
+			type : "post",
+			url : url,
+			data : {
+				"matId" : matId
+			},
+			dataType : "json",
+			success : function(data) {
+				$("#img").attr("src", 'data:img/png;base64,' + data.pic);
+				$("#barCode").html(data.barCode);
+				$("#spec").html(data.spec);
+				$("#remNum").html(data.remainNum);
+				$("#borrowTypeName").html(data.borrowTypeName);
+				$("#subBoxId").val(data.subBoxId);
+                $("#lockIndex").val(data.lockPara.lockIndex);
+				$("#storNum").html("1");
+			}
+		});
+	}
+
+	$(document).ready(function() {
+		var matId = $("#selectDetial").val();
+		if (matId) {
+			getMatDetail(matId);
+		}
+	});
+</script>
+</html>

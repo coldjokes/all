@@ -1,0 +1,66 @@
+{
+    "code": 200,
+    "message": "领用清单同步成功",
+    "resultList": [
+        {
+            "accountId": "admin",
+            "accountName": "admin",
+            "opDate": "2020-12-03 10:30:14",
+            "borrowNum": 1,
+            "equId": "297e5a8667960b070167969f51620013",
+            "equName": "ZD012",
+            "matId": "4028947a6d4d4aa7016d4d70a4670009",
+            "matName": "233472H PWP Tip holder",
+            "matSpec": "with profile 12*12*130",
+            "matBarCode": "40-00003A",
+            "supplyID": "4028947a6d4d4aa7016d4d5c48cb0006",
+            "supplyFullName": "未定义",
+            "borrowOrigin": "全部"
+        },
+        {
+            "accountId": "admin",
+            "accountName": "admin",
+            "opDate": "2020-12-03 10:40:27",
+            "borrowNum": 1,
+            "equId": "297e5a8667960b070167969f51620013",
+            "equName": "ZD012",
+            "matId": "4028947a6d4d4aa7016d4d70a4670009",
+            "matName": "233472H PWP Tip holder",
+            "matSpec": "with profile 12*12*130",
+            "matBarCode": "40-00003A",
+            "supplyID": "4028947a6d4d4aa7016d4d5c48cb0006",
+            "supplyFullName": "未定义",
+            "borrowOrigin": "全部"
+        },
+        {
+            "accountId": "admin",
+            "accountName": "admin",
+            "opDate": "2020-12-03 10:47:37",
+            "borrowNum": 1,
+            "equId": "297e5a8667960b070167969f51620013",
+            "equName": "ZD012",
+            "matId": "4028947a6d4d4aa7016d4d70a4670009",
+            "matName": "233472H PWP Tip holder",
+            "matSpec": "with profile 12*12*130",
+            "matBarCode": "40-00003A",
+            "supplyID": "4028947a6d4d4aa7016d4d5c48cb0006",
+            "supplyFullName": "未定义",
+            "borrowOrigin": "全部"
+        },
+        {
+            "accountId": "admin",
+            "accountName": "admin",
+            "opDate": "2020-12-03 10:48:28",
+            "borrowNum": 1,
+            "equId": "297e5a8667960b070167969f51620013",
+            "equName": "ZD012",
+            "matId": "4028947a6d4d4aa7016d4d70a4670009",
+            "matName": "233472H PWP Tip holder",
+            "matSpec": "with profile 12*12*130",
+            "matBarCode": "40-00003A",
+            "supplyID": "4028947a6d4d4aa7016d4d5c48cb0006",
+            "supplyFullName": "未定义",
+            "borrowOrigin": "全部"
+        }
+    ]
+}

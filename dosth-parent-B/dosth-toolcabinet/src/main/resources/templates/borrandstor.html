@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<div class="l-return">
+	<div class="jia_cab_btn">
+		<a id="history" href="javascript:void('0');" style="margin-right: 2vw" onclick="flushBusiness('history')">待归还物料</a> 
+		<a id="subcabinet" href="javascript:void('0');" onclick="flushBusiness('subcabinet')">我的暂存柜</a>
+	</div>
+	<div id="borrandstor"></div>
+	<input type="hidden" th:value="${selectedType}" id="selectedType">
+</div>
+<script type="text/javascript">
+	var hasTempCabinet = [[${hasTempCabinet}]];
+
+	$(document).ready(function() {
+		var selectedType = $("#selectedType").val();
+		$(".jia_cab_btn a").removeClass("jia_can_btn_on");
+		$("#" + selectedType).addClass("jia_can_btn_on");
+		if (selectedType == 'history') {
+			renderReturnPage();
+		} else {
+			flushBusiness('subcabinet');
+		}
+	});
+
+	//获取待归还页面
+	function renderReturnPage(){
+		var returnBackType = $("#returnBackType").val();
+		$.ajax({
+    		url : "/getBackTypeInfo",
+			type : "post",
+			async : false,
+			dataType : "html",
+			data : {
+                "returnBackType" : returnBackType
+            },
+			success : function(data) {
+				$("#borrandstor").html(data);
+			}
+		}); 
+	};
+	
+	/**
+	 * @description 刷新业务
+	 * @param selectedType 选择类型
+	 */
+	function flushBusiness(selectedType) {
+		$(".jia_cab_btn a").removeClass("jia_can_btn_on");
+		$("#" + selectedType).addClass("jia_can_btn_on");
+		if (selectedType == 'history') { // 待归还物料
+			renderReturnPage();
+		} else {// 我的暂存柜
+			if (hasTempCabinet) {
+				$.ajax({
+					url : "/getSubCabinetList",
+					type : "post",
+					async : false,
+					dataType : "html",
+					success : function(data) {
+						$("#borrandstor").html(data);
+					}
+				});
+			} else {
+				layer.msg("暂未开通此功能！");
+				$("#subcabinet").removeClass('jia_can_btn_on');
+				$("#history").addClass('jia_can_btn_on');
+				return;
+			}
+		}
+	}
+	
+	/**
+	 * @description 取消
+	 */
+	function cancel() {
+		$(".layer").hide();
+		$(".l-cover").hide();
+	}
+</script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>修改账户</title>
+</head>
+<body>
+	<div class="ibox float-e-margins">
+		<div class="ibox-content">
+			<div class="form-horizontal" id="accountInfoForm" th:object="${account}">
+				<input type="hidden" id="id" th:field="*{id}">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">账户</label>
+							<div class="col-sm-10">
+								<input class="form-control" id="loginName" name="loginName"
+									type="text" th:field="*{loginName}"/>
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">密码</label>
+							<div class="col-sm-10">
+								<input class="form-control" id="password" name="password"
+									type="password" />
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">确认密码</label>
+							<div class="col-sm-10">
+								<input class="form-control" id="rePassword" name="rePassword"
+									type="password" />
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+					</div>
+					<div class="row btn-group-m-t">
+						<div class="col-sm-10">
+							<button type="button" class="btn btn-info" onclick="AccountInfoDlg.editSubmit()" id="ensure">
+								<i class="fa fa-check"></i>&nbsp;提交
+							</button>
+							<button type="button" class="btn btn-danger" onclick="AccountInfoDlg.close()" id="cancel">
+								<i class="fa fa-eraser"></i>&nbsp;取消
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/admin/account/account_info.js}"></script>
+</body>
+</html>

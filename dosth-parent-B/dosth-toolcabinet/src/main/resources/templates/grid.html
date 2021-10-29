@@ -1,0 +1,20 @@
+<div class="l-return" style="padding: 0;">
+	<div id="cabinetList" class="jia_cab_btn" th:style="'display:' + @{(${cabinetList.size() > 1} ? 'inline-block' : 'none')} + ';padding-top: 1vw; text-align: left;'">
+		<a th:each="cabinet : ${cabinetList}"
+			th:id="${cabinet.cabinetId}" href="javascript:void('0');"
+			style="margin-right: 2vw"
+			th:onclick="'selectCabinet(\''+${cabinet.cabinetId}+'\',\''+${cabinet.door}+'\',\''+${cabinet.cabinetType}+'\')'"
+			th:text="${cabinet.cabinetName}">柜子名称</a>
+	</div>
+	<div id="gridlist" style="overflow: auto; min-height: 1685px; max-height: 1685px;"></div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var cabinetSize = [[${cabinetList.size()}]];
+		if(cabinetSize == 1){
+			$("#gridlist").css("min-height","1725px");
+			$("#gridlist").css("max-height","1725px");
+		}
+		$("#cabinetList a:first-child").click();
+	});
+</script>

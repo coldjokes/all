@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<meta charset="UTF-8">
+<title>暂存柜-设置</title>
+</head>
+<body class="gray-bg">
+	<input type="hidden" id="equSettingId" name="equSettingId" th:value="${equSettingId}">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<table id="subBoxTable"></table>
+	</div>
+</body>
+<script th:src="@{/static/modular/tool/equsetting/temSetupInfo.js}"></script>
+</html>

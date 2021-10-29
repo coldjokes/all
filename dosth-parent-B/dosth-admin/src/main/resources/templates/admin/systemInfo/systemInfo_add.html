@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>添加用户</title>
+</head>
+<body>
+	<div class="ibox float-e-margins">
+		<div class="ibox-content">
+			<div class="form-horizontal" id="systemInfoForm">
+				<input type="hidden" id="id" value="">
+				<div class="row">
+					<div class="col-sm-6 b-r">
+						<div class="form-group">
+							<label class="col-sm-3 control-label">系统名称</label>
+							<div class="col-sm-9">
+								<input class="form-control" id="systemName" name="systemName" type="text" />
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">系统URL</label>
+							<div class="col-sm-9">
+								<input class="form-control" id="url" name="url" type="text" />
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+					</div>
+					<div class="col-sm-6">
+						<div class="hr-line-dashed"></div>
+					</div>
+				</div>
+				<div class="row btn-group-m-t">
+					<div class="col-sm-10">
+						<button type="button" class="btn btn-info" onclick="SystemInfoDlg.addSubmit()" id="ensure">
+							<i class="fa fa-check"></i>&nbsp;提交
+						</button>
+						<button type="button" class="btn btn-danger" onclick="SystemInfoDlg.close()" id="cancel">
+							<i class="fa fa-eraser"></i>&nbsp;取消
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/admin/systemInfo/system_info.js}"></script>
+	<script th:src="@{/static/js/plugins/webuploader/webuploader.min.js}"></script>
+	<script th:src="@{/static/js/common/web-upload-object.js}"></script>
+</body>
+</html>

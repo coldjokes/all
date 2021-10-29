@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>管理员-可控柜</title>
+<link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+<script th:src="@{/static/layui/layui.js}"></script>
+</head>
+<body>
+<div class="layui-tab" style="margin: 0 auto;">
+	<div class="layui-tab-content" style="margin: 0; padding: 0;">
+		<div class="layui-tab-item layui-show" style="margin: 0 auto;">
+			<table class="layui-table" style="margin: 0;">
+				<tbody>
+					<tr th:each="card:${cardList}" th:id="${card.detailId}">
+						<td>
+							<table class="layui-table" cellspacing="0" cellpadding="0" style="margin: 0;">
+								<tr>
+									<td th:each="lattice:${card.latticeList}" style="padding: 3px;">
+										<button class="layui-btn layui-btn-primary"
+											style="width: 100%; margin: 0 auto;" type="button"
+											th:id="'btn_'+${lattice.boxIndex}"
+											th:text="${lattice.boxIndex<10?('00'+lattice.boxIndex):lattice.boxIndex<100?('0'+lattice.boxIndex):lattice.boxIndex}"
+											th:onclick="'openTrol(\''+${cabinetId}+'\',\''+${lattice.boxIndex}+'\',\''+${lattice.boardNo}+'\',\''+${lattice.lockIndex}+'\',\''+${lattice.maxReserve}+'\',\''+${lattice.interval}+'\')'">
+										</button>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

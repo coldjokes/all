@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<table class="layui-table" style="text-align: center; border: 1px solid gray;">
+	<thead>
+		<tr style="display: table;width: 100%;table-layout: fixed;">
+			<th style="width:70px">位置</th>
+			<th style="width:140px">图片</th>
+			<th style="width:180px">物料</th>
+			<th style="width:50px">包装数量</th>
+			<th style="width:50px">包装单位</th>
+			<th style="width:60px">库存</th>		
+			<th style="width:50px">待补数量</th>			
+			<th style="width:50px">可补数量</th>
+			<th>补货数量</th>
+		</tr>
+	</thead>
+	<tbody style="display: block;height: 1080px;overflow-y: scroll;">
+		<tr th:each="sta:${staList}" th:id="${sta.staId}" style="display: table;width: 100%;table-layout: fixed;">
+			<td style="width:70px" th:text="${sta.position}"></td>
+			<td style="width:140px">
+				<img th:src="${sta.icon}" onerror="imgerrorfun();" />
+			</td>
+			<td style="width:180px">
+				<div th:text="'名称：' + ${sta.matName}"></div>
+				<div th:text="'编号：' + ${sta.barCode}"></div>
+				<div th:text="'型号：' + ${sta.spec}"></div>
+			</td>
+			<td style="width:50px" th:text="${sta.packNum}"></td>
+			<td style="width:50px" th:text="${sta.packUnit}"></td>
+			<td style="width:60px" th:text="${sta.curNum}+'/'+${sta.maxNum}"></td>
+			<td style="width:50px" th:text="${sta.waitNum}"></td>
+			<td style="width:50px" th:text="${sta.maxNum - sta.waitNum - sta.curNum}"></td>
+			<td>
+				<div class="c-add-num"> 
+					<span style="width: 50px;height: 50px; line-height: 50px;" th:onclick="'subFeed(\''+${sta.staId}+'\',\'' + ${sta.curNum}+'\')'">-</span>
+					<input style="height:50px; line-height: 50px; background-color: whitesmoke;" type="text" th:id="'nums_'+${sta.staId}" readonly="readonly" size="1"> 
+					<span style="width: 50px;height: 50px; line-height: 50px;" th:onclick="'addFeed(\''+${sta.staId}+'\',\''+${sta.maxNum - sta.waitNum - sta.curNum}+'\')'"
+						th:ondblclick="'fullFeed(\''+${sta.staId}+'\',\''+${sta.maxNum - sta.waitNum - sta.curNum}+'\')'">+</span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>盘点</title>
+</head>
+<body>
+    <input type="hidden" id="area" th:value="${area}"/>
+    <input type="hidden" id="frameId" th:value="${frameId}"/>
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="form-horizontal" id="customInfoForm">
+                <div class="row" th:if="${matInfo != null}">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">物料名称</label>
+                            <div class="col-sm-4">
+                                <input class="form-control" disabled="disabled" id="matInfoName" type="text" th:value="${matInfo.matEquName}"> 
+                            </div>
+                            <label class="col-sm-2 control-label">物料编号</label>
+                            <div class="col-sm-4">
+                                <input class="form-control" disabled="disabled" id="barCode" type="text" th:value="${matInfo.barCode}"> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">物料规格</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" disabled="disabled" id="spec" type="text" th:value="${matInfo.spec}"> 
+                            </div>
+                        </div>
+                        <div class="form-group" th:if="${area=='TEMP'}">
+                            <label class="col-sm-2 control-label">使用人员</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" disabled="disabled" id="account" type="text" th:value="${user}"> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">库存数量</label>
+                            <div class="col-sm-4">
+                                <input class="form-control" disabled="disabled" id="storageNum" type="text" th:value="${num}"> 
+                            </div>
+                            <label class="col-sm-2 control-label">实盘数量</label>
+                            <div class="col-sm-4">
+                                <input class="form-control" id="inventoryNum" type="text" th:value="${num}"> 
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                    </div>
+                    <div class="row btn-group-m-t">
+                        <div class="col-sm-10">
+                            <button type="button" class="btn btn-info" onclick="Inventory.inventory()" id="ensure">
+                                <i class="fa fa-check"></i>提交
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="Inventory.close()" id="cancel">
+                                <i class="fa fa-eraser"></i>取消
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" th:if="${matInfo == null}">
+                    <div class="col-sm-12">
+                        柜体中未设置物料
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/static/modular/tool/inventory/index.js}"></script>
+</body>
+</html>

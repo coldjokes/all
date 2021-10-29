@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common/header.html :: common_header(~{::title})">
+	<title>添加用户</title>
+</head>
+
+<body>
+	<div class="ibox float-e-margins">
+		<div class="ibox-content">
+			<div class="form-horizontal" id="userInfoForm">
+				<input type="hidden" id="id" value="">
+				<div class="row">
+					<div class="col-lg-12 col-sm-12">
+						<h4 style="color:#000000;">基础信息</h4>
+						<div class="form-group">
+							<label class="col-lg-1 col-sm-2 control-label"><span
+									style="color:red;">*&nbsp;</span>用户姓名&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-lg-5 col-sm-5">
+								<input class="form-control" id="name" name="name" type="text" placeholder="用户姓名" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-1 col-sm-2 control-label"><span
+									style="color:red;">*&nbsp;</span>所属部门&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-sm-5 col-lg-5">
+								<input class="form-control" id="citySel" name="citySel" type="text" readonly="readonly"
+									placeholder="请选择部门" onclick="UserInfoDlg.showDeptSelectTree(); return false;"
+									style="background-color: #ffffff !important;">
+								<input class="form-control" type="hidden" id="deptId" value="">
+							</div>
+						</div>
+						<div class="form-group">
+							<label
+								class="col-lg-1 col-sm-2  control-label">IC卡号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-sm-5 col-lg-5">
+								<input class="form-control" id="icCard" name="icCard" type="text" placeholder="IC卡号" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label
+								class="col-lg-1 col-sm-2 control-label">邮箱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-sm-5 col-lg-5">
+								<input class="form-control" id="email" name="email" type="text" placeholder="邮箱" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 ">
+						<h4 style="color:#000000;">账号设置</h4>
+						<div class="form-group">
+							<label class="col-lg-1  col-sm-2 control-label"><span
+									style="color:red;">*&nbsp;</span>登录帐号&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-sm-5 col-lg-5">
+								<input class="form-control" id="loginName" name="loginName" type="text"
+									placeholder="登录帐号" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-1  col-sm-2 control-label">登录密码&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-sm-5 col-lg-5">
+								<input class="form-control" id="password" name="password" type="text"
+									placeholder="不修改为默认密码111111，可留空" />
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-lg-1  col-sm-2 control-label">
+								<label>权限&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							</div>
+							<div class="col-lg-5 col-sm-5 ">
+								<div>
+									<input id="isAdmin" name="isAdmin" type="checkbox"
+										onclick="UserInfoDlg.adminRoleChange(this)" />
+									<input type="hidden" id="isAdminRole" value="false" />
+									<label style="padding-top:9px;">是否管理员</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-1  col-sm-2 control-label">暂存柜数量</label>
+							<div class="col-sm-5 col-lg-5">
+								<input class="form-control" id="extraBoxNum" name="extraBoxNum" type="text"
+									style="padding-right: 2px;" onkeyup="value=value.replace(/^(-1+)|[^\d]+/g,'')"
+									placeholder="暂存柜数量" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 这是部门选择的下拉框 -->
+				<div id="menuContent" class="menuContent" style="display: none;width: 39.7% !important; position: absolute; z-index: 200;">
+					<ul id="treeDemo" class="ztree tree-box" style="background-color:white;border:1px solid whitesmoke !important"></ul>
+				</div>
+				<div class="col-lg-12">
+					<div class="form-group">
+						<div class="col-lg-2 " style="padding-top: 35px; padding-left: 50px;">
+							<button type="button" class="btn btn-primary btn-outline" onclick="UserInfoDlg.close()"
+								id="cancel">
+								<i class="fa fa-eraser"></i>&nbsp;取消
+							</button>
+							&nbsp;&nbsp;&nbsp;
+							<button type="button" class="btn btn-primary" onclick="UserInfoDlg.addSubmit()" id="ensure">
+								<i class="fa fa-check"></i>&nbsp;保存
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/admin/user/user_info.js}"></script>
+	<script th:src="@{/static/js/plugins/webuploader/webuploader.min.js}"></script>
+	<script th:src="@{/static/js/common/web-upload-object.js}"></script>
+</body>
+
+</html>

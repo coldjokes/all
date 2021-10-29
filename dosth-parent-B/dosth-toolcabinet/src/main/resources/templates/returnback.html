@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<input type="hidden" id="matBillId" th:value="${matUseBillId}" />
+<input type="hidden" id="matInfoId" th:value="${matInfoId}" />
+<input type="hidden" id="backWay" th:value="${backWay}" />
+<input type="hidden" id="qrCached" />
+<div class="layer-title">
+	<div style="width: 100%; text-align: center;">
+		<h3>归还物料</h3>
+	</div>
+	<div style="width: 21px;">
+		<a href="javascript:void('0');" class="l-close" id="closeReturnBack">
+			<img src="/static/images/l-close.jpg" alt="关闭">
+		</a>
+	</div>
+</div>
+<ul class="l-back-main">
+	<li class="l-back-item" th:each="area, type : ${reBackTypeMap}" th:if="${not #lists.isEmpty(reBackTypeMap)}">
+		<h3 class="jia_cab_h3" th:text="${area.key}"></h3>
+		<ul class="l-back-num" th:each="val:${area.value}">
+			<li class="c-add-num"> 
+				<input th:text="${val.name} + '：'" readonly="readonly"/>
+				<span th:onclick="'sub(\''+${val.code}+'\',\''+${val.name}+'\')'">-</span>
+				<input th:id="${val.code}" type="text" th:value="0" readonly="readonly" />
+				<span th:onclick="'add(\''+${val.code}+'\',\''+${val.name}+'\')'">+</span>
+				<div class="c-add-all" th:onclick="'addAll(\''+${val.code}+'\',\''+${val.name}+'\')'">全部</div>
+			</li>
+		</ul>
+	</li>
+	<li hidden="hidden"><input id="backNum" type="text" th:value="${packNum}" readonly="readonly"></li>
+</ul>
+<div class="l-back-main-2">
+	<div class="l-back-new">
+        <p>
+            产品流水号：<input class="form-control" type="text" id="serialNum" style="width: 430px;" size="50" maxlength="50"/>
+        </p>
+	</div>
+</div>
+<div class="l-back-main-2">
+	<div class="l-back-total">
+		应归还数量：<span id="packNum" th:text="${packNum}">0</span>个
+	</div>
+	<div class="l-back-new">
+        <span>* 制造产量:</span>
+        <p>
+            <input class="form-control" type="text" id="realLife" style="width: 70px;" size="6" maxlength="6" th:value="${useLife}">
+        </p>
+    </div>
+	<div class="l-back-new" th:if="${backWay=='S'}">
+		<span>* 以旧换新:</span>
+		<p>
+			<input type="checkbox" id="isGetNewOne">
+		</p>
+	</div>
+</div>
+<div class="l-back-main-2" id="barcodeScan" th:if="${printComm==''}">
+	<div class="l-back-total">
+		归还条形码：<input type="text" id="barcode" placeholder="请扫描条形码" readonly="readonly" style="height: 25px; width: 250px;">
+	</div>
+</div>
+<a class="l-return-btn" href="javascript:void('0');" onclick="returnback()" id="returnback">归还</a>
+<a class="l-return-btn" href="javascript:;" onclick="takeFinish()" id="takeAll" style="display: none">领取完成</a>
+
+<div id="printConfirm" style="display: none;">
+	<div class="layer jia_type_layer" style="border: 3px solid whitesmoke;">
+		<div class="layer-title">
+			<div></div>
+			<h3>打印是否成功？</h3>
+			<div></div>
+		</div>
+		<div class="jia_tip_btn">
+			<a href="javascript:;" onclick="noConfirm()" id="noConfirm">否</a> 
+			<a href="javascript:;" onclick="yesConfirm()" id="yesConfirm">是</a>
+		</div>
+	</div>
+</div>
+
+<script th:inline="javascript">
+
+	var layer;
+	var returnInfo = new Map();
+	var printComm = [[${printComm}]]; // 打印机串口
+	var recCom = [[${recovery}]]; // 归还口扫描仪串口
+	
+	//一般直接写在一个js文件中
+	layui.use([ 'layer' ], function() {
+		layer = layui.layer;
+	});
+	
+	$(function(){
+	    $(".l-close").click(function() {
+	        $(".layer").hide();
+	        $(".l-cover").hide();
+	        webSocket.unsubscribe();
+	    });
+	    
+	    //订阅后台归还扫描结果
+	    webSocket = stompClient.subscribe('/modbus/' + $("#mainCabinetId").val() + '/status', function(response){
+            var msg = JSON.parse(response.body);
+            if (msg.msgType=='RETURN_BACK_INFO') {
+				// 归还失败提示信息
+            	layer.msg(msg.msgContent, {time:9000});
+    		}else if(msg.msgType=='PRINTED_CODE_INFO') {
+    			console.log('Recev ic_str : ' + msg.msgContent);
+                $("#barcode").val(msg.msgContent);
+    		}else if(msg.msgType == 'DOOROPENED'){
+    			setTimeout(function(){
+        			$("#returnback").hide();
+					$("#takeAll").show();
+				},2000);
+                setTimeout(function(){
+                	takeFinish();
+                }, 30 * 1000);
+    		} else if (msg.msgType == 'PRINT_SUCC' || msg.msgType == 'PRINT_FAIL') { // 打印成功或失败
+				$("#printConfirm").show();
+    		}  else if (msg.msgType == 'PRINT_NO_PAPER') { //打印机缺纸
+				layer.msg(msg.msgContent);
+    		} else if (msg.msgType == 'DOOR_ERR') {
+            	$("#takeAll").css('background', '#3476ee');
+            	$("#takeAll").css('pointer-events', 'auto');
+            	layer.msg(msg.msgContent, {time:9000});
+    		} else if (msg.msgType == 'DOORCLOSED') {
+    			closeSuccess();
+    		} else if (msg.msgType == 'TEXT'){
+                layer.msg(msg.msgContent, {time:3000});
+            }
+        });
+	});
+	
+	/**
+	 * @description 减少数量
+	 * @param 控制区域
+	 */
+	function sub(code, name) {
+		var areaVal = parseInt($("#" + code).val());
+		if (areaVal > 0) {
+			$("#" + code).val(areaVal - 1);
+			$("#backNum").val(parseInt($("#backNum").val()) + 1);
+			
+			var tempNum = $("#" + code).val();
+			if(tempNum < 1){
+				returnInfo.delete(code);
+			}else{
+				returnInfo.set(code, tempNum +','+ name);
+			}
+		} else {
+			layer.msg('[' + name + '数量]' + '已达下限');
+		}
+	}
+
+	/**
+	 * @description 添加数量
+	 * @param 控制区域
+	 */
+	function add(code, name) {
+		var backVal = parseInt($("#backNum").val());
+		if (backVal > 0) {
+			$("#" + code).val(parseInt($("#" + code).val()) + 1);
+			$("#backNum").val(backVal - 1);
+			
+			var tempNum = $("#" + code).val();
+			if(tempNum > 0){
+				returnInfo.set(code, tempNum +','+ name);
+			}
+		} else {
+			layer.msg('[' + name + '数量]' + '已达上限');
+		}
+	}
+	
+	/**
+	 * @description 添加全部
+	 * @param 控制区域
+	 */
+	function addAll(code, name) {
+		var backVal = parseInt($("#backNum").val());
+		if (backVal > 0) {
+			$("#" + code).val(parseInt($("#" + code).val()) + backVal);
+			$("#backNum").val(0);
+			
+			var tempNum = $("#" + code).val();
+			if(tempNum > 0){
+				returnInfo.set(code, tempNum +','+ name);
+			}
+		} else {
+			layer.msg('[' + name + '数量]' + '已达上限');
+		}
+	}
+	
+	/**
+	 * @description 归还操作
+	 */
+	function returnback() {
+		var backWay = $("#backWay").val();
+		var backNum = $("#backNum").val();
+		if(backNum > 0){
+			layer.msg('还剩 ['+ backNum +'个] 没有归还');
+			return;
+		}
+		
+		var typeCount = returnInfo.size;
+		if(backWay == "M"){
+			if(typeCount > 1){
+				layer.msg('批量归还类型超过上限（最多1种）！');
+				return;
+			}
+		}else if(typeCount > 2){
+			layer.msg('归还类型超过上限（最多2种）！');
+			return;
+		}
+		
+		var barcode = "";
+		var matInfoId = $("#matInfoId").val();
+		var matBillId = $("#matBillId").val();
+		var packNum = parseInt($("#packNum").html());
+		var dataInfo = mapToJson(returnInfo);
+		if(backWay == "S"){
+			var isGetNewOne = $("#isGetNewOne").is(":checked") ? "1" : "0";
+		}else{
+			var isGetNewOne = "0";
+		}
+		var url = "/cabinet/returnBack";
+		if(printComm == ""){
+			barcode = $("#barcode").val();
+			if(barcode ==  null || barcode == "" || typeof(barcode) == undefined){
+				layer.msg("请扫描条形码");
+				$("#returnback").css('pointer-events','auto');
+				$("#returnback").css('background', '#3476ee');
+				$("#closeReturnBack").show();
+				return;
+			} else {
+				url = "/cabinet/returnbackBybarcode";
+			}
+		}
+		
+		if(isGetNewOne == "1"){
+			//超过30s，退出按钮亮起
+			setTimeout(function(){
+ 				$(".exit-btn").css("z-index", 1000);
+			},30 * 1000);
+		}
+		
+		$.ajax({
+			type : "post",
+			url : url,
+			data : {
+				"matInfoId" : matInfoId, // 物料Id
+				"matBillId" : matBillId, // 借出物料流水Ids
+				"returnInfo" : dataInfo, // 归还信息
+				"isGetNewOne" : isGetNewOne, // 是否是以旧换新
+				"backWay" : backWay, // 归还方式
+				"backNum" : packNum, // 归还数量
+				"barcode" : barcode, // 绑定条形码
+                "realLife":$("#realLife").val(), // 制造产量
+                "serialNum":$("#serialNum").val() // 产品流水号
+			},
+			dataType : "json",
+			success : function(data) {
+				if(printComm == ""){
+					layer.msg(data.message);
+					if(data.code == 200){
+						$("#returnback").css('pointer-events','none');
+						$("#returnback").css('background', '#bfbfbf');
+						if(backWay == "S"){
+							$("#" + matBillId).remove(); 
+						}
+						if(isGetNewOne == 1){
+							$("#closeReturnBack").hide();
+						}else{
+							$(".layer").hide();
+						    $(".l-cover").hide();
+						}
+					}else{
+						$("#barcode").val("");
+						$("#returnback").css('pointer-events','auto');
+						$("#returnback").css('background', '#3476ee');
+						$("#closeReturnBack").show();
+					}
+				}else{
+					if(data.code == 200){
+						$("#returnback").css('pointer-events','none');
+						$("#returnback").css('background', '#bfbfbf');
+						$("#isGetNewOne").val(isGetNewOne);
+						$("#matBillId").val(matBillId);
+						$("#qrCached").val(data.message);
+					}else{
+						layer.msg(data.message);
+					}
+				}
+			}
+		});
+	}
+	
+	function yesConfirm(){
+		$("#yesConfirm").css('pointer-events', 'none');
+		$("#yesConfirm").css('background', '#bfbfbf');
+		var backWay = $("#backWay").val();
+		var qrCached = $("#qrCached").val();
+		var matInfoId = $("#matInfoId").val();
+		var matBillId = $("#matBillId").val();
+		var isGetNewOne = $("#isGetNewOne").is(":checked") ? "1" : "0";
+		$.ajax({
+			type : "post",
+			url : "/cabinet/printConfirm",
+			data : {
+				"matInfoId" : matInfoId,
+				"matBillId" : matBillId,
+				"qrCached" : qrCached,
+				"isGetNewOne" : isGetNewOne
+			},
+			dataType : "json",
+			success : function(data) {
+				layer.msg(data.message);
+				if(backWay == 'S'){// 非批量归还移除DIV
+	            	$("#" + matBillId).remove();
+            	}else{// 批量归还修改页面数量
+            		var waitBackNum = parseInt($("#waitBackNum_"+ matInfoId).html());
+            		var packNum = parseInt($("#packNum").html());
+    				$("#waitBackNum_"+ matInfoId).html(waitBackNum - packNum);
+    				if((waitBackNum - packNum) == 0){
+    					$("#" + matInfoId).remove();
+    				}
+            	}
+				if(isGetNewOne == 1){
+					$("#closeReturnBack").hide();
+					$("#printConfirm").hide();
+				}else{
+					$(".layer").hide();
+				    $(".l-cover").hide();
+				}
+			}
+		});
+	}
+	
+	function noConfirm(){
+		webSocket.unsubscribe();
+		$("#printConfirm").hide();
+		$(".layer").hide();
+	    $(".l-cover").hide();
+	    plcOp('RESTART_PRINTER');
+	}
+	
+	// 领取完成
+	function takeFinish() {
+		$("#takeAll").css('background', '#bfbfbf');
+		$("#takeAll").css('pointer-events', 'none');
+		batchDoorOp(false);
+	}
+	
+	// 门关闭成功
+	function closeSuccess() {
+		logout();
+	}
+
+	/**
+	 * @description pi操作
+	 * @param opFlag  开关门操作标识 true 开门 false 关门
+	 */
+	function batchDoorOp(opFlag) {
+		$.ajax({
+			url : '/cabinet/batchDoorOp',
+			type : 'post',
+			data: {
+				"opFlag":opFlag
+			},
+			dataType : "json",
+			async : false,
+			success : function(result) {
+				layer.msg(result.message);
+			},
+			error : function(err) {
+				layer.msg(err);
+			}
+		});
+	}
+	
+	/**
+	 * @description Map转Json
+	 */
+	function mapToJson(strMap){
+	    let obj= Object.create(null);
+	    for (let[k,v] of strMap) {
+	      obj[k] = v;
+	    }
+	    return JSON.stringify(obj);
+	}
+</script>
+</html>

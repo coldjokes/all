@@ -1,0 +1,9 @@
+<thead th:fragment="common_thead">
+	<tr>
+		<th th:each="column:${columns}" th:data-field="${column.field != 'id' ? column.field : ''}"
+			data-id-field="id" data-click-to-select="true" data-align="center"
+			data-valign="middle" th:data-visible="${column.isVisible}"
+			th:attr="data-radio=${column.field == 'radio'},data-checkbox=${column.field == 'checkbox'}"
+			th:text="${column.field == 'id' ? 'id' : column.title}"></th>
+	</tr>
+</thead>

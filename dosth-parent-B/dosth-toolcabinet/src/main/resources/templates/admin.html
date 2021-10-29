@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div id="cabinetList" class="jia_cab_btn" th:style="'display:' + @{(${cabinetTreeList.size() > 1} ? 'inline-block' : 'none')} + ';padding-top: 1vw; text-align: left;'">
+		<a th:each="cabinet : ${cabinetTreeList}"
+			th:id="${cabinet.cabinetId}" href="javascript:void('0');"
+			style="margin-right: 2vw"
+			th:onclick="'adminToCabinet(\''+${cabinet.cabinetId}+'\',\''+${cabinet.cabinetType}+'\')'"
+			th:text="${cabinet.cabinetName}">柜子名称</a>
+	</div>
+	<div id="adminDiv"></div>
+<script th:inline="javascript">
+	var timeOutEvent = 0;
+	var faceBind = [[${faceBind}]];
+	var mainCabinetId =$("#mainCabinetId").val();
+	var showErr = true; // 显示错误提示,开门不提示,其他均提示
+
+	var layer;
+	//一般直接写在一个js文件中
+	layui.use([ 'layer' ], function() {
+		layer = layui.layer;
+	});
+	
+	//是否有人脸识别功能
+	$(function(){
+		 //订阅后台消息
+	    webSocket = stompClient.subscribe('/modbus/' + mainCabinetId + '/status', function(response) {
+            var msg = JSON.parse(response.body);
+            if (msg.msgType == 'TEXT' || msg.msgType == 'SUB_UNRECEIVED' || msg.msgType == 'DOOROPENED' || msg.msgType == 'DOORCLOSED') {
+            	layer.msg(msg.msgContent);
+            }
+            if (msg.msgType == 'DOOR_ERR' || msg.msgType == 'WARN_TIP') {
+            	layer.msg(msg.msgContent, {time:2000});
+    		} 
+            if ((msg.msgType == 'ERR_TIP' && showErr) || msg.msgType == 'TIME_OUT') {
+    			layer.msg(msg.msgContent, {time:9000});
+    		}
+        });
+	});
+	
+	$(function() {
+		$("#cabinetList a").each(function() {
+			console.log($(this).attr("id"));
+			if ($(this).attr("id") == mainCabinetId) {
+				$(this).click();
+			}
+		});
+	});
+
+	/**
+	 * @description 测试操作
+	 * @param testWork 测试工作
+	 */
+	function testOp(testWork) {
+		if ('PRINT' == testWork) {//打印机
+			$.ajax({
+				url : '/cabinet/testOp/' + testWork,
+				type : 'post',//提交方式
+				dataType : "json",
+				success : function(result) {
+					layer.msg(result.message);
+				},
+				error : function(err) {//后台处理数据失败后的回调函数
+					layer.msg(err);
+				}
+			});
+		} else if ('FACE' == testWork) {//人脸识别
+			$.ajax({
+				url : '/faceBind',
+				type : 'post',//提交方式
+				dataType : "html",
+				success : function(result) {
+					$("#opener").css("width", "80vw");
+					$("#opener").html(result);
+					$("#opener").show();
+					$(".l-cover").show();
+				},
+				error : function(err) {//后台处理数据失败后的回调函数
+					layer.msg(err);
+				}
+			});
+		} else if ('IC' == testWork) {//读卡器
+			$.ajax({
+				url : '/icBind',
+				type : 'post',//提交方式
+				dataType : "html",
+				success : function(result) {
+					$("#opener").css("width", "60vw");
+					$("#opener").html(result);
+					$("#opener").show();
+					$(".l-cover").show();
+				},
+				error : function(err) {//后台处理数据失败后的回调函数
+					layer.msg(err);
+				}
+			});
+		} else if ('AffirmFeeding' == testWork) { // 补料清单确认
+			$.ajax({
+				url : '/supplymat',
+				type : 'post',//提交方式
+				dataType : "html",
+				success : function(result) {
+					$("#opener").css("width", "60vw");
+					$("#opener").html(result);
+					$("#opener").show();
+					$(".l-cover").show();
+				},
+				error : function(err) {//后台处理回调函数
+					layer.msg("没有可操作的补料清单！");
+				}
+			});
+		} else if ('FEEDING' == testWork) { // 我要补料
+			$.ajax({
+				url : '/initFeed',
+				type : 'post',//提交方式
+				dataType : "html",
+				success : function(result) {
+					$("#opener").css("width", "90vw");
+					$("#opener").html(result);
+					$("#opener").show();
+					$(".l-cover").show();
+				},
+				error : function(err) {//后台处理数据失败后的回调函数
+					layer.msg(err);
+				}
+			});
+		} else if ('RESTART_COMPUTER' == testWork) {
+			$.ajax({
+				url : '/resetSystem',
+				type : 'post',//提交方式
+				dataType : "json",
+				success : function(result) {
+					layer.msg(result);
+				},
+				error : function(err) {//后台处理数据失败后的回调函数
+					layer.msg(err);
+				}
+			});
+		} else if ('RESETPRINT' == testWork) { // 重置打印机
+			$.ajax({
+				url : '/getNoticeMgr',
+				type : 'post',
+				dataType : 'html',
+				data: {
+					"noticeType" : "PRINT"
+				},
+				success : function(result) {
+					$("#opener").css("width", "60vw");
+					$("#opener").html(result);
+					$("#opener").show();
+					$(".l-cover").show();
+				},
+				error : function(err) {
+					layer.msg(err);
+				}
+			});
+		} else if ('RESETRECOVERY' == testWork) { // 重置回收柜
+			$.ajax({
+				url : '/getNoticeMgr',
+				type : 'post',
+				dataType : 'html',
+				data: {
+					"noticeType" : "RECOVERY"
+				},
+				success : function(result) {
+					$("#opener").css("width", "60vw");
+					$("#opener").html(result);
+					$("#opener").show();
+					$(".l-cover").show();
+				},
+				error : function(err) {
+					layer.msg(err);
+				}
+			});
+		}
+		/* 
+		else if ('RESTART_SERVICE' == testWork) {
+			layer.msg("服务将在1分钟内重启");
+			$.ajax({
+				url : '/resetService',
+				type : 'post',//提交方式
+				dataType : "json",
+				success : function(result) {
+					console.log(result);
+					layer.msg(result);
+				},
+				error : function(err) {//后台处理数据失败后的回调函数
+					layer.msg(err);
+				}
+			});
+		} 
+		 */
+	}
+	
+	/**
+	 * @description 管理员跳转页面
+	 * @param cabinetId 柜体Id
+	 * @param cabinetType 柜体类型
+	 */
+	function adminToCabinet(cabinetId, cabinetType) {
+		$("#cabinetList a").removeClass("jia_can_btn_on");
+		$("#cabinetList").find("a[id='"+cabinetId+"']").addClass("jia_can_btn_on");
+		$.ajax({
+			url : '/adminTo',
+			type : 'post',//提交方式
+			data: {"cabinetId": cabinetId},
+			dataType : "html",
+			success : function(result) {
+				$("#adminDiv").html(result);
+			},
+			error : function(err) {//后台处理数据失败后的回调函数
+				layer.msg(err);
+			}
+		});
+	}
+	
+	/**
+	 * @description 硬件测试
+	 * @param cabinetId 柜子Id
+	 * @param opType 操作类型
+	 */
+	function hardTest(cabinetId, opType) {
+		showErr = true;
+		if (opType == 'ON_OPEN_DOOR_COIL' || opType == 'ON_CLOSE_DOOR_COIL') { // 开关门不提醒警报
+			showErr = false;
+		}
+		$.ajax({
+			url : '/cabinet/plcop',
+			type : 'post',
+			data: {
+				"cabinetId":cabinetId,
+				"opType":opType
+			},
+			dataType : "json",
+			success : function(result) {
+				if (result.message) {
+					layer.msg(result.message);
+				}
+			},
+			error : function(err) {
+				console.log(err);
+			}
+		});
+	}
+	
+	/**
+	 * @description 打开暂存柜
+	 * @param cabinetId 暂存柜Id
+	 * @param boxIndex 盒子索引位
+	 * @param boardNo 栈号
+	 * @param lockIndex 锁针脚
+	 */
+	function openSubBox(cabinetId, boxIndex, boardNo, lockIndex) {
+		var url = "/cabinet/openBox";
+		$.ajax({
+			type : "post",
+			url : url,
+			data : {
+				"cabinetId": cabinetId,
+				"boxIndex":boxIndex,
+				"boardNo":boardNo,
+				"lockIndex":lockIndex
+			},
+			dataType : "json",
+			success : function(data) {
+		//		layer.msg(data.message);
+			}
+		});
+	}
+	
+	/**
+	 * @description 打开可控柜
+	 * @param cabientId 柜体Id
+	 * @param boxIndex 格子索引位
+	 * @param boardNo 栈号
+	 * @param lockIndex 货道索引号
+	 * @param maxReserver 最大库存
+	 * @param interval 间隔
+	 */
+	function openTrol(cabinetId, boxIndex, boardNo, lockIndex, maxReserve, interval) {
+		var url = "/cabinet/openTrol";
+		$.ajax({
+			type : "post",
+			url : url,
+			data : {
+				"cabinetId": cabinetId,
+				"boxIndex":boxIndex,
+				"boardNo":boardNo,
+				"lockIndex":lockIndex,
+				"maxReserve":maxReserve,
+				"interval":interval
+			},
+			dataType : "json",
+			success : function(data) {
+		//		layer.msg(data.message);
+			}
+		});
+	}
+	
+	/**
+	 * @description 故障恢复
+	 * @param cabinetId 柜体Id
+	 */
+	function resetProblem(cabinetId) {
+		$.ajax({
+			url : '/cabinet/resetProblem',
+			data: {"cabinetId":cabinetId},
+			type : 'post',//提交方式
+			dataType : "TEXT",
+			success : function(result) {
+				layer.msg(result);
+			},
+			error : function(err) {//后台处理数据失败后的回调函数
+				layer.msg(err);
+			}
+		});
+	}
+	
+	/**
+	 * @description 恢复门故障
+	 * @param cabinetId 柜子Id
+	 */
+	function resetDoorErr(cabinetId) {
+		$.ajax({
+			url : '/cabinet/resetDoorErr',
+			data:{"cabinetId":cabinetId},
+			type : 'post',//提交方式
+			dataType : "TEXT",
+			success : function(result) {
+				layer.msg(result);
+			},
+			error : function(err) {//后台处理数据失败后的回调函数
+				layer.msg(err);
+			}
+		});
+	}
+</script>
+</html>

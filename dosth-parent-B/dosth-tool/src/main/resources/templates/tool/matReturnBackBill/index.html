@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>归还审核</title>
+</head>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-lg-3 col-sm-3">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">开始日期
+												</button>
+											</div>
+											<input type="text" class="form-control layer-date"
+												id="beginTime" placeholder="开始日期" />
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-3">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">结束日期
+												</button>
+											</div>
+											<input type="text" class="form-control layer-date"
+												id="endTime" placeholder="结束日期" />
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-3">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">归还人员
+												</button>
+											</div>
+											<input class="form-control" id="userName" name="userName"
+												type="text" placeholder="请选择归还人员" readonly="readonly"
+												onclick="MatReturnBackBill.showUserSelectTree(); return false;"
+												style="background-color: #ffffff !important;"> <input
+												class="form-control" type="hidden" id="accountId" />
+											<div id="userContent" class="menuContent"
+												style="width: 78%; display: none; position: absolute; z-index: 200; border:1px solid whitesmoke; background-color: white; top: 35px;">
+												<ul id="userTree" class="ztree tree-box"
+													style="max-height: 300px; overflow-y: auto"></ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-3">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">审核状态
+												</button>
+											</div>
+											<select class="form-control" id="status" name="status">
+												<option value="-1">全部</option>
+												<option
+													th:each="auditStatus : ${T(com.dosth.tool.common.state.AuditStatus).values()}"
+													th:value="${auditStatus}" th:text="${auditStatus.message}">
+												</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-3" style="padding-top: 10px">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">归还种别
+												</button>
+											</div>
+											<select class="form-control" id="backType" name="backType">
+												<option value="-1">全部</option>
+												<option th:each="backType : ${returnTypeList}"
+													th:value="${backType.id}" th:text="${backType.restName}">
+												</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-3" style="padding-top: 10px">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">刀具柜
+												</button>
+											</div>
+											<select class="form-control" id="equSettingName" name="equSettingName">
+												<option value="-1">全部</option>
+												<option th:each="equSetting : ${equSettingList}"
+													th:value="${equSetting.equSettingName}"
+													th:text="${equSetting.equSettingName}"></option>
+											</select>
+										</div>
+									</div>
+									<!-- <button type="button" class="btn btn-primary"
+											onclick="MatReturnBackBill.scanConfirm()" id="scanConfirm">
+											<i class="fa fa-plus"></i>扫描确认
+										</button> -->
+									<div class="col-lg-3 col-sm-3" style="padding-top: 10px">
+										<div class="row">
+											<div class="col-lg-12 col-sm-12">
+												<button type="button" class="btn btn-primary"
+													onclick="MatReturnBackBill.search()" id="search">
+													<i class="fa fa-search"></i>搜索
+												</button>
+												&nbsp;&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary"
+													onclick="MatReturnBackBill.resetSearch()" id="trash">
+													<i class="fa fa-refresh"></i>&nbsp;重置
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<hr />
+								<div id="button">
+									<button type="button" class="btn btn-primary"
+										onclick="MatReturnBackBill.normalConfirm()" id="normalConfirm">
+										<i class="fa fa-check"></i>正常确认
+									</button>
+									&nbsp;&nbsp;&nbsp;
+									<button type="button" class="btn btn-primary btn-outline"
+										onclick="MatReturnBackBill.abnormalConfirm()"
+										id="abnormalConfirm">
+										<i class="fa fa-eraser"></i>异常确认
+									</button>
+									&nbsp;&nbsp;&nbsp;
+									<button type="button" class="btn btn-primary btn-outline"
+										onclick="MatReturnBackBill.infoExport()" id="export">
+										<i class="fa fa-download"></i>&nbsp;导出
+									</button>
+								</div>
+								<table id="MatReturnBackBillTable">
+									<thead th:include="/common/thead.html :: common_thead">
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/matReturnBackBill/index.js}"></script>
+	<script>
+		laydate.render({
+			elem : '#beginTime',
+			trigger: 'click'
+		});
+		laydate.render({
+			elem : '#endTime',
+			trigger: 'click'
+		});
+	</script>
+</body>
+
+</html>

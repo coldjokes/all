@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+<script th:src="@{/static/js/sockjs.min.js}"></script>
+<script th:src="@{/static/js/stomp.min.js}"></script>
+<link th:href="@{/static/css/reset.css}" rel="stylesheet" />
+<link th:href="@{/static/css/swiper.css}" rel="stylesheet" />
+<link th:href="@{/static/css/css.css}" rel="stylesheet" />
+<script th:src="@{/static/js/jquery.min.js}"></script>
+<script th:src="@{/static/js/swiper.js}"></script>
+<script th:src="@{/static/layui/layui.js}"></script>
+
+<title>登录</title>
+<script type="text/javascript">  
+    function doNothing(){  
+        window.event.returnValue=false;  
+        return false;  
+    }  
+</script>
+</head>
+<body oncontextmenu="doNothing()">
+	<div class="version" style="width: 230px;">
+		<p>软件版本：<span th:text="${version}">&nbsp;&nbsp;</span></p>
+		<p>更新时间：<span th:text="${projectLastUpdateTime}">&nbsp;&nbsp;</span></p>
+		<p>资产编号：<span th:text="${serialNo}">&nbsp;&nbsp;</span></p>
+	</div>
+	<div style="border: 0px solid red; font-size: 48px;color: white; margin: 0 20px;"><marquee behavior="scroll" direction="left" align="middle"> <span th:each="stockTip:${stockTipList}">&nbsp;&nbsp;<span style="color: red" th:text="${stockTip.name}"/>&nbsp;&nbsp;<span th:each="detail:${stockTip.detailList}" >&nbsp;<span th:text="${'F' + detail.rowNo + '-' + detail.colNo + '  ' + detail.curNum}"/></span></marquee></div>
+	<div class="login-wrap">
+		<div class="l-logo">
+			<img th:src="${'/static/images/'+logo+'.png'}" style="width: 400px;"/>
+		</div>
+		<div class="login-main" style="height: 60vw;">
+			<div id="tab1" name="tab" style="display: block;">
+				<img src="/static/images/card_login.png" style="width: 800px;" />
+				<form action="formSubmit()"></form>
+				<div id="accountLogin">
+					<button class="login-btn accountLoginBtn">账户密码登录</button>
+				</div>
+				<div id="faceLogin" style="display: none; margin: 3vw auto 0;">
+					<div align="left" style="float: left">
+						<button class="login-btn-button accountLoginBtn">账户密码登录</button>
+					</div>
+					<div align="right">
+						<button class="login-btn-button faceLoginBtn">人脸识别登录</button>
+					</div>
+				</div>
+			</div>
+			<div id="tab2" name="tab" style="display: none;">
+				<h3>请登录</h3>
+				<h4>Please login</h4>
+				<form id="form" action="/index" onsubmit="return checkUser();">
+					<p class="login-p1">
+						<span><img style="max-width: 50px;" src="static/images/login-icon-1.jpg" alt="账户"></span><input
+							type="text" id="username" style="width: 30vw;"/> <!--  加上autocomplete="off" 可以防止保存信息 -->
+					</p>
+					<p class="login-p2">
+						<span><img style="max-width: 50px;" src="static/images/login-icon-2.jpg" alt="密码"></span><input
+							type="password" id="password" style="width: 30vw;" />
+					</p>
+					<input class="login-btn" id="btn" type="submit" value="登录" />
+				</form>
+				<button class="login-btn returnToICCardLoginBtn">返回刷卡登录</button>
+			</div>
+			<div id="tab3" name="tab" style="display: none;">
+				<div id="regcoDiv" style="width: 410px; height: 440px;"></div>
+				<button class="login-btn returnToICCardLoginFromFaceBtn">返回刷卡登录</button>
+			</div>
+		</div>
+	</div>
+	<div class="login-bg">
+		<img src="static/images/login-bg.jpg" />
+	</div>
+	<script th:inline="javascript">
+		var layer;
+		var interval;
+		var faceLogin = [[${faceLogin}]];
+		var mediaStreamTrack1;
+		var mediaStreamTrack2;
+		
+		//一般直接写在一个js文件中
+		layui.use([ 'layer' ], function() {
+			layer = layui.layer;
+		});
+		
+		$(function(){
+			if(faceLogin){
+				$("#accountLogin").hide();
+				$("#faceLogin").show();
+			}
+		});
+				
+		var inputStr="";
+		var selectStyle = true;
+	    document.onkeydown=function(event){
+	        var e = event || window.event || arguments.callee.caller.arguments[0];
+	        if(inputStr.length > 1 && e && e.keyCode==13 && selectStyle == true) { // enter键 and 刷卡登录页面
+	           formSubmit();
+	           inputStr="";
+	        } else if(!isNaN(String.fromCharCode(e.keyCode))){// 排除空格键
+	          //累计数值
+	           inputStr=inputStr+String.fromCharCode(e.keyCode);
+	         }
+	      };
+		
+	    function formSubmit() {
+	      	//可以在这里触发接口方法，例如读取会员信息等
+	      	console.log('Recev ic_str : ' + inputStr);
+	       	$.ajax({
+	   			type : "get",
+	   			url : "/getAccountInfo/" + inputStr,
+	   			dataType : "json",
+	   			success : function(data) {
+	   				if (data) {
+	                   	$("#username").val(data.loginName);
+	                   	$("#password").val(data.password);
+	                   	$("#btn").click();
+	   				} else {
+	   					layer.msg("此卡片信息无效！");
+	   				}
+	   			},
+	   			error : function(err) {
+					layer.msg("此卡片信息无效！");
+				}
+	   		});
+	      return false;
+	    }
+	    
+	  	/**
+		 * @description 登录验证
+		 */
+		function checkUser(){
+	  		//禁用提交，防止重复提交
+			$("input[type='submit']").attr("disabled", true);
+			
+			if ($("#username").val() == '') {
+				$("input[type='submit']").attr("disabled", false);
+				layer.msg("用户名不能为空");
+				$("#username").focus();
+				return false;
+			} else if ($("#password").val() == '') {
+				$("input[type='submit']").attr("disabled", false);
+				layer.msg("密码不能为空");
+				$("#password").focus();
+				return false;
+			} else { 
+		       	$.ajax({
+		   			type : "post",
+		   			dataType : "json",
+		   			url : "/checkUser",
+		   			async:false, 
+		   			data:{
+		   				"loginName" : $("#username").val(),
+		   				"pwd" : $("#password").val()
+		   			},
+		   			success : function(data) {
+		                if (data.code == 200) {
+		                	return true;
+		                } else {
+		    				$("#errMsg").html(data.message);
+		    				return false;
+		    			}
+		   			}
+		   		});
+			}
+		}
+	  	
+		var mainCabinetId = [[${mainCabinetId}]];
+	    var stompClient = null;
+	    var socket = new SockJS('/endpointModbusStatus'); //1连接SockJS的endpoint是“endpointWisely”，与后台代码中注册的endpoint要一样。
+	    stompClient = Stomp.over(socket);//2创建STOMP协议的webSocket客户端。
+	    stompClient.connect({}, function(frame) {//3连接webSocket的服务端。
+	        console.log('IC Login 开始进行连接Connected: ' + frame);
+	        //4通过stompClient.subscribe（）订阅服务器的目标是'/user/' + userId + '/msg'接收一对一的推送消息,其中userId由服务端传递过来,用于表示唯一的用户,通过此值将消息精确推送给一个用户
+	        stompClient.subscribe('/modbus/' + mainCabinetId + '/status', function(response){
+	            var msg = JSON.parse(response.body);	            
+	            if (msg.msgType=='PRINTSCAN') {
+		            var appointment_stas = msg.msgContent.scanStart;
+		            var urlPara = "";
+		            if(appointment_stas == true)
+		            	urlPara = "Already_Appointment";
+		            else
+		            	urlPara = "NO_Appointment";
+					console.log('appointment_stas : ' + appointment_stas);
+					$.ajax({
+		           			type : "get",
+		           			url : "/cabinet/appointmentBorr/" + urlPara,
+		           			dataType : "json",
+		           			success : function(data) {
+		           			}
+		           		});
+				}
+				
+	            if (msg.msgType=='ICSWIPING') {
+	                console.log('Recev ic_str : ' + msg.msgContent);
+	               	$.ajax({
+	           			type : "get",
+	           			url : "/getAccountInfo/" + msg.msgContent,
+	           			dataType : "json",
+	           			success : function(data) {
+	           				if (data) {
+	                           	$("#username").val(data.loginName);
+	                           	$("#password").val(data.password);
+	                           	$("#btn").click();
+	           				} else {
+	           					layer.msg("此卡片信息无效！");
+	           				}
+	           			},
+	           			error : function(err) {
+	    					layer.msg("此卡片信息无效！");
+	    				}
+	           		});
+	    		}
+	            
+	            if (msg.msgType == 'ERR_TIP') {
+	    			layer.msg(msg.msgContent, {time:9000});
+	    		}
+	            if (msg.msgType == 'WARN_TIP') {
+	            	layer.msg(msg.msgContent, {time:2000});
+	            }
+	        });
+	    });
+      
+	    
+	  var divs = document.getElementsByName("tab");
+	  //账户密码登录
+      $(".accountLoginBtn").click(function(event){
+    	  inputStr="";
+          //隐藏div
+          divs[0].style.display="none";
+          //根据索引显示相应的div
+          divs[1].style.display = "block";
+          selectStyle = false; 
+      });
+      
+      //返回刷卡登录
+      $(".returnToICCardLoginBtn").click(function(event){
+    	  inputStr="";
+          //隐藏div
+          divs[1].style.display="none";
+          //根据索引显示相应的div
+          divs[0].style.display = "block";
+          selectStyle = true; 
+      });
+      
+      //人脸识别登录
+      $(".faceLoginBtn").click(function(event){
+    	  openFaceView();
+    	  inputStr="";
+          //隐藏div
+          divs[0].style.display="none";
+          //根据索引显示相应的div
+          divs[2].style.display = "block";
+          selectStyle = false; 
+      });
+
+      //返回刷卡登录
+      $(".returnToICCardLoginFromFaceBtn").click(function(event){
+    	  clearInterval(interval);
+    	  
+    	  if(typeof(mediaStreamTrack1) != 'undefined' && typeof(mediaStreamTrack2) != 'undefined'){
+    		  mediaStreamTrack1.stop();
+     		  mediaStreamTrack2.stop();
+    	  }
+    	  
+		  inputStr="";
+		  //隐藏div
+		  divs[2].style.display="none";
+		  //根据索引显示相应的div
+		  divs[0].style.display = "block";
+		  selectStyle = true; 
+	  });
+      
+      function openFaceView() {
+    	  $("#regcoDiv").empty();
+    	  let vedioComp = "<video muted='muted' id='video2' width='500px' height='500px' autoplay='autoplay' style='margin-top: 20px;'></video><canvas id='canvas2' width='500px' height='500px' style='display: none'></canvas>";
+		  $("#regcoDiv").append(vedioComp);
+		  let constraints = {
+			  video : {
+				  width : 500,
+				  height : 500
+			  },
+			  audio : true
+		  }; 
+		  let video = document.getElementById("video2");
+		  let promise = navigator.mediaDevices.getUserMedia(constraints);
+		  promise.then(function(MediaStream) {
+			  mediaStreamTrack1 = MediaStream.getTracks()[0];
+			  mediaStreamTrack2 = MediaStream.getTracks()[1];
+			  video.srcObject = MediaStream;
+			  video.play();
+		  }).catch(function(error) {
+			  layer.msg("摄像头开启失败");
+			  clearInterval(interval);
+			  location.reload(true);
+		  });
+		  interval = setInterval(chooseFileChangeComp, 2000);
+      }
+      
+      function chooseFileChangeComp() {
+    	  let regcoDivComp = $("#regcoDiv");
+    	  if(regcoDivComp.has('video').length) {
+    		  let video = document.getElementById("video2");
+              let canvas = document.getElementById("canvas2");
+              let ctx = canvas.getContext('2d');
+              ctx.drawImage(video, 0, 0, 500, 500);
+              var base64File = canvas.toDataURL();
+              var formData = new FormData();
+              formData.append("file", base64File);
+              
+              $.ajax({
+            	  type: "post",
+                  url: "/faceLogin",
+                  data: formData,
+                  contentType: false,
+                  processData: false,
+                  async: false,
+                  success: function (data) {
+                 	  if (data) {
+                 		 mediaStreamTrack1.stop();
+                		 mediaStreamTrack2.stop();
+                		 $("#username").val(data.loginName);
+                       	 $("#password").val(data.password);
+                       	 $("#btn").click();
+                 	  }
+                  },
+                  error: function (data) {
+                	  layer.msg(data);
+                  }
+              });
+    	  }
+      }
+
+      var layer;
+      //一般直接写在一个js文件中
+      layui.use([ 'layer' ], function() {
+          layer = layui.layer;
+      });
+      
+      /**
+      	* 显示库存提醒
+      	*/
+      function showStockTip() {
+    	  $.ajax({
+        	  type: "post",
+              url: "/cabinet/getStockTip",
+              async: false,
+              success: function (data) {
+             	  if (data) {
+             		 
+             	  }
+              },
+              error: function (data) {
+            	  layer.msg(data);
+              }
+          });
+      }
+  	</script>
+</body>
+</html>

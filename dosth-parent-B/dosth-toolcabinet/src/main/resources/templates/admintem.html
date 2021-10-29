@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>管理员-暂存柜</title>
+<link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+<script th:src="@{/static/layui/layui.js}"></script>
+</head>
+<body>
+<div class="layui-tab" style="margin: 0 auto;">
+	<div class="layui-tab-content" style="margin: 0; padding: 0;">
+		<div class="layui-tab-item layui-show" style="margin: 0 auto;">
+			<table class="layui-table" style="margin: 0;">
+				<tbody th:each="board:${subBoxMap}" th:id="${board.key}">
+					<tr th:each="sub,sta:${board.value}" th:id="${sub.key}">
+						<td th:each="col:${sub.value}">
+							<button class="layui-btn layui-btn-primary"
+								style="width: 100%; margin: 0 auto;" type="button"
+								th:id="'btn_'+${col.lockIndex}"
+								th:text="${col.boxIndex<10?('00'+col.boxIndex):col.boxIndex<100?('0'+col.boxIndex):col.boxIndex}"
+								th:onclick="'openSubBox(\''+${cabinetId}+'\',\''+${col.boxIndex}+'\',\''+${col.boardNo}+'\',\''+${col.lockIndex}+'\')'">
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

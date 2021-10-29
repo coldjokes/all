@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>暂存柜领用记录</title>
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-lg-3 col-sm-3">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">开始日期
+												</button>
+											</div>
+											<input type="text" class="form-control layer-date"
+												id="beginTime" placeholder="开始日期" />
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-3">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">结束日期
+												</button>
+											</div>
+											<input type="text" class="form-control layer-date"
+												id="endTime" placeholder="结束日期" />
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-3">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">物料
+												</button>
+											</div>
+											<input type="text" class="form-control layer-date" id="info"
+												placeholder="名称 / 编号 / 规格" />
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-3">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">暂存柜
+												</button>
+											</div>
+											<select class="form-control" id="subBoxName">
+												<option value="-1">全部</option>
+												<option th:each="list : ${subBoxNameList}"
+													th:value="${list.equSettingName}"
+													th:text="${list.equSettingName}"></option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-3" style="padding-top: 10px">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">暂存状态
+												</button>
+											</div>
+											<select class="form-control" id="inOrOut">
+												<option value="-1">全部</option>
+												<option value="YES">暂存</option>
+												<option value="NO">取出</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-5" style="padding-top: 10px">
+										<div class="row">
+											<div class="col-lg-12 col-sm-12">
+												<button type="button" class="btn btn-primary"
+													onclick="ViceCabinetQuery.search()" id="search">
+													<i class="fa fa-search"></i>&nbsp;搜索
+												</button>
+												&nbsp;&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary button-margin"
+													onclick="ViceCabinetQuery.resetSearch()" id="trash">
+													<i class="fa fa-refresh"></i>&nbsp;重置
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<hr />
+								<button type="button" class="btn btn-primary btn-outline"
+									onclick="ViceCabinetQuery.infoExport()" id="infoExport">
+									<i class="fa fa-download"></i>&nbsp;导出
+								</button>
+								<table id="ViceCabinetQueryTable">
+									<thead th:include="/common/thead.html :: common_thead">
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/viceCabinetQuery/index.js}"></script>
+	<script th:src="@{/static/js/content.js}"></script>
+	<script>
+		laydate.render({
+			elem : '#beginTime',
+			trigger: 'click'
+		});
+		laydate.render({
+			elem : '#endTime',
+			trigger: 'click'
+		});
+	</script>
+</body>
+</html>

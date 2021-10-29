@@ -1,0 +1,124 @@
+#####################################################
+#################  所有profile共有的配置  #################
+#####################################################
+
+###################  dosth配置  ###################
+dosth: 
+   logo: ${others.logo}                                                # logo标识 bsc 鲍斯智能 ahno 阿诺 knowwhy 诺尔为
+   appId: ${face.appId}                                               # APP ID 官网注册
+   sdkKey: ${face.sdkKey}                                             # SDK KEY 官网注册
+   sdkLibPath: ${face.sdkLibPath}                                     # dll文件路径
+   passRate: ${face.passRate}                                         # 相似度
+   dataCenterId: 444777                                                # 数据中心编号
+   kaptcha-open: false                                                 # 是否开启登录时验证码 (true/false)
+   file-tmp-path: d:/tmp                                               # 文件上传目录(不配置的话为java.io.tmpdir目录)
+   sso:
+      facePath: d:/upload/face
+   session-validation-interval: 900                                    # 多久检测一次失效的session(只在单机环境下生效) 单位：秒
+   swagger-open: true                                                  # 是否开启swagger (true/false)
+###################  项目启动端口  ###################
+server:
+   port: ${port.admin}                                           # 项目端口
+   max-http-header-size: 4048576                                       # 最大请求大小
+
+eureka: 
+   client:                                                             # 客户端进行Eureka注册的配置
+      serviceUrl:                                                     # 与Eureka注册服务中心的通信zone和url地址
+         defaultZone: http://${ip.eurekaServer}:${port.eurekaServer}/eureka/ # Eureka服务中心url
+   instance:
+      ip-address: ${ip.server}                      # 服务端IP地址
+      instance-id: ${ip.server}:${port.admin} # 注册到服务中心的唯一ID
+      prefer-ip-address: true                                          # 是否优先使用 IP 地址作为主机名的标识
+ribbon: 
+   ReadTimeout: 60000                 # ribbon读取超时时间
+   ConnectTimeout: 60000              # ribbon连接超时时间   feign:
+  client:
+    config:
+      default:
+        connectTimeout: 60000
+        readTimeout: 60000###################  spring配置  ###################
+spring:
+   cloud:
+      client:
+         ipAddress: ${ip.server}
+   application:
+      name: service-admin                                      # 名称
+   profiles:
+      active: ${datasource.type}                                           # 指定环境
+   session:
+      store-type: none                                         # 会话存储类型
+   redis:
+      host: ${ip.redis}                                # Redis服务器主机
+      port: ${port.redis}                                # 端口
+      password: ${redis.password}                        # 密码
+      database: 0                                              # 连接工厂使用的数据库索引，默认使用db0  
+      timeout: 1800000                                         # 连接超时,单位毫秒,默认30分钟
+      pool:
+         max-active: 8                                         # 池在给定时间可以分配的最大连接数，使用负值无限制
+         max-wait: -1                                          # 在池耗尽时，在抛出异常之前连接分配应阻塞的最长时间，使用负值无限期阻止
+         max-idle: 8                                           # 池中“空闲”连接的最大数量，使用负值表示无限数量的空闲连接
+         min-idle: 0                                           # 目标是池中维护的最小空闲连接数，此设置仅在其为正时才有效
+   mvc: 
+      static-path-pattern: /static/**                          # 用于静态资源的路径模式
+   thymeleaf: 
+      template-resolver-order: 2                               # 链中模板解析器的顺序
+      prefix: classpath:/templates                             # 在构建URL时添加前缀以查看名称的前缀
+      suffix:                                                  # 在构建URL时附加到视图名称的后缀
+      mode: HTML5                                              # 要应用于模板的模板模式
+      content-type: text/html                                  # Content-Type写入HTTP响应的值
+      cache: false                                             # 是否启用模板缓存
+      check-template: false                                    # 是否在呈现模板之前检查模板是否存在
+      encoding: UTF-8                                          # 模板文件编码
+   http: 
+      converters:
+        preferred-json-mapper: fastjson                          # 用于HTTP消息转换的首选JSON映射器
+      multipart:
+         enabled: true                                         # 是否启用分段上传支持
+         max-request-size: 100MB                               # 最大请求大小
+         max-file-size: 100MB                                  # 最大文件大小
+   devtools:
+      restart:
+         enabled: true                                         # 是否启用自动重启
+         additional-paths: src/main/java                       # 要监视更改的其他路径
+         exclude: static/**,WEB-INF/view/**                    # 设置classpath下 static 目录内容修改后不重启。一般设置为静态资源目录
+   aop:
+      proxy-target-class: false                                # 是否要创建基于子类的（CGLIB）代理（true），而不是基于标准Java接口的代理（false）
+
+######################### COM 串口配置(IC卡绑定用户功能)#####
+COM:
+  ICCom: COM66
+---
+
+######################################################
+###################  mySql环境配置  ######################
+######################################################
+spring:
+  profiles: mysql
+  datasource:                                               # 创建的数据库
+      url: jdbc:mysql://${datasource.url}/dosth?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull    #创建的数据库
+      username: ${datasource.username}                # 数据库用户名
+      password: ${datasource.password}                # 数据库密码
+  jpa: 
+    database-platform: ${jpa.database-platform}       # 要操作的目标数据库的名称
+    hibernate:
+      ddl-auto: ${jpa.hibernate.ddl-auto}             # 更新架构时，使用
+    show-sql: ${jpa.show-sql}                         # 是否启用SQL语句的日志记录
+    
+---
+
+    
+######################################################
+###################  sqlserver环境配置  ######################
+######################################################
+spring:
+  profiles: sqlserver
+  datasource:
+      driver-class-name: net.sourceforge.jtds.jdbc.Driver           # 创建的数据库
+      url: jdbc:jtds:sqlserver://${datasource.url}/dosth
+      username: ${datasource.username}                # 数据库用户名
+      password: ${datasource.password}                # 数据库密码
+  jpa: 
+    database-platform: ${jpa.database-platform}       # 要操作的目标数据库的名称
+    hibernate:
+      ddl-auto: ${jpa.hibernate.ddl-auto}             # 更新架构时，使用
+    show-sql: ${jpa.show-sql}                         # 是否启用SQL语句的日志记录

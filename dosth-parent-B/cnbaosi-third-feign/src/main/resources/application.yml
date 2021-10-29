@@ -1,0 +1,14 @@
+server:
+  port: ${port.thirdfeign}
+  max-http-header-size: 4048576                                       # 最大请求大小
+
+spring:  application:    name: third-feign
+
+eureka: 
+   client:                                                             # 客户端进行Eureka注册的配置
+      serviceUrl:                                                     # 与Eureka注册服务中心的通信zone和url地址
+         defaultZone: http://${ip.eurekaServer}:${port.eurekaServer}/eureka/ # Eureka服务中心url
+   instance:
+      ip-address: ${ip.server}                      # 客户端IP地址
+      instance-id: ${ip.server}:${port.thirdfeign} # 客户端注册到服务中心的唯一ID
+      prefer-ip-address: true                                          # 是否优先使用 IP 地址作为主机名的标识

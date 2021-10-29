@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+<script th:src="@{/static/js/sockjs.min.js}"></script>
+<script th:src="@{/static/js/stomp.min.js}"></script>
+<link th:href="@{/static/bootstrap-3.3.7-dist/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+<link th:href="@{/static/css/reset.css}" rel="stylesheet" />
+<link th:href="@{/static/css/jia_style.css}" rel="stylesheet" />
+<link th:href="@{/static/css/swiper.css}" rel="stylesheet" />
+<link th:href="@{/static/css/css.css}" rel="stylesheet" />
+<link th:href="@{/static/css/font-awesome-4.7.0/css/font-awesome.min.css}" rel="stylesheet" />
+<link th:href="@{/static/css/init.css}" rel="stylesheet" />
+<script th:src="@{/static/js/jquery.js}"></script>
+<script th:src="@{/static/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/static/bootstrap-3.3.7-dist/js/bootstrap-paginator.js}"></script>
+<script th:src="@{/static/js/swiper.js}"></script>
+<script th:src="@{/static/layui/layui.js}"></script>
+<title>机柜首页</title>
+<style type="text/css">
+    .warnVal {
+        color: red;
+    }
+    .normalStyle {
+        background: #0050e5;
+    }
+    .knowwhyStyle {
+        background: #EB6000;
+    }
+</style>
+<script type="text/javascript">  
+    function doNothing(){  
+        window.event.returnValue=false;  
+        return false;  
+    }  
+</script>
+<script type="text/javascript"> 
+    function imgerrorfun(){ 
+        var img=event.srcElement; 
+        img.src="static/img/noimg.jpg"; 
+        img.onerror=null; 
+    } 
+</script>   
+</head>
+<body oncontextmenu="doNothing()">
+    <div style="position: fixed;">
+        <div class="header" style="position: fixed; left: 0; top: 0; width: 100%;">
+            <div class="h-logo" style="width: 140px; height: 60px;">
+                <img th:src="${'static/images/'+logo+'-title.png'}" th:alt="${agenMap.get(logo).name}">
+            </div>
+            <div class="h-intro" style="width: 38vw;">
+                <h3 th:if="${agenMap.get(logo).title} !=null" th:text="${agenMap.get(logo).title}"></h3>
+                <p th:if="${agenMap.get(logo).content} !=null" th:text="${agenMap.get(logo).content}"></p>
+            </div>
+            <div class="h-contact">
+            <div class="h-stock" th:if="${!#strings.isEmpty(agenMap.get(logo).stock)}">
+                    股票代码：<span th:text="${agenMap.get(logo).stock}"></span>
+            </div>
+                <div class="h-c-info">
+                    <div class="h-c-icon">
+                        <img src="static/images/tel-icon.jpg" alt="电话">
+                    </div>
+                    <div class="h-c-txt">
+                        <div class="h-c-txt-top">
+                            <span>服务热线：</span> 
+                            <a href=""><img src="static/images/h-qq.jpg" alt="QQ"></a> 
+                            <a href=""><img src="static/images/h-weibo.jpg" alt="微博"></a>
+                        </div>
+                        <p th:text="${agenMap.get(logo).phone1}"></p>
+                        <p th:text="${agenMap.get(logo).phone2}"></p>
+                    </div>
+                </div>
+            </div>    
+        </div>
+        <div class="nav-wrap fixednav" style="top: 105px; left: 0;">
+            <input type="hidden" id="mainCabinetId" th:value="${mainCabinetId}"/>
+            <div class="nav-left" th:classappend="${logo == 'knowwhy'?'knowwhyStyle':'normalStyle'}">
+                <a th:each="borrowType,sta : ${borrowTypeList}" href="javascript:void('0');" th:alt="${borrowType.name}"
+                    th:onclick="'selectType(\''+${borrowType.code}+'\')'" th:id="${borrowType.code}" th:classappend="${logo == 'knowwhy'?'knowwhyStyle':''}"> 
+                    <img th:src="'static/images/'+${borrowType.code}+'.png'" alt="类型">
+                    <p th:text="${borrowType.name}"></p>
+                </a>
+            </div>
+            <div class="nav-right" th:classappend="${logo == 'knowwhy'?'knowwhyStyle':'normalStyle'}">
+                <div class="h-search">
+                    <a href="javascript:void('0')"><img src="static/images/search-icon.jpg" alt="搜索关键字"></a>
+                    <input type="text" placeholder="搜索关键字" id="onKeyDown">
+                    <span style="font-size: 10px; display: none; position: absolute; margin-left: 60px;" id="emptyInput">
+                        <i class="fa fa-times fa-2x" onclick="emptyInput()"></i>
+                    </span>
+                </div>
+                <div class="h-carts" onclick="openBatch()">
+                    <div><img src="static/images/shop-carts.jpg" alt="购物车"></div>
+                    <a href="javascript:void('0');">购物车<span id="cartNum" th:text="${nums}">0</span></a>
+                </div>
+                <div>
+                </div>
+                <div class="exit-btn" onclick="logout()">
+                <span id="userName"></span><br/>
+                退&nbsp;&nbsp;出
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="l-cover" style="display: none;"></div>
+    <div id="content" style="top: 180px; width: 100%; position: fixed;"></div>
+    <div class="layer carts-layer" id="cart" style="display: none;"></div>
+	<div class="layer" id="opener" style="display: none; width: 60vw;"></div>
+    <input type="hidden" id="borrowTypeCode">
+    <input type="hidden" id="returnBackType">
+</body>
+<script th:inline="javascript">
+ 
+    // 柜子关联的门
+    var curDoor;
+    
+    //获取用户信息
+    var accountInfo  = [[${accountInfo}]];
+    
+    //websocket服务器
+    var stompClient = null;
+    
+    var layer;
+    //一般直接写在一个js文件中
+    layui.use([ 'layer' ], function() {
+        layer = layui.layer;
+    });
+ 
+    var oldSearchValue;
+    
+    var webSocket = null;
+    
+    var logoutFlag = false;
+ 
+    //建立websocket连接
+    var socket = new SockJS('/endpointModbusStatus'); //1连接SockJS的endpoint是“endpointWisely”，与后台代码中注册的endpoint要一样。
+    stompClient = Stomp.over(socket);//2创建STOMP协议的webSocket客户端。
+    stompClient.connect({}, ////3连接webSocket的服务端。
+           function connectCallback(frame) {
+            console.log('websocket connected result: ' + frame); 
+            console.log("连接成功..."); 
+            },
+            function errorCallBack(error) {
+                // 连接失败时（服务器响应 ERROR 帧）的回调方法
+                console.log(error);
+                console.log("连接失败..."); 
+            }
+    ); 
+    
+    $(function() {
+        
+        //增加用户名
+        $("#userName").html(accountInfo.userName);
+        
+        $(".nav-left a").click(function() {
+            $(this).addClass("nav-on").siblings().removeClass("nav-on");
+        });
+        $(".nav-left a").eq(0).click();
+        
+        //搜索关键字
+        setInterval(function(){
+            //搜索框是空并且原来的有值||搜索框不为空并且与原来的值不一样
+            if((!$("#onKeyDown").val() && oldSearchValue) || ($("#onKeyDown").val() && $("#onKeyDown").val() != oldSearchValue)){
+                oldSearchValue = $("#onKeyDown").val();
+                onSearch();
+            }
+        }, 500);
+        
+        setInterval(checkSession, 2000);
+ 
+        // 登陆之后验证门状态
+        $.ajax({
+               type : "post",
+               url : "/checkDoorStatus",
+               dataType : "text",
+               success : function(data) {
+                   console.log(data);
+               }                           
+           });
+    });
+ 
+    function emptyInput() {
+        $("#onKeyDown").val("");
+    }
+    
+    function onSearch() {
+        var val = $("#onKeyDown").val().toLowerCase();
+        var selectPart = $("div[class='jia_cab_btn']").find("a[class='jia_can_btn_on']")[0];
+        var partCode = $(selectPart).attr("id");
+        var typrCode = $(borrowTypeCode).val();
+        var backType = $("#backType").val();
+        
+        if (val != "" && val != null) {
+            $("#emptyInput").show();
+            if (typrCode == 'GRID') {
+                $("#content .l-floor-title").hide();
+                $("#content .l-pro-item").hide();
+                $("#content .l-pro-item").each(function() {
+                    var name = $(this).attr("name").toLowerCase();
+                    if(name.indexOf(val) != -1){
+                        $(this).parent().prev().show();
+                        $(this).show();
+                    }
+                });
+            } else if(typrCode == 'RETURN'){
+                if(partCode == 'history'){
+                	if(backType == 'backNormal'){  // 常规归还
+                		$("#borrandstor .l-return-item").hide();
+                        $("#borrandstor .l-return-head").hide();
+                        $("#borrandstor .l-return-item").each(function() {
+                            var name = $(this).attr("name").toLowerCase();
+                            if(name.indexOf(val) != -1){
+                                $(this).parent().prev().show();
+                                $(this).show();
+                            }
+                        });
+                	} else if (backType == 'backSort'){    // 分类归还
+                		$("#typeBackList .j_table-tr2").hide();
+                        $("#typeBackList .j_table-tr2").each(function() {
+                            var name = $(this).attr("name").toLowerCase();
+                            if(name.indexOf(val) != -1){
+                                $(this).parent().prev().show();
+                                $(this).show();
+                            }
+                        });
+                	} else if (backType == 'backBatch'){   // 批量归还
+                		$("#backKind .l-sub-item").hide();
+                        $("#backKind .l-sub-item").each(function() {
+                            var name = $(this).attr("name").toLowerCase();
+                            if(name.indexOf(val) != -1){
+                                $(this).parent().prev().show();
+                                $(this).show();
+                            }
+                        });
+                	}
+                }else{
+                    $("#borrandstor .l-sub-item").hide();
+                    $("#borrandstor .l-sub-item").each(function() {
+                        var name = $(this).attr("name").toLowerCase();
+                        if(name.indexOf(val) != -1){
+                            $(this).parent().prev().show();
+                            $(this).show();
+                        }
+                    });
+                }
+            }else {
+                //物料列表
+                $("#matlist .j_table-tr2").hide();
+                $("#matlist .j_table-tr2").each(function() {
+                    var name = $(this).attr("name").toLowerCase();
+                    if(name.indexOf(val) != -1){
+                        $(this).show();
+                    }
+                });
+            }
+        } else {
+            $("#emptyInput").hide();
+            selectType(typrCode);
+        }
+    }
+ 
+    //    打开购物车
+    function openBatch() {
+        var borrowTypeCode = $("#borrowTypeCode").val();
+        var num = $("#cartNum").html();
+        if (num == 0) {
+            layer.msg("购物车为空！");
+            return;
+        }
+        $.ajax({
+            url : '/cart/initCart',
+            type : 'post',//提交方式
+            dataType : "html",
+            success : function(result) {
+                $("#cart").html(result);
+                $("#borrowTypeCodeName").val(borrowTypeCode);
+                $("#cart").show();
+                $(".l-cover").show();
+                $("#takeFinish").css('pointer-events', 'none');
+                $("#takeFinish").css('background', '#bfbfbf');
+            },
+            error : function(err) {//后台处理数据失败后的回调函数
+                layer.msg(err);
+            }
+        });
+        document.body.style.overflow="hidden";
+        $("body").css('height','100vh');
+        $("html").css('height','100vh');
+        $("html").css('overflow','hidden');
+    }
+ 
+    /**
+     * @description 切换领取类型
+     * @param borrowTypeCode 借出类型编码
+     */
+    function selectType(borrowTypeCode) {
+        $("#onKeyDown").val("");
+        $("#borrowTypeCode").val(borrowTypeCode);
+        $(this).addClass("nav-on").siblings().removeClass("nav-on");
+        var url;
+        if(webSocket){
+            webSocket.unsubscribe();
+        }
+        if (borrowTypeCode == 'GRID') {// 全部
+            url = '/initGrid';
+        } else if (borrowTypeCode == 'RETURN') { // 归还
+            url = "/borrandstor";
+        } else if (borrowTypeCode == 'ADMIN') { // 管理员
+            url = '/admin';
+        } else if (borrowTypeCode == 'APPLYVOUCHER') { // 申请单
+        	url = "/initApplyVoucher";
+        } else { // 其他类型
+            url = '/otherborrow/' + borrowTypeCode;
+        }
+        $.ajax({
+            url : url,
+            type : 'post',//提交方式
+            dataType : "html",
+            success : function(result) {
+                $("#content").html(result);
+            },
+            error : function(err) {//后台处理数据失败后的回调函数
+                layer.msg(err);
+            }
+        });
+    }
+    
+    /**
+     * @description 选择柜子
+     * @param cabinetId 柜子Id
+     * @param door 柜子关联门
+     * @param cabinetType 柜体类型
+     */
+    function selectCabinet(cabinetId, door, cabinetType) {
+        $("#cabinetList a").removeClass("jia_can_btn_on");
+        $("#cabinetList").find("a[id='"+cabinetId+"']").addClass("jia_can_btn_on");
+        curDoor = door;
+        var url = "/grid";
+        $.ajax({
+            url : url,
+            type : 'post',//提交方式
+            data : {"cabinetId":cabinetId, "cabinetType":cabinetType},
+            dataType : "html",
+            success : function(result) {
+                $("#gridlist").html(result);
+                var val = $("#onKeyDown").val().toLowerCase();
+                if(val != "" && val != null){
+                    onSearch();
+                }
+            },
+            error : function(err) {
+                layer.msg(err);
+            }
+        });
+    }
+    
+    /**
+     * @description plc操作
+     * @param plcOpType plc操作类型
+     * @param cabinetId 柜体Id
+     */
+    function plcOp(plcOpType, cabinetId) {
+        $.ajax({
+            url : '/cabinet/plcop',
+            type : 'post',
+            data: {
+                "cabinetId":cabinetId,
+                "opType":plcOpType
+            },
+            dataType : "json",
+            async : false,
+            success : function(result) {
+                layer.msg(result.message);
+            },
+            error : function(err) {
+                layer.msg(err);
+            }
+        });
+    }
+    
+    // 退出
+    function logout() {
+        var url = "/cabinet/logout";
+        if(logoutFlag){
+            return;
+        }
+        logoutFlag = true;
+        $.ajax({
+            url : url,
+            type : 'post',//提交方式
+            dataType : "html",
+            success : function(data) {
+                window.location.href = data;
+            },
+            error : function(data) {//后台处理数据失败后的回调函数
+                logoutFlag = false;
+                layer.msg(data);
+            }
+        });
+    }
+    
+    var historyTimestamp = new Date();
+    document.body.addEventListener('touchend', function() {
+        historyTimestamp = new Date();
+        console.log(historyTimestamp);
+    });
+ 
+    // 校验session
+    function checkSession() {
+        var ms = Math.abs(new Date().getTime() - new Date(historyTimestamp).getTime());
+        if (ms > 180000) { // 超时时间(默认3min)
+            $.ajax({
+                url : "/cabinet/checkSession",
+                type : 'get',//提交方式
+                dataType : "text",
+                success : function(data) {
+                    if (data=='Y') {
+                        layer.msg('登录超时，请重新登录！');
+                        window.location.href="/login";
+                    }
+                },
+                error : function(data) {//后台处理数据失败后的回调函数
+                    console.log(data);
+                }
+            });
+        }
+    }
+    
+    function stockEmail(cabinetId){
+    	console.log("发送邮件了~~~~~~~~~~~~~~~~~~~~~~");
+        $.ajax({
+            url: '/cabinet/stockEmail',
+            type: 'post',
+            dataType: 'json',
+            async: true,
+            data: {
+                "cabinetId":cabinetId,
+            },
+            success:function(data){
+                console.log(data);
+            },
+            error:function(err){
+                console.log(err);
+            }
+        });
+    }
+    
+    /**
+     * 消除session不过期标识
+     */
+    function revokeSession() {
+        $.ajax({
+            url: '/cabinet/revokeSession',
+            type: 'get',
+            dataType: 'text',
+            success:function(data){
+                console.log(data);
+            },
+            error:function(err){
+                console.log(err);
+            }
+        });
+    }
+</script>
+</html>

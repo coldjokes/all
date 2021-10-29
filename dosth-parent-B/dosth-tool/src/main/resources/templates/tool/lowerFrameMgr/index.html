@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+	<title>物料上下架</title>
+</head>
+<link th:href="@{/static/css/main.css}" rel="stylesheet"/>
+<body class="gray-bg">
+	<input type="hidden" id="cabinetId"/>
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-sm-12">
+								<div class="col-lg-2 col-sm-2">
+									<div class="panel panel-default">
+										<div class="panel-heading">设备</div>
+										<div class="panel-body dept-tree">
+											<ul id="equInfoTree" class="ztree"></ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-10 col-sm-10">
+									<div class="ibox float-e-margins">
+										<button type="button" class="btn btn-primary"
+											onclick="MgrLowerFrame.changeLowerFrame()" id="lowerFrame">
+											<i class="fa fa-search"></i>&nbsp;下架
+										</button>
+										<button type="button" class="btn btn-primary" style="display: none;" 
+											onclick="MgrLowerFrame.openUpFrame()" id="upFrameAll">
+											<i class="fa fa-search"></i>&nbsp;批量上架
+										</button>
+										<div class="ibox-content">
+											<div id="details" class="row"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/lowerFrameMgr/index.js}"></script>
+	<script th:src="@{/static/js/string.js}"></script>
+</body>
+</html>

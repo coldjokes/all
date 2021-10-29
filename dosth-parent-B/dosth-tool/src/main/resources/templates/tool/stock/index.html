@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>库存明细</title>
+</head>
+<body class="gray-bg">
+	<!-- 存储大类属于主柜还是暂存柜标识 -->
+	<input type="hidden" id="area" />
+	<!-- 选择大类类型或柜子Id -->
+	<input type="hidden" id="cabinetId" />
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-lg-12 col-sm-12">
+								
+									<div class="col-lg-2 col-sm-3">
+										<div class="panel panel-default">
+											<div class="panel-heading">设备</div>
+											<div class="panel-body dept-tree">
+												<ul id="equInfoTree" class="ztree"></ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-10 col-sm-9">
+									<div class="col-lg-3 col-sm-4">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">行号
+												</button>
+											</div>
+											<input type="text" class="form-control" id="rowNo"
+												placeholder="请输入行号" />
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-4">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">列号
+												</button>
+											</div>
+											<input type="text" class="form-control" id="colNo"
+												placeholder="请输入列号" />
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-4">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">物料
+												</button>
+											</div>
+											<input type="text" class="form-control" id="matInfo"
+												placeholder="名称/编号/型号" />
+										</div>
+									</div>
+									<div class="col-lg-3 col-sm-4">
+										<button type="button" class="btn btn-primary"
+											onclick="SubCabinetDetail.search()" id="search">
+											<i class="fa fa-search"></i>&nbsp;搜索
+										</button>
+										&nbsp;&nbsp;
+										<button type="button" class="btn btn-primary"
+											onclick="SubCabinetDetail.resetSearch()" id="trash">
+											<i class="fa fa-refresh"></i>&nbsp;重置
+										</button>
+										<button type="button" class="btn btn-primary btn-outline"
+											onclick="SubCabinetDetail.subcabinetDetailExport()"
+											id="exportExcel">
+											<i class="fa fa-download"></i>&nbsp;导出
+										</button>
+									</div>
+									<div class="col-lg-12 col-sm-12" id="rightContent">
+										<hr />
+										<table id="managerTable">
+											<thead th:include="/common/thead.html :: common_thead">
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/stock/index.js}"></script>
+	<script th:src="@{/static/js/string.js}"></script>
+</body>
+</html>

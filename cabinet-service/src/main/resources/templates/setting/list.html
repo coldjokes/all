@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head th:include="common/header.html :: common_header"></head>
+	<script th:src="@{/static/custom/js/setting/setting.js}"></script>    
+	
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content">
+	        <div class="ibox">
+	            <div class="ibox-title">
+	                <h5>系统设置</h5>
+	            </div>
+	           
+	            <div class="ibox-content">
+	                <div class="row">
+	                    <div class="col-sm-12">
+		                    <div class="panel panel-default">
+							    <div class="panel-heading">
+							        <h3 class="panel-title">
+							           	人脸识别是否打开<small>（ ON:打开；OFF:关闭）</small>
+							        </h3>
+							    </div>
+							    <div class="panel-body">
+							        <input name="faceStatus" type="checkbox">
+							    </div>
+							</div>
+                        </div>
+	                    <div class="col-sm-12">
+		                    <div class="panel panel-default">
+							    <div class="panel-heading">
+							        <h3 class="panel-title">
+							           	物料是否计数
+							           	&nbsp;<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="1.不计数时，设备端不显示数量加减功能； 2.不计数时，设备端库存只显示在库/不在库；3.不计数时，同一物料在设备端只能操作领取或者存入；4.不计数时，同一个格口物料取出库存即扣减完；5.不计数时，后台物料库存只有显示在库/不在库；6.不计数时，后台存取记录里面只能看到出入信息，没有数据详细信息"></i>
+							           	<small>（ ON:计数，可加减数量；OFF:不计数，只判断有或者没有）</small>
+							        </h3>
+							    </div>
+							    <div class="panel-body">
+							        <input name="materialCount" type="checkbox">
+							    </div>
+							</div>
+                        </div>
+	                    <div class="col-sm-12">
+		                    <div class="panel panel-default">
+							    <div class="panel-heading">
+							        <h3 class="panel-title">
+							           	不同物料能否放同一个格口
+							           	&nbsp;<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="当不同物料可以存放同一个格口时，需要主动选择相同格口，否则自动分配格口时，仍会分配一个空格口 "></i>
+							           	<small>（ ON:不同物料可以放同一个格口；OFF:不同物料不可以放同一个格口）</small>
+							        </h3>
+							    </div>
+							    <div class="panel-body">
+							        <input name="multiMaterialOneCell" type="checkbox">
+							    </div>
+							</div>
+                        </div>
+	                </div>
+            		<button type="button" class="btn btn-default hide" id="updateSettingConfirmBtn">
+                        <i class="fa fa-refresh"></i> 更新
+                    </button>
+	            </div>
+	        </div>
+	    </div>
+		<div class="modal fade" id="settingUpdateModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">确认信息</h4>
+                    </div>
+                    <div class="modal-body">
+						确定更新配置？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="updateSettingBtn">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>	 	    
+	</body>
+</html>

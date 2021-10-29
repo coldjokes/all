@@ -1,0 +1,123 @@
+[
+    {
+    	"seq": 1,
+    	"id":"1010101",
+		"username": "admin",
+    	"role":"管理员",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10001,
+        "source": "文件导入",
+        "status": "启用"
+    },
+    {
+    	"seq": 2,
+    	"id":"1010101",
+		"username": "aabbcc",
+    	"role":"管理员",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10002,
+        "source": "系统新增",
+        "status": "启用"
+    },
+    {
+    	"seq": 1,
+    	"id":"1010101",
+		"username": "admin",
+    	"role":"超级管理员",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10001,
+        "source": "系统对接",
+        "status": "启用"
+    },
+    {
+    	"seq": 1,
+    	"id":"1010101",
+		"username": "admin",
+    	"role":"员工",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10001,
+        "source": "文件导入",
+        "status": "启用"
+    },
+    {
+    	"seq": 1,
+    	"id":"1010101",
+		"username": "admin",
+    	"role":"员工",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10001,
+        "source": "文件导入",
+        "status": "启用"
+    },
+    {
+    	"seq": 1,
+    	"id":"1010101",
+		"username": "admin",
+    	"role":"员工",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10001,
+        "source": "文件导入",
+        "status": "启用"
+    },
+    {
+    	"seq": 1,
+    	"id":"1010101",
+		"username": "admin",
+    	"role":"员工",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10001,
+        "source": "文件导入",
+        "status": "禁用"
+    },
+    {
+    	"seq": 1,
+    	"id":"1010101",
+		"username": "admin",
+    	"role":"管理员",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10001,
+        "source": "文件导入",
+        "status": "禁用"
+    },
+    {
+    	"seq": 1,
+    	"id":"1010101",
+		"username": "admin",
+    	"role":"管理员",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10001,
+        "source": "文件导入",
+        "status": "禁用"
+    },
+    {
+    	"seq": 1,
+    	"id":"1010101",
+		"username": "admin",
+    	"role":"管理员",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10001,
+        "source": "文件导入",
+        "status": "禁用"
+    },
+    {
+    	"seq": 1,
+    	"id":"1010101",
+		"username": "admin",
+    	"role":"管理员",
+    	"icCard": 1234567890,
+        "fullname": "张三",
+        "userNo": 10001,
+        "source": "文件导入",
+        "status": "禁用"
+    }
+]

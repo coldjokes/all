@@ -1,0 +1,149 @@
+cabinet:
+   serialNo: ${others.serialNo}                # 刀具柜序列号
+   version: ${others.version}                  # 软件版本号
+   logo: ${others.logo}                            # logo标识  bsc 鲍斯智能 ahno 阿诺 knowwhy 诺尔为
+   audioPath: ${others.audioPath}              # 音频路径
+   nettyServerHost: ${ip.nettyServer}          # netty服务端地址
+   nettyServerPort: ${port.nettyServer}        # netty服务端端口
+   toolServerPort: ${port.tool}                # tool服务端端口
+   applyVoucherUrl: ${others.applyVoucherUrl} # 领料单请求路径
+   applyVoucherResultUrl: ${others.applyVoucherResultUrl} #领料单领取结果
+   syncFeedingListUrl: ${others.syncFeedingListUrl}  #同步补料单
+   warehouseResultUrl: ${others.warehouseResultUrl}  #入库单确认
+   agenMap: 
+    bsc: # 鲍斯智能
+      name: 鲍斯
+      title:
+      content: 行业领先的智能仓储和智能制造解决方案服务商
+      stock: 300441
+      phone1: 0512-68152076
+      phone2: 0512-68227053 
+    ahno: # 阿诺
+      name: 阿诺
+      title: 金属切削刀具整体解决方案服务商
+      content: 20年德国技术积累，您身边的刀具专家
+      stock: 300441
+      phone1: 0512-62877709
+      phone2: 0512-62877712 
+    binuo: #比诺
+      name: 比诺
+      title: 
+      content: 行业领先的智能仓储和智能制造解决方案服务商
+      stock: 
+      phone1: 0571-83502022
+      phone2:  
+    knowwhy: #诺尔为
+      name: 诺尔为
+      title:
+      content: 为机械制造业提供技术服务的互联平台
+      stock: 
+      phone1: 15151537678
+      phone2: 0512-69383254 
+    tianxi: # 天熙
+      name: 天熙
+      title:
+      content: 行业领先的智能仓储和智能制造解决方案服务商
+      stock: 
+      phone1: 0512-68152076
+      phone2: 0512-68227053 
+    mlmw: # 模来模往
+      name: 模来模往
+      title:
+      content: 中国模塑行业品牌企业国际推广平台
+      stock: 
+      phone1: 0576-84287744
+      phone2: 
+    manroo: # 迈诺
+      name: 迈诺
+      title:
+      content: 行业领先的智能仓储和智能制造解决方案服务商
+      stock: 
+      phone1: 19952666668
+      phone2: 
+    guohong: # 国宏
+      name: 国宏
+      title:
+      content: 行业领先的智能仓储和智能制造解决方案服务商
+      stock: 300441
+      phone1: 0512-68152076
+      phone2: 0512-68227053 
+    dahong: # 大虹工具
+      name: 大虹工具
+      title:
+      content: 行业领先的智能仓储和智能制造解决方案服务商
+      stock: 300441
+      phone1: 0512-68152076
+      phone2: 0512-68227053
+    dunhanbushi: # 顿汉布什
+      name: 顿汉布什
+      title:
+      content: 行业领先的智能仓储和智能制造解决方案服务商
+      stock: 300441
+      phone1: 0512-68152076
+      phone2: 0512-68227053
+    ld: # 绿点
+      name: 绿点
+      title: 
+      content: 行业领先的智能仓储和智能制造解决方案服务商
+      stock: 300441
+      phone1: 0512-68152076
+      phone2: 0512-68227053
+    zhengtian: # 正天
+      name: 正天
+      title: 
+      content: 行业领先的智能仓储和智能制造解决方案服务商
+      stock: 300441
+      phone1: 0512-68152076
+      phone2: 0512-68227053        
+eureka: 
+   client:                                                          # 客户端进行Eureka注册的配置
+      serviceUrl:                                  
+         defaultZone: http://${ip.eurekaServer}:${port.eurekaServer}/eureka/     # 与Eureka注册服务中心的通信zone和url地址
+   instance:
+      hostname: ${ip.client}                   # 客户端IP地址
+      instance-id: ${ip.client}:${port.toolcabinet}  # 客户端注册到服务中心的唯一ID
+      prefer-ip-address: true                                       # 是否优先使用 IP 地址作为主机名的标识
+ribbon: 
+   ReadTimeout: 60000                                               # ribbon读取超时时间
+   ConnectTimeout: 60000                                            # ribbon连接超时时间
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 60000
+        readTimeout: 60000
+server: 
+   port: ${port.toolcabinet}                                     # 端口
+  
+spring: 
+   cloud:
+      client:
+         ipAddress: ${ip.client}
+   application:
+      name: tool-cabinet                                            # 名称
+   profiles:
+      active: config                                                # 指定环境
+   thymeleaf:
+      check-template: false                                         # 是否在呈现模板之前检查模板是否存在
+      cache: false                                                  # 是否启用模板缓存
+      prefix: classpath:/templates/                                 # 在构建URL时添加前缀以查看名称的前缀
+   mvc:
+      static-path-pattern: /static/**                               # 用于静态资源的路径模式
+   http: 
+      multipart:
+         enabled: true                                               # 是否启用分段上传支持
+         max-request-size: 100MB                                     # 最大请求大小
+         max-file-size: 100MB                                        # 最大文件大小                  
+   devtools: 
+      restart:
+         enabled: true                                               # 是否启用自动重启
+         additional-paths: src/main/java                             # 要监视更改的其他路径
+         exclude: static/**,WEB-INF/view/**                          # 设置classpath下 static 目录内容修改后不重启。一般设置为静态资源目录
+
+logging:
+   level:
+      root: ${logging.level.root}                            # 日志级别严重性映射
+      com.dosth: ${logging.level.com.dosth}
+      com.cnbaosi: ${logging.level.com.cnbaosi}
+      com.dosth.netty: ${logging.level.com.dosth.netty}r
+   path: ${logging.path}                                     # 日志文件的位置

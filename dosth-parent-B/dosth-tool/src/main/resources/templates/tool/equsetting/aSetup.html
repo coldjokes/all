@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>C-A参数</title>
+</head>
+<body>
+	<div class="ibox float-e-margins">
+		<div class="ibox-content">
+			<div class="form-horizontal" id="aForm" th:object="${setupKey}">
+				<input type="hidden" id="equSettingId" name="equSettingId"
+					th:value="${equSettingId}"> <input type="hidden"
+					id="cabinetType" name="cabinetType" th:value="${cabinetType}">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label class="col-sm-1 control-label"><span
+								class="required">*</span>A柜栈号</label>
+							<div class="col-sm-4">
+								<input class="form-control" type="text" id="DET_BOARD_NO_A"
+									name="DET_BOARD_NO_A"
+									th:value="${map['DET_BOARD_NO_A'] != null ? map['DET_BOARD_NO_A'].setupValue : ''}" />
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-10"
+						style="padding-top: 35px; padding-left: 70px">
+						<button type="button" class="btn btn-primary btn-outline"
+							onclick="aSetup.close()" id="cancel">
+							<i class="fa fa-eraser"></i>&nbsp;取消
+						</button>
+						&nbsp;&nbsp;&nbsp;
+						<button type="button" class="btn btn-primary"
+							onclick="aSetup.editSubmit()" id="ensure">
+							<i class="fa fa-check"></i>&nbsp;提交
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/equsetting/aSetup.js}"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.9.RELEASE</version>
+		<relativePath />
+	</parent>
+
+	<groupId>com.dosth</groupId>
+	<artifactId>dosth-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>dosth-parent</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<spring-boot.version>1.5.9.RELEASE</spring-boot.version>
+		<shiro.version>1.4.0</shiro.version>
+		<mysql-connector-java.version>5.1.44</mysql-connector-java.version>
+		<fastjson.version>1.2.31</fastjson.version>
+		<druid.version>1.1.6</druid.version>
+		<ehcache.version>3.5.2</ehcache.version>
+		<ehcache.core.version>2.6.11</ehcache.core.version>
+		<commons.io.version>2.5</commons.io.version>
+		<commons-lang3.version>3.6</commons-lang3.version>
+		<zxing.version>3.2.1</zxing.version>
+		<velocity.version>1.7</velocity.version>
+		<kaptcha.version>2.3.2</kaptcha.version>
+		<thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
+		<thymeleaf-layout-dialect.version>2.2.1</thymeleaf-layout-dialect.version>
+		<spring-boot-starter-redis.version>1.4.7.RELEASE</spring-boot-starter-redis.version>
+		<opencv.version>2.4.13-0</opencv.version>
+		<spring-cloud.version>Dalston.SR5</spring-cloud.version>
+	</properties>
+
+	<modules>
+		<module>dosth-common</module>
+		<module>dosth-admin</module>
+		<module>dosth-tool</module>
+		<module>dosth-netty</module>
+		<module>dosth-eureka-server</module>
+		<module>dosth-toolcabinet</module>
+		<module>dosth-toolcabinet-common</module>
+		<module>dosth-feign</module>
+		<module>cnbaosi-common1</module>
+		<module>cnbaosi-third-feign</module>
+	</modules>
+</project>

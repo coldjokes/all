@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<!-- 我的暂存柜页面 -->
+<div class="jia_cab_btn2">
+	<a href="javascript:void('0');" onclick="haveMatToStor()">我要暂存</a>
+</div>
+<div class="jia_cab_div" style="clear: both">
+	<ul class="jia_cab_ul" style="overflow: auto; min-height: 1620px; max-height: 1620px;">
+		<li class="l-sub-item"  th:each="val : ${detailList}" th:id="${val.matUseBillId}" 
+        	th:name="${val.matName} + ${val.barCode} + ${val.spec}">
+			<div class="jia_cab_list">
+				<div class="jia_cab_left" style="width:177px;height:177px;">
+					<img th:src="'data:img/png;base64,' + ${val.pic}" th:title="${val.matName}" onerror="imgerrorfun();"/>
+				</div>
+				<div class="jia_sub_left">
+					<ul class="jia_cab_r_ul">
+						<li>名称：<span th:text="${val.matName}"></span></li>
+						<li>编号：<span th:text="${val.barCode}"></span></li>
+						<li>规格：<span th:text="${val.spec}"></span></li>
+						<li>数量：<span th:text="${val.remainNum}" id="remainNum"></span></li>
+						<li>单位：<span th:text="${val.borrowTypeName}"></span></li>
+						<li>位置：<span th:text="${val.cabinetName}"></span></li>
+						<li>暂存时间：<span th:text="${#dates.format(val.borrowTime, 'yyyy-MM-dd HH:mm')}"></span></li>
+					</ul>
+				</div>
+				<div class="jia_cab_btn3">
+					<a href="javascript:void('0');" style="margin-right: 1vw"
+						th:onclick="'outStor(\''+ ${val.subBoxId} + '\',\''+${val.matId}+'\', \''+${val.lockPara.lockIndex}+'\')'">取料</a>
+				</div>
+				<div class="jia_cab_btn4">	
+					<a href="javascript:void('0');" style="margin-right: 1vw"
+						th:onclick="'subOpen(\''+${val.subCabinetId}+'\', \''+ ${val.lockPara.boxIndex} + '\', \''+ ${val.lockPara.boardNo} + '\', \''+ ${val.lockPara.lockIndex} + '\')'">打开</a>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+<div class="l-cover" style="display: none;"></div>
+<!-- 弹出层 -->
+<div id="layerSubCabinet" class="layer jia_type_layer2"
+	style="display: none;"></div>
+<script th:inline="javascript">
+	
+	$(function(){
+		 //订阅后台消息
+	    webSocket = stompClient.subscribe('/modbus/' + $("#mainCabinetId").val() + '/status', function(response){
+	        var msg = JSON.parse(response.body);
+	        if (msg.msgType == 'TIME_OUT') {
+	        	layer.msg(msg.msgContent, {time:3000});
+	        }
+	    });
+	});
+	
+	/**
+     * @description 是否有暂存信息
+     */
+    function haveMatToStor() {
+        $.ajax({
+            type : "post",
+            url : "cabinet/haveMatToStor",
+            dataType : "json",
+            success : function(data) {
+                if(data.code == 201){
+                    layer.msg(data.message);
+                }else{
+                    needTempStor();
+                }
+            }
+        });
+    }
+	
+	/**
+	 * @description 我要暂存
+	 */
+	function needTempStor() {
+		$.ajax({
+			type : "post",
+			url : "/tosubcabinet",
+			dataType : "html",
+			success : function(data) {
+				$("#opener").css("width", "60vw");
+				$("#opener").html(data);
+				$("#opener").show();
+				$(".l-cover").show();
+			}
+		});
+	}
+
+	/**
+	 * @description 我要取料
+	 * @param subboxId 暂存盒子Id
+	 * @param matInfoId 物料Id
+	 * @param lockIndex 锁索引
+	 */
+	function outStor(subboxId, matInfoId, lockIndex) {
+		$.ajax({
+			type : "post",
+			url : "/outsubcabinet",
+			data : {
+				"subboxId" : subboxId,
+				"matInfoId" : matInfoId,
+				"lockIndex" : lockIndex
+			},
+			dataType : "html",
+			success : function(data) {
+				$("#opener").css("width", "60vw");
+				$("#opener").html(data);
+				$("#opener").show();
+				$(".l-cover").show();
+			}
+		});
+	}
+
+	/**
+     * @description 打开抽屉
+     * @param lockIndex 锁索引
+     */
+    function subOpen(cabinetId, boxIndex, boardNo, lockIndex){
+        $.ajax({
+            type : "post",
+            url : "/cabinet/openBox",
+            data : {
+            	"cabinetId": cabinetId,
+            	"boxIndex": boxIndex,
+            	"boardNo": boardNo,
+                "lockIndex": lockIndex
+            },
+            dataType : "json",
+            success : function(data) {
+            }
+        });
+    }
+</script>
+
+</html>

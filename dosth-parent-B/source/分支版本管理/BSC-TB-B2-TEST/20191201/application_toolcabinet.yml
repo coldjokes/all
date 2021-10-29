@@ -1,0 +1,68 @@
+cabinet:
+  ver: B2                    #版本
+  isCTypeCabinet: false       #是否是C型柜
+  hasTempCabinet: false       #是否包含暂存柜
+  tempCabinetType: Z2        #暂存柜型号
+  faceLogin: false            #是否人脸识别登录
+  board: PLC                 #电极板类型（PLC or DET）
+  returnWay: PR              #归还条形码类型（重复使用：RE or 打印使用：PR）
+  cabinetId: 297e5a8667960b070167969f51620013 # 当前柜子的编码
+  nettyServerHost: localhost #netty服务端地址
+  nettyServerPort: 9000      #netty服务端端口
+  lockComm: COM3             #锁控板COMM
+  printComm: COM4            #打印COMM
+  scanComm: COM22             #扫描COMM
+  icComm: COM33               #ICCOMM
+  detComm: COM12              #行列式端口号
+  appScanComm: COM55          #主柜预约取料扫描仪COMM
+  serialScanComm: COM2     #多功能扫描仪COMM
+  serialScanParams: 115200-8-N-1     #多功能扫描仪参数
+  plcHost: 192.168.1.67      #PLC 地址
+  
+eureka: 
+  client: 
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: ${spring.cloud.client.ipAddress}
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+ribbon: 
+  ReadTimeout: 60000    # ribbon读取超时时间
+  ConnectTimeout: 60000 # ribbon连接超时时间
+
+  
+server: 
+  port: 8888
+  
+spring: 
+  cloud:
+    client:
+      ipAddress: localhost
+  application:
+    name: tool-cabinet
+  thymeleaf:
+    check-template: false
+    cache: false
+    prefix: classpath:/templates/
+  mvc:
+    static-path-pattern: /static/**
+  http: 
+    multipart:
+      enabled: true
+      max-request-size: 100MB #最大请求大小
+      max-file-size: 100MB #最大文件大小
+  devtools: 
+    restart:
+      enabled: true #是否开启开发者工具（true/false）
+      additional-paths: src/main/java
+      exclude: static/**,WEB-INF/view/**
+
+
+logging:
+  level:
+    root: warn
+    com.dosth: info
+    com.cnbaosi: error
+    com.dosth.netty: error
+  path: logs/

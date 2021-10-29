@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>修改暂存柜数量设定</title>
+</head>
+<body>
+	<div class="ibox float-e-margins">
+		<div class="ibox-content">
+			<div class="form-horizontal" id="extraBoxNumSettingForm" th:object="${extraBoxNumSetting}">
+				<input type="hidden" id="id" th:field="*{id}" />
+				<input type="hidden" id="accountId" th:value="*{user.getAccountId()}" />
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">姓名</label>
+							<div class="col-sm-4">
+								<input class="form-control" id="userName" name="userName" disabled="disabled"
+									type="text" th:value="*{user.getUserName()}" /> 
+							</div>
+							<label class="col-sm-2 control-label">工号</label>
+							<div class="col-sm-4">
+								<input class="form-control" id="userName" name="userName" disabled="disabled"
+									type="text" th:value="*{user.getUserNo()}" /> 
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">暂存柜数量</label>
+							<div class="col-sm-4">
+								<input class="form-control" id="extraBoxNum" name="extraBoxNum" 
+									type="text" th:field="*{extraBoxNum}" />
+							</div>
+							<label class="col-sm-2 control-label">可分配数量</label>
+							<div class="col-sm-2">
+								<input class="form-control" type="text" th:value="${num}" readonly="readonly"/> 
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+					</div>
+					<div class="row btn-group-m-t">
+						<div class="col-sm-10">
+							<button type="button" class="btn btn-info"
+								onclick="ExtraBoxNumInfoDlg.editSubmit()" id="ensure">
+								<i class="fa fa-check"></i>&nbsp;提交
+							</button>
+							<button type="button" class="btn btn-danger"
+								onclick="ExtraBoxNumInfoDlg.close()" id="cancel">
+								<i class="fa fa-eraser"></i>&nbsp;取消
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/extraBoxNumSetting/edit.js}"></script>
+</body>
+</html>

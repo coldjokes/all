@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link th:href="@{/static/css/reset.css}" rel="stylesheet" />
+<link th:href="@{/static/css/jia_style.css}" rel="stylesheet" />
+<link th:href="@{/static/css/css.css}" rel="stylesheet" />
+<script th:src="@{/static/layui/lay/modules/element.js}"></script>
+<title>类型</title>
+
+<style type="text/css">
+#box1 {
+    position:fixed;
+}
+ 
+#box2 {
+    height: 0.5vw;
+}
+ 
+#coor {
+    width: 0; 
+    height: 0;
+    right:0px;
+    float: left;
+    overflow: hidden;
+    cursor: e-resize;
+    position: absolute;
+    border-width: 12px;
+    border-style: solid;
+    border-color: #0099CC #0099CC transparent transparent;
+}
+</style>
+
+<style type="text/css">
+	/* 菜单背景色 */
+	.layui-nav{
+		background: #f4f8ff;
+	}
+	/* 所有菜单的文字样式 */
+	.layui-nav *{
+		color: #000 !important;
+		font-size: 1.5vw;
+	}
+	/* 母菜单（包含子菜单）鼠标以上去后的颜色 */
+	.layui-nav-tree .layui-nav-item a:hover {
+	    background: #9bbeff !important;
+	}
+	/* 母菜单选中后的颜色 */
+	.layui-nav-itemed>a, .layui-nav-tree .layui-nav-title a, .layui-nav-tree .layui-nav-title a:hover{
+		color: #000 !important;
+	}
+	/* 展开后子菜单的背景色 */
+	.layui-nav-itemed>.layui-nav-child {
+	    background-color: rgba(91, 146, 214, 0.3) !important;
+	}
+	/* 菜单选中后的颜色 */
+	.layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-nav-child dd.layui-this a, .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover{
+		background: #9bbeff !important;
+	}
+	/* 菜单小图标（向下） */
+	.layui-nav .layui-nav-more {
+    	border-top-color: black;
+	}
+	/* 菜单小图标（向上） */
+	.layui-nav .layui-nav-mored, .layui-nav-itemed>a .layui-nav-more {
+	    border-color: transparent transparent black;
+	}
+	
+	/* 菜单显示位置和字体大小 */
+	.layui-nav li>a{
+		font-size: 1.7vw; 
+		text-align: center;
+	}
+	.layui-nav dd{
+		text-align: center;
+	}
+</style>
+
+</head>
+<body>
+	<input type="hidden" id="type" th:value="${type}" />
+	<input type="hidden" id="nodeId" />
+	<input type="hidden" id="receiveInfo"/>
+	<input type="hidden" id="filteredMenuIds"/>
+	<div class="jia_left_type" id="box1" width="10%">
+		<div id="coor"></div>
+		<p style="font-size:26px; width: 100%;">分类</p>
+		<ul class="layui-nav layui-nav-tree" lay-filter="categoryNav" style="position: absolute; height: 1650px; overflow-y: auto;width: 100%; text-align: center;background-color: #f4f8ff;"></ul>
+	</div>
+	<div class="j_table" id="matlist"  style="height: 1620px;"></div>
+</body>
+
+<script th:inline="javascript">
+
+	var sourceMenu = [[${list}]];
+	var childrenLevel = 1;
+	
+	$(document).ready(function() {
+		
+		//页面初始化时加载选中的大分类下的物料数据
+        flushMat(sourceMenu[0].id, sourceMenu[0].name);
+		
+      	//渲染左侧导航栏
+		renderMenu(sourceMenu[0].children);
+
+		touchMove();
+	});
+
+	//拖拽
+    function touchMove(){
+        $(document).on("touchmove",function(e) {
+            if (!!this.move) {
+                var posix = !document.move_target ? {'x': 0, 'y': 0} : document.move_target.posix,
+                callback = document.call_down || function() {
+                    $(this.move_target).css({
+                        'top': e.originalEvent.touches[0].screenY - posix.y,
+                        'left': e.originalEvent.touches[0].screenX - posix.x
+                    });
+                };
+                callback.call(this, e, posix);
+            }
+        }).on("touchend",function(e) {
+            if (!!this.move) {
+                var callback = document.call_up || function(){};
+                callback.call(this, e);
+                $.extend(this, {
+                    'move': false,
+                    'move_target': null,
+                    'call_down': false,
+                    'call_up': false
+                });
+            }
+        });
+        
+        var $box2 = $('#box2');
+        var $box1 = $('#box1').on('touchstart', '#coor', function(e) {
+            var posix1 = {
+                    'w': $box1.width(), 
+                    'h': $box1.height(), 
+                    'x': e.originalEvent.touches[0].screenX, 
+                    'y': e.originalEvent.touches[0].screenY
+                };
+            var posix2 = {
+                    'w': $box2.width(), 
+                    'h': $box2.height(), 
+                    'x': e.originalEvent.touches[0].screenX, 
+                    'y': e.originalEvent.touches[0].screenY
+                };
+            $.extend(document, {'move': true, 'call_down': function(e) {
+            	var width_left = Math.max(30, e.originalEvent.touches[0].screenX - posix1.x + posix1.w);
+                var width_right = Math.max(30, posix2.x - e.originalEvent.touches[0].screenX + posix2.w);
+                
+                if(width_left > 300){
+                	width_left = 300;
+                }
+                
+                if(width_left < 124){
+                	width_left = 124;
+                }
+                
+                if(width_right > 928){
+                	width_right = 928;
+                }
+                
+                if(width_right < 750){
+                	width_right = 750;
+                }
+                
+                $box1.css({
+                    'width': width_left
+                });
+                $box2.css({
+                    'width': width_right
+                });
+                
+                localStorage.setItem("width_left", width_left);
+                localStorage.setItem("width_right", width_right);
+            }});
+            return false;
+        });
+    }
+	
+	//获取所有符合查询条件的menuId
+	function loopFilterMenuId(data, val, results){
+		data.forEach((item, index)=>{
+			if(item.name.toLowerCase().indexOf(val) != -1){
+				results.push(item.id);
+			}
+			if(item.children){
+				loopFilterMenuId(item.children, val, results);
+			}
+		})
+	}
+	
+	//通过menuIds拼接完整的树
+	function loopTreeByIds(data, ids){
+		let menu = data.map(item =>{
+			if(ids.indexOf(item.id) >= 0){ //查找当前节点
+				item = {
+							id: item.id,
+							name: item.name,
+							pId: item.pId,
+							children: loopTreeByIds(item.children, ids)
+						}
+				return item;
+			} else { //查找子节点
+				let childArr = [];
+				item.children.map(i => {
+					if(ids.indexOf(i.id) >= 0){
+						childArr.push(i);
+					} else {
+						var a = {
+								id: i.id,
+								name: i.name,
+								pId: i.pId,
+								children: loopTreeByIds(i.children, ids)
+							}
+						//如果子节点都不包含搜索字符，则父类也不需要加载
+						if(a.children.length > 0 && a.children[0] != undefined){
+							childArr.push(a);
+						}
+					}
+				})
+				if(childArr.length > 0){
+					var a = {
+							id: item.id,
+							name: item.name,
+							pId: item.pId,
+							children: childArr
+						}
+					return a;
+				}
+			}
+		})
+		return menu;
+	}
+	
+	/**
+	 * @params paramId 选中条件参数
+	 */
+	function flushMat(paramId, receiveInfo) {
+		$(".jia_left_ul li").removeClass("j_type_on");
+		$(".jia_left_ul li[id='" + paramId + "']").addClass("j_type_on");
+		var url = "/getMatListByEqu/" + paramId;
+		$("#receiveInfo").val(paramId);
+		//console.log(receiveInfo);
+		$.ajax({
+			type : "post",
+			url : url,
+			async : false,
+			dataType : "html",
+			success : function(data) {
+				$("#onKeyDown").val("");
+				$("#matlist").html(data);
+				touchMove();
+				$("#box1").css("width", localStorage.getItem("width_left"));
+                $("#box2").css("width", localStorage.getItem("width_right"));
+			}
+		});
+		//selectCart();
+	}
+
+	// 查询购物车
+	function selectCart() {
+		$.ajax({
+			url : '/cart/initCart',
+			type : 'post',//提交方式
+			dataType : "html",
+			success : function(result) {
+				$("#cart").html(result);
+			},
+			error : function(err) {
+				layer.msg(err);
+			}
+		});
+	}
+	
+	
+	//渲染左侧导航栏
+	function renderMenu(list){
+		
+		let target = $(".layui-nav-tree");
+		
+		//清空所有元素
+		target.empty();
+		
+		//添加子节点
+		list.forEach((item, index)=>{
+			if(item){
+				let parent = $('<li class="layui-nav-item"></li>');	
+				$(parent).append(`<a href="javascript:;" id="${item.id}" title="${item.name}">${item.name}`);
+				showall(item.children, parent);
+				target.append(parent);
+				childrenLevel = 1;
+			}
+		});
+		
+		//重新渲染绑定事件
+		var element = layui.element;
+        element.init();
+		//绑定点击事件
+        element.on('nav(categoryNav)', function(elem){
+           const selectedId = elem.attr("id");
+           const text = elem.text();
+           
+           //根据类别获取物料
+           flushMat(selectedId, text);
+           
+           //重新渲染菜单颜色
+           $('.layui-this').removeClass('layui-this');
+           $(elem).addClass("layui-this");
+           
+       	});
+	}
+	
+	//递归渲染内部节点
+	function showall(json, parent){
+		if(json){
+			//子节点前面逐步加上空格
+			childrenLevel ++;
+			let nbspStr = '';
+			for(var i = 0; i < childrenLevel; i ++){
+				nbspStr += "&nbsp;";
+			}
+			for (var i in json) {
+				if(json[i]){
+		            var dl = $('<dl class="layui-nav-child"></dl>');
+				    $(dl).append(`<dd><a href="javascript:;" id="${json[i].id}" title="${json[i].name}">${nbspStr}${json[i].name}</a></dd>`).appendTo(parent);
+				    //递归渲染下级数据
+				    showall(json[i].children, $(dl).children().eq(0));
+				}
+	        }
+		}
+	}
+	
+
+	//过滤菜单
+	function loopFilterMenu(data, val){
+		let menu = data.map(item =>{
+			if(item.name.toLowerCase().indexOf(val) != -1){ //查找当前节点
+				item = {
+							id: item.id,
+							name: item.name,
+							pId: item.pId,
+							children: loopFilterMenu(item.children, val)
+						}
+				return item;
+			} else { //查找子节点
+				let childArr = [];
+				item.children.map(i => {
+					if(i.name.toLowerCase().indexOf(val) != -1){
+						childArr.push(i);
+					} else {
+						var a = {
+								id: i.id,
+								name: i.name,
+								pId: i.pId,
+								children: loopFilterMenu(i.children, val)
+							}
+						//如果子节点都不包含搜索字符，则父类也不需要加载
+						if(a.children.length > 0 && a.children[0] != undefined){
+							childArr.push(a);
+						}
+					}
+				})
+				
+				if(childArr.length > 0){
+					var a = {
+							id: item.id,
+							name: item.name,
+							pId: item.pId,
+							children: childArr
+						}
+					return a;
+				}
+			}
+		})
+		return menu;
+	}
+</script>
+</html>

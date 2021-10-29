@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>批量上架</title>
+</head>
+<body>
+<input type="hidden" th:value="${cabinetId}" id="cabinetId">
+<div class="ibox-content">
+	<button type="button" class="btn btn-primary"
+		onclick="infoDlg.upFrameAll()" id="upFrameALL">
+		<i class="fa fa-search"></i>&nbsp;批量上架
+	</button>
+	<table id="matInfoListAll"></table>
+</div>
+<script th:src="@{/static/modular/tool/lowerFrameMgr/index.js}"></script>
+<script th:src="@{/static/modular/tool/lowerFrameMgr/edit.js}"></script>
+<script>
+	$(document).ready(function() {
+		infoDlg.searchAll();
+	});
+</script>
+</body>
+</html>

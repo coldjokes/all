@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+    <title>账户角色分配</title>
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row row-lg">
+			<div class="col-sm-12">
+				<div class="col-lg-6 col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">账户</div>
+						<div class="panel-body dept-tree" style="height: 350px; overflow: auto;">
+							<ul id="accountTree" class="ztree"></ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">角色</div>
+						<div class="panel-body dept-tree" style="height: 350px; overflow: auto;">
+							<ul id="roleTree" class="ztree"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row btn-group-m-t">
+			<div class="col-sm-10">
+				<button type="button" class="btn btn-info" onclick="AccRole.editSubmit();" id="ensure">
+					<i class="fa fa-check"></i>&nbsp;提交
+				</button>
+				<button type="button" class="btn btn-danger" onclick="AccRole.resetData();" id="cancel">
+					<i class="fa fa-eraser"></i>&nbsp;重置
+				</button>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/admin/accrole/accrole.js}"></script>
+</body>
+<script th:src="@{/static/js/content.js}"></script>
+</html>

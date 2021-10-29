@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="common/header.html :: common_header"></head>
+
+<script th:src="@{/static/custom/js/report/matBillRecord.js}"></script>
+
+<style type="text/css">
+</style>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content">
+		<div class="ibox">
+			<div class="ibox-title">
+				<h5>存取记录</h5>
+			</div>
+
+			<div class="ibox-content">
+				<div class="row ">
+					<div class="col-sm-12">
+						<div class="tableToolBar">
+							<form role="form" class="form-inline" onsubmit="return false;" id="matBillSearchForm">
+								<div class="input-group">
+									<div class="input-group-btn">
+										<div class="btn searchKeyBtn">物料</div>
+									</div>
+									<input type="text" name="text" class="form-control" placeholder="编码、刀片型号或图纸编号">
+								</div>
+								<div class="input-group">
+									<div class="input-group-btn">
+										<div class="btn searchKeyBtn">操作人</div>
+									</div>
+									<input type="text" name="fullname" class="form-control" placeholder="操作人姓名">
+								</div>
+								<div class="input-group">
+									<div class="input-group-btn">
+										<div class="btn searchKeyBtn">设备</div>
+									</div>
+									<select class="form-control cabinetList" name="cabinetId">
+										<option value="">全部</option>
+									</select>
+								</div>
+								<div class="input-group">
+									<div class="input-group-btn">
+										<div class="btn searchKeyBtn">操作类型</div>
+									</div>
+									<select class="form-control operateType" name=operateType></select>
+								</div>
+								<div class="input-group">
+									<div class="input-group-btn">
+										<div class="input-group-btn">
+											<div class="btn searchKeyBtn">操作时间 </div>
+										</div>
+									</div>
+									<input type="text" class="form-control daterangePicker">
+								    <input type="hidden" class="form-control" name="startTime">
+								    <input type="hidden" class="form-control" name="endTime">
+								</div>
+								<button class="btn btn-primary" id="matBillSearchBtn">查询</button>
+								<button class="btn btn-primary" id="matBillExportBtn">导出</button>
+							</form>
+						</div>
+						<table id="matBillRecordTbl" data-mobile-responsive="true"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

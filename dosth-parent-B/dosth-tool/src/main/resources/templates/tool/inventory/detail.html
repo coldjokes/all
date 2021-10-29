@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="col-sm-12">
+	<div class="table-head">
+		<table class="table" style="width: 100%; display:table; margin: 0;">
+			<colgroup>
+				<col style="width: 120px;" />
+				<col style="width: 300px;"/>
+				<col style="width: 200px;"/>
+				<col />
+				<col style="width: 100px;" />
+				<col style="width: 100px;" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th>货道位置</th>
+					<th>物料名称</th>
+					<th>物料编号</th>
+					<th>物料型号</th>
+					<th>库存数量</th>
+					<th>实盘数量</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<div class="table-body" style="display: block; height: 500px; overflow-y:auto;">
+		<table class="table" style="width: 100%;">
+			<colgroup>
+				<col style="width: 120px;" />
+				<col style="width: 300px;"/>
+				<col style="width: 200px;"/>
+				<col />
+				<col style="width: 100px;" />
+				<col style="width: 100px;" />
+			</colgroup>
+			<tbody>
+				<tr th:each="info : ${infoList}" th:id="${info.detailBoxId}">
+					<td th:text="${info.detailBoxDesc}"></td>
+					<td th:text="${info.matInfo != null ? info.matInfo.matName : ''}"></td>
+					<td th:text="${info.matInfo != null ? info.matInfo.barCode : ''}"></td>
+					<td th:text="${info.matInfo != null ? info.matInfo.spec : ''}"></td>
+					<td th:text="${info.storageNum}"></td>
+					<td><input type="text"
+						th:id="${'inventory_'+info.detailBoxId}"
+						onkeyup="value=value.replace(/^(-1+)|[^\d]+/g,'')" size="3"
+						maxlength="2"
+						th:disabled="${info.storageNum==null||info.storageNum==0}"
+						th:attr="detailboxid=${info.detailBoxId},matid=${info.matInfo != null ? info.matInfo.matId : ''},storagenum=${info.storageNum}"
+						th:value="${info.matInfo != null ? info.storageNum : ''}" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</html>

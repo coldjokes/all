@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="form-horizontal" style="height: 700px; overflow-y: auto;">
+	<table class="table table-striped table-bordered table-hover table-condensed">
+		<thead>
+			<tr>
+				<th>补料清单名称</th>
+				<th>补料货位</th>
+				<th>物料名称</th>
+				<th>物料编号</th>
+				<th>物料型号</th>
+				<th>补料数量</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="detail : ${feedDetail}">
+				<td th:text="${detail.feedingList.feedingName}"></td>
+				<td th:text="${detail.equDetailSta.equDetail.equSetting.equInfo.matEquName+'(' 
+					+ detail.equDetailSta.equDetail.rowNo + '-' + detail.equDetailSta.colNo + ')'}"></td>
+				<td th:text="${detail.matInfo.matEquName}"></td>
+				<td th:text="${detail.matInfo.barCode}"></td>
+				<td th:text="${detail.matInfo.spec}"></td>
+				<td th:text="${detail.feedingNum}"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}" type="text/css" />
+<script th:src="@{/static/modular/tool/feedQuery/index.js}"></script>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>上架</title>
+</head>
+<body>
+<input type="hidden" th:value="${equDetailStaId}" id="equDetailStaId">
+<input type="hidden" th:value="${cabinetId}" id="cabinetId">
+<div class="col-sm-12">
+	<div class="ibox-content">
+		<table id="matInfoList"></table>
+	</div>
+</div>
+<script th:src="@{/static/modular/tool/lowerFrameMgr/index.js}"></script>
+<script th:src="@{/static/modular/tool/lowerFrameMgr/edit.js}"></script>
+<script>
+	$(document).ready(function() {
+		infoDlg.search();
+	});
+</script>
+</body>
+</html>

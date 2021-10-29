@@ -1,0 +1,48 @@
+#仓库流水
+DROP TABLE IF EXISTS warehouse_bill;
+#设备详情领用流水
+DROP TABLE IF EXISTS mat_use_bill;
+#设备详情设置流水
+DROP TABLE IF EXISTS equ_detail_bill;
+#设备详情状态
+DROP TABLE IF EXISTS equ_detail_sta;
+#设备设置详情
+DROP TABLE IF EXISTS equ_detail;
+#设备设置
+DROP TABLE IF EXISTS equ_setting;
+#设备物料关系
+DROP TABLE IF EXISTS equ_mat_ref;
+#工序物料关系
+DROP TABLE IF EXISTS proc_mat_ref;
+#工序信息
+DROP TABLE IF EXISTS proc_info;
+#物料/设备信息
+DROP TABLE IF EXISTS mat_equ_info;
+#物料/设备类型
+DROP TABLE IF EXISTS mat_equ_type;
+#生产商
+DROP TABLE IF EXISTS manufacturer;
+#单位
+DROP TABLE IF EXISTS unit;
+#仓库
+DROP TABLE IF EXISTS warehouse;
+
+#
+DROP TABLE IF EXISTS view_dept;
+#
+DROP TABLE IF EXISTS view_user;
+
+#创建人员信息视图
+DROP VIEW IF EXISTS VIEW_USER;
+CREATE VIEW VIEW_USER
+AS
+SELECT A.ID ACCOUNT_ID, U.DEPT_ID, U.NAME USER_NAME, A.LOGIN_NAME
+FROM dosth.ACCOUNT A
+LEFT JOIN dosth.USER U
+ON A.ID = U.ACCOUNT_ID;
+
+#创建部门视图
+DROP VIEW IF EXISTS VIEW_DEPT;
+CREATE VIEW VIEW_DEPT
+AS
+SELECT D.ID DEPT_ID, D.P_ID DEPT_P_ID, D.SIMPLE_NAME DEPT_NAME FROM dosth.DEPT D;

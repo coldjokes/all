@@ -1,0 +1,60 @@
+[
+    {
+        "wareHouseAlias": "D001",
+        "userName": "admin",
+        "feedType": "STA",
+        "detailList": [
+            {
+                "rowNo": 1,
+                "colNo": 1,
+                "mat": {
+					"matId":"4028947a6d4d4aa7016d4d70b1570401",
+                    "barCode": "43-00244R",
+                    "matName": "²Ûµ¶Æ¬ÐÞÄ¥ 3004-3.2-5R",
+                    "spec": ""
+                },
+                "feedingNum": 1
+            },
+            {
+                "rowNo": 1,
+                "colNo": 2,
+                "mat": {
+					"matId":"4028947a6d4d4aa7016d4d70b1570402",
+                    "barCode": "40-00007B",
+                    "matName": "PWP Interchangeable tip",
+                    "spec": "with profile 13*3*16"
+                },
+                "feedingNum": 2
+            }
+        ]
+    },
+    {
+        "wareHouseAlias": "C001",
+        "userName": "admin",
+        "feedType": "STA",
+        "detailList": [
+            {
+                "rowNo": 2,
+                "colNo": 1,
+                "mat": {
+					"matId":"4028947a6d4d4aa7016d4d70b1570403",
+                    "barCode": "40-00012A",
+                    "matName": "inserts Tin",
+                    "spec": "coated carbide"
+                },
+                "feedingNum": 1
+            },
+            {
+                "rowNo": 2,
+                "colNo": 2,
+                "mat": {
+					"matId":"4028947a6d4d4aa7016d4d70b1570404",
+                    "barCode": "40-00016A",
+                    "matName": "Form Insert PTC-1244-",
+                    "spec": "10047-D4"
+                },
+                "feedingNum": 2
+            }
+        ]
+    }
+]

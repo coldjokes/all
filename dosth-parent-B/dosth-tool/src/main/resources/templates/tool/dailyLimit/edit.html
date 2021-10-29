@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="form-horizontal" id="infoForm" style="height: 560px; overflow-y: auto;border:1px solid #ddd">
+	<table class="table">
+		<thead>
+			<tr style="background-color:whitesmoke">
+				<th>序号</th>
+				<th width="80px"></th>
+				<th>物料信息</th>
+				<th width="100px">限额数量</th>
+				<th></th>
+				<th width="100px">未还限额</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody th:each="limit,sta : ${limitList}">
+			<tr class="limit-item">
+				<th rowspan="3" th:text="${sta.count}"></th>
+				<td rowspan="3">
+					<img style="width: 80px; height: 60px;" th:src="${'/'+netPath+'/'+limit.matInfo.icon}"/>
+				</td>
+				<td style="border:0" th:text="${'物料名称: ' + limit.matInfo.matEquName}"></td>
+				<td rowspan="3">
+					<input type="text" size="3" onkeyup="value=value.replace(/^(-1+)|[^\d]+/g,'')" maxlength="3"
+						 class="limitNum form-control" placeholder="请输入..."/>
+				</td>
+				<td rowspan="3" th:text="${limit.matInfo.borrowType.message}"></td>
+				<td rowspan="3">
+					<input type="text" size="3" onkeyup="value=value.replace(/^(-1+)|[^\d]+/g,'')" maxlength="3"
+						 class="notReturnNum form-control" placeholder="请输入..."/>
+				</td>
+				<td rowspan="3" th:text="${limit.matInfo.borrowType.message}"></td>
+				<td rowspan="3">
+					<input type="hidden" th:value="${limit.id}" id="limitId"/>
+				</td>
+			</tr>
+			<tr>
+				<td style="border:0" th:text="${'物料编号: ' + limit.matInfo.barCode}"></td>
+			</tr>
+			<tr>
+				<td style="border:0" th:text="${'物料型号: ' + limit.matInfo.spec}"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#ensure").show();
+	});
+</script>
+<script th:src="@{/static/modular/tool/dailyLimit/edit.js}"></script>
+</html>

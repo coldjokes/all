@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div class="layer pro-layer" th:each="lat:${lattice}">
+	<div class="layer-title">
+		<div style="width: 100%; text-align: center;">
+			<h3 th:id="matName" th:text="${lat.matInfo.name}"></h3>
+		</div>
+		<div style="width: 21px;">
+			<a href="javascript:;" class="l-close" id="closePro"> <img src="/static/images/l-close.jpg" alt=""></a>
+		</div>
+	</div>
+	<div class="pro-detail">
+		<div class="pro-detail-img" th:switch="${lat.matInfo.icon}">
+			<img th:src="'data:img/png;base64,' + ${lat.matInfo.icon}" onerror="imgerrorfun();" style="height: 45vw;"/>
+		</div>
+		<div class="pro-d-info">
+			<p style="width: 100%">编号：<span th:id="barCode" th:text="${lat.matInfo.barCode}"></span></p>
+			<p style="width: 100%">型号：<span th:id="spec" th:text="${lat.matInfo.spec}"></span></p>
+			<p>库存数量： <span th:id="${lat.staId} + num" th:text="${num}"></span><span th:text="盒"></span></p>
+			<p>包装数量：<span th:id="packNum" th:text="${lat.matInfo.packNum}"></span><span th:text="${lat.matInfo.packUnit}"></span></p>
+			<p>供应商：<span th:text="${lat.matInfo.manufacturerName}"></span></p>
+			<p>品牌：<span th:text="${lat.matInfo.brand}"></span></p>
+			<p>备注：<span th:text="${lat.matInfo.remark}"></span></p>
+		</div>
+		<div class="add-carts">
+			<div class="add-num">
+				<p th:onclick="'subMat(\''+${matId}+'\',\''+${num}+'\')'" id="subMat">-</p>
+				<input type="text" th:id="'num_'+${matId}" disabled="disabled" value="1" size="1" />
+				<p th:onclick="'addMat(\''+${matId}+'\',\''+${num}+'\')'" id="addMat">+</p>
+			</div>
+			<a class="add-c-btn" href="javascript:;"  th:if="${cabinetType != 'VIRTUAL_WAREHOUSE' && cabinetType != 'TROL_DRAWER'}" th:onclick="'proAddCart(\''+${matId}+'\',\''+${remainNum}+'\')'" id="proAddCart">加入购物车</a>
+			<a class="add-c-btn" href="javascript:;" onclick="readErrStatus()" id="startBorrNow">立即领取</a> 
+			<a class="add-c-btn" href="javascript:;" onclick="takeFinish()" id="finishTake"  style="display: none;">领取完成</a>
+		</div>
+		<div>
+			<input type="hidden" th:id="latticeId" th:value="${lat.staId}">
+			<input type="hidden" th:id="cabinetId" th:value="${cabinetId}">
+			<input  type="hidden" id="cabinetType" th:value="${cabinetType}"/>
+			<input type="hidden" th:id="matId" th:value="${matId}"> 
+			<input type="hidden" th:id="borrowType" th:value="${lat.matInfo.borrowTypeName}">
+			<input type="hidden" id="host" th:value="${lat.host}" /> 
+			<input type="hidden" id="port" th:value="${lat.port}" /> 
+			<input type="hidden" id="rowNo" th:value="${rowNo}" /> 
+			<input type="hidden" id="colNo" th:value="${lat.colNo}" />
+			<input type="hidden" th:id="remainNum" th:value="${remainNum}">
+			<!-- 行列式 -->
+			<input type="hidden" id="levelHeight" th:value="${lat.levelHeight}"/>
+			<!-- 储物柜 -->
+            <input type="hidden" id="comm" th:value="${comm}"/>
+            <input type="hidden" id="boardNo" th:value="${boardNo==null||boardNo==''?0:boardNo}"/>
+            <input type="hidden" id="lockIndex"  th:value="${lockIndex==null||lockIndex==''?1:lockIndex}"/>
+            <input type="hidden" id="boxIndex"  th:value="${boxIndex==null||boxIndex==''?1:boxIndex}"/>
+            <!-- 可控抽屉间隔数 -->
+            <input type="hidden" id="interval" th:value="${interval==null||interval==''?1:interval}"/>
+		</div>
+	</div>
+</div>
+<script th:inline="javascript">
+		var layer;
+		var socket = null;
+		var submit = true;
+		// 显示开门提示标识
+		var showOpen = true;
+		//一般直接写在一个js文件中
+		layui.use([ 'layer' ], function() {
+			layer = layui.layer;
+		});
+		
+		var recordId = null;
+		var board = [[${board}]];
+		var type = [[${type}]];
+		// 定时任务
+        var timeOut;
+		
+		$(function(){
+		    //订阅后台消息
+		    socket = stompClient.subscribe('/modbus/' + $("#mainCabinetId").val() + '/status', function(response){
+	            var msg = JSON.parse(response.body);
+	            if(msg.msgType == 'DOOROPENED' || msg.msgType == 'BOX_CABINET_OPENED'){
+	            	if (showOpen) {
+		            	layer.msg(msg.msgContent);
+		            }
+					$("#startBorrNow").hide();
+					$("#finishTake").show();
+					$("#finishTake").css('background', '#3476ee');
+                    $("#finishTake").css('pointer-events', 'auto');
+                    $("#finishTake").css('color', '#fff');
+                    timeOut = setTimeout(function(){
+                    	takeFinish();
+                    }, 30 * 1000);
+	            }
+	            if (msg.msgType == 'BORROWPOST') {
+	    			recordId += msg.msgContent + ",";
+	    		}
+	            if (msg.msgType == 'TEXT' || msg.msgType == 'TIME_OUT') {
+	    			layer.msg(msg.msgContent, {time:3000});
+	    		}
+	            if (msg.msgType == 'DOOR_ERR') {
+	            	$("#finishTake").css('background', '#3476ee');
+	            	$("#finishTake").css('pointer-events', 'auto');
+	            	$("#finishTake").css('color', '#fff');
+	            	layer.msg(msg.msgContent, {time:9000});
+	    		}
+	            if (msg.msgType == 'TROL_DRAWER_AGAIN') {
+		    		$("#startBorrNow").css('pointer-events', 'auto');
+					$("#startBorrNow").css('background', '#3476ee');
+					$("#startBorrNow").css('color', '#fff');
+	            	layer.msg(msg.msgContent, {time:5000});
+					submit = true;
+	            }
+	            if (msg.msgType == 'WARN_TIP') {
+	    			layer.msg(msg.msgContent, {time:5000});
+	    			showOpen = false;
+	    		}
+	            if (msg.msgType == 'DOORCLOSED') {
+	            	closeSuccess();
+	    		}
+	        });
+		});
+
+		/**
+		 * @description 读取柜子故障
+		 */
+		function readErrStatus() {
+			
+			$("#startBorrNow").css('pointer-events', 'none');
+			$("#startBorrNow").css('background', '#bfbfbf');
+			$("#startBorrNow").css('color', '#23527c');
+			$("#proAddCart").css('pointer-events', 'none');
+			$("#proAddCart").css('background', '#bfbfbf');
+			$("#proAddCart").css('color', '#23527c');
+			$("#addMat").css('pointer-events', 'none');
+			$("#subMat").css('pointer-events', 'none');
+			$("#closePro").hide();
+			
+			$.ajax({
+			    url: '/cabinet/readErrStatus',
+			    type: 'post',
+			    data: {"cabinetId":$("#cabinetId").val()},
+			    dataType: "TEXT",
+			    success: function(data) {
+			    	if(data.length > 0){
+			    		layer.msg(data);
+			    	} else {
+			    		startBorrNow();
+			    	}
+			    },
+			    error: function(err){
+			    	console.log(err);
+			    }
+			});
+		}
+		
+		// 立即领取-每日限额判断
+		function startBorrNow() {
+			//超过30s，退出按钮亮起
+			setTimeout(function(){
+ 				$(".exit-btn").css("z-index", 1000);
+			},30 * 1000);
+			
+			var matId = $("#matId").val();
+			var borrowNum = $("#num_" + matId).val();
+			
+			var latticeId = $("#latticeId").val();
+			var num = $("#" + latticeId + "num").html();
+			if(parseInt(borrowNum) > parseInt(num)){
+				layer.msg("库存不足");
+				return;
+			}
+			
+			$.ajax({
+			    url: '/cabinet/getDailyLimit',
+			    type: 'post',
+			    data: {
+			    	"matId" : matId,
+					"borrowNum" : borrowNum
+			    },
+			    success: function(data){
+			    	if(data.code == 200){
+				    	startGridBorr();
+			    	}else{
+			    		$("#startBorrNow").css('pointer-events', 'auto');
+						$("#startBorrNow").css('background', '#3476ee');
+						$("#startBorrNow").css('color', '#fff');
+						$("#proAddCart").css('pointer-events', 'auto');
+						$("#proAddCart").css('background', '#3476ee');
+						$("#proAddCart").css('color', '#fff');
+						$("#addMat").css('pointer-events', 'auto');
+						$("#subMat").css('pointer-events', 'auto');
+						$("#closePro").show();
+			    		layer.msg(data.message);
+			    		return;
+			    	}
+			    },
+			    error: function(err){
+			    	console.log(err);
+			    }
+			});
+		}
+	
+		// 启动格局领取
+		function startGridBorr() {
+			if(!submit){// 防止多次请求
+	            return;
+	         }
+	        submit = false;
+			var matId = $("#matId").val();
+			var borrowNum = $("#num_" + matId).val();
+			var borrowType = $("#borrowType").val();
+			var latticeId = $("#latticeId").val();
+			var host = $("#host").val();
+			var port = $("#port").val();
+			var rowNo = $("#rowNo").val();
+			var colNo = $("#colNo").val();
+			var num = $("#num_" + matId).val();
+			var levelHeight = $("#levelHeight").val();
+			var cabinetType = $("#cabinetType").val();
+            
+            var comm = $("#comm").val();
+            var boardNo = $("#boardNo").val();
+            var lockIndex = $("#lockIndex").val();
+            var boxIndex = $("#boxIndex").val();
+            
+			var data = {
+				"cabinetId":$("#cabinetId").val(),
+				"matId" : matId,
+				"borrowNum" : borrowNum,
+				"borrowType" : borrowType,
+				"host" : host,
+				"port" : port,
+				"rowNo" : rowNo,
+				"colNo" : colNo,
+				"num" : num,
+				"latticeId" : latticeId,
+				"receiveType" : "GRID",
+				"receiveInfo" : "全部",
+				"curDoor": curDoor, // 当前柜子关联的门
+				"levelHeight" : levelHeight, // 层高
+				"cabinetType": cabinetType, // 柜体类型
+                "comm":comm,
+                "boardNo":boardNo,
+                "lockIndex":lockIndex,
+                "boxIndex":boxIndex,
+                "interval":$("#interval").val() // 可控抽屉间隔
+			};
+			$.ajax({
+			    url: '/cabinet/startBorr',
+			    type: 'post',
+			    data: {"data":JSON.stringify(data)},
+			    dataType: 'json',
+			    success: function(data){
+			    	layer.msg(data.message);
+			    	if (($("#cabinetType").val() == 'VIRTUAL_WAREHOUSE' 
+			    			|| $("#cabinetType").val() == 'STORE_CABINET') 
+			    			&& data.code == 200) {
+			    		setTimeout(function(){
+			    			$("#startBorrNow").hide();
+							$("#finishTake").show();
+						}, 500);
+			    	}
+			    },
+			    error: function(err){
+			    	console.log(err);
+			    }
+			});
+		}
+	    
+		// 减少数量
+		function subMat(matId, curReserve) {
+			var num = parseInt($("#num_" + matId).val()) - 1;
+			if (num > curReserve) {
+				num = curReserve;
+			}
+			if (num > 0) {
+				$("#num_" + matId).val(num);
+			}else{
+				layer.msg("已至最小数量");
+			}
+		}
+
+		// 增加数量
+		function addMat(matId, curReserve) {
+			var curNum = $("#num_" + matId).val();
+			var num = parseInt(curNum) + 1;
+			if (num <= curReserve) {
+				$("#num_" + matId).val(num);
+			}else{
+				layer.msg("已至最大数量");
+			}
+		}
+		
+		// 加入购物车
+		function proAddCart(matId, remainNum) {
+			$("#proAddCart").css('pointer-events', 'none');
+			$("#proAddCart").css('background', '#bfbfbf');
+			$("#proAddCart").css('color', '#23527c');
+			
+			var num = $("#num_" + matId).val();
+			$.ajax({
+				url : 'cart/proAddCart',
+				type : 'post',
+				data : {
+					'matId' : matId,
+					'num' : num,
+					'remainNum' : remainNum,
+					'type':'PACK',
+					'receiveType' : 'GRID',
+					'receiveInfo' : '全部'
+				},
+				success : function(data) {
+					if(data == 0){
+						layer.msg("加入失败，库存数量不足");
+					}else{
+						//取消订阅后台
+						socket.unsubscribe();
+						$("#cartNum").html(data);
+						$(".layer").hide();
+						$(".l-cover").hide();
+						layer.msg("加入成功！");
+					}
+				},
+				error : function(err) {
+					layer.msg(err);
+				}
+			});
+			
+			setTimeout(function (){
+				$("#proAddCart").css('pointer-events', 'auto');
+				$("#proAddCart").css('background', '#3476ee');
+				$("#proAddCart").css('color', '#fff');
+			}, 1000);
+		}
+		
+		// 领取完成关门
+		function takeFinish() {
+			clearTimeout(timeOut);
+			$("#finishTake").css('background', '#bfbfbf');
+			$("#finishTake").css('pointer-events', 'none');
+			$("#finishTake").css('color', '#23527c');
+			
+			// 库存预警邮件
+			var cabinetId = $("#cabinetId").val();
+			stockEmail(cabinetId);
+			
+			$.ajax({
+				url : '/cabinet/borrowPost',
+				type : 'post',
+				dataType : 'json',
+	            async: true,
+				data :{
+					"recordId" : recordId
+				},
+				success:function(data){
+					layer.msg(data);
+				},
+				error:function(err){
+					layer.msg(err);
+				}
+			});
+			 
+			// 虚拟仓直接退出系统,其他da
+			if ($("#cabinetType").val() == 'KNIFE_CABINET_DETB' || $("#cabinetType").val() == 'KNIFE_CABINET_PLC' || $("#cabinetType").val() == 'SUB_CABINET'
+					|| $("#cabinetType").val() == 'KNIFE_CABINET_C_A' || $("#cabinetType").val() == 'KNIFE_CABINET_C_B') {
+				plcOp('ON_CLOSE_DOOR_COIL', $("#cabinetId").val());
+			} else {
+				logout();
+			}
+		}
+		
+		// 门关闭成功
+		function closeSuccess() {
+			logout();
+		}
+		
+		//初始化全部刀具信息
+        function initLatticeValue() {
+			var url = '/cabinet/getLatticeValueMap';
+			$.ajax({
+			    url: url,
+			    type:'get',//提交方式
+			    dataType:'json',
+			    success:function(data){
+			    	for (var latticeId in data) {
+			    		$("#curReserve_"+latticeId).html((data[latticeId] < 10 ? ' ' : '') + data[latticeId]);
+			    		if (data[latticeId] > parseInt($("#warnVal_"+latticeId).val())) {
+			    			$("#curReserve_"+latticeId).removeClass("warnVal");
+			    		} else {
+			    			$("#curReserve_"+latticeId).addClass("warnVal");
+			    		}
+			    		
+			    		if (data[latticeId] > 1) {
+			    			$("#shortage_"+latticeId).hide();
+			    		} else {
+			    			$("#shortage_"+latticeId).show();
+			    		}
+			    	}
+			    },
+			    error:function(data){//后台处理数据失败后的回调函数
+			    	layer.msg(data);
+			    }
+			});  
+		}
+	</script>
+	<script>
+		$(function() {
+			$(".l-close").click(function() {
+				$(".layer").hide();
+				$(".l-cover").hide();
+				//取消订阅后台
+				socket.unsubscribe();
+			});
+			document.body.style.overflow="auto";
+    		$("html").css('height','auto');
+    		$("html").css('overflow','auto');
+		});
+		
+		$(function(){
+            $(".l-pro-carts").click(function(){
+                $(this).next().toggle();
+            });
+        });
+	</script>
+</html>

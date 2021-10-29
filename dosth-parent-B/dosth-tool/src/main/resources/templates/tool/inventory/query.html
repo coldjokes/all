@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>盘点查询</title>
+</head>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-sm-12">
+								<div class="row" style="padding-top: 20px;">
+									<div class="col-lg-4 col-sm-4">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">开始日期
+												</button>
+											</div>
+											<input type="text" class="form-control layer-date"
+												id="beginTime" placeholder="开始日期" />
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-4">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">结束日期
+												</button>
+											</div>
+											<input type="text" class="form-control layer-date"
+												id="endTime" placeholder="结束日期" />
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-4">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">刀具柜
+												</button>
+											</div>
+											<select class="form-control" id="equName" name="equName">
+												<option value="-1">全部</option>
+												<option th:each="equSetting : ${equSettingList}"
+													th:value="${equSetting.id} + ':' + ${equSetting.cabinetType}"
+													th:text="${equSetting.equSettingName}"></option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-4" style="padding-top: 10px;">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button data-toggle="dropdown"
+													class="btn btn-white dropdown-toggle" type="button">物料
+												</button>
+											</div>
+											<input type="text" class="form-control" id="matInfo"
+												placeholder="名称/编号/型号" />
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-4" style="padding-top: 10px;">
+										<div class="row">
+											<div class="col-lg-12 col-sm-12">
+												<button type="button" class="btn btn-primary"
+													onclick="Inventory.search()" id="search">
+													<i class="fa fa-search"></i>&nbsp;搜索
+												</button>
+												&nbsp;&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary button-margin"
+													onclick="Inventory.resetSearch()" id="trash">
+													<i class="fa fa-refresh"></i>&nbsp;重置
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<hr />
+								<button type="button" class="btn btn-primary btn-outline"
+									onclick="Inventory.exportList()" id="btnExport">
+									<i class="fa fa-download"></i>&nbsp;导出
+								</button>
+
+								<table id="InventoryTable">
+									<thead th:include="/common/thead.html :: common_thead">
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/modular/tool/inventory/query.js}"></script>
+	<script>
+		laydate.render({
+			elem : '#beginTime',
+			trigger: 'click'
+		});
+		laydate.render({
+			elem : '#endTime',
+			trigger: 'click'
+		});
+	</script>
+</body>
+
+</html>

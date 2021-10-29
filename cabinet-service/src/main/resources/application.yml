@@ -1,0 +1,53 @@
+server: 
+   port: 8080
+spring: 
+   profiles:
+      active: dev
+   thymeleaf:
+      #check-template: false
+      cache: false #热部署文件，页面不产生缓存，及时更新
+      prefix: classpath:/templates/
+      suffix: .html
+      mode: HTML
+      encoding: UTF-8
+      content-type: text/html
+   mvc:
+      static-path-pattern: /static/** #静态资源访问路径
+   resources: #静态资源指向的路径，多个使用英文逗号隔开
+      static-locations:  classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/download/ 
+   devtools: 
+      restart:
+         enabled: true #是否开启开发者工具（true/false）
+         additional-paths: src/main/java
+         exclude: static/**,WEB-INF/view/**
+   flyway: #数据库版本管理工具
+      enabled: true #启用或禁用 flyway 
+      locations: classpath:/db #设定 SQL 脚本的目录,多个路径使用逗号分隔, 比如取值为 classpath:db/migration,filesystem:/sql-migration 
+      validate-on-migrate: true # 是否开启校验
+   servlet:
+      multipart: #文件上传限制
+         max-file-size: 20MB #单个文件的大小
+         max-request-size: 100MB #单次请求的文件的总大小
+
+cabinet-service:
+   projectLocation: D:/cnbaosi/bsc-tool-box-drawer   #项目路径
+   filePath: /file   #文件路径
+   tempPath: /temp/   #文件上传临时路径
+   picturePath: ${cabinet-service.filePath}/picture/ #物料图片
+   blueprintPath: ${cabinet-service.filePath}/blueprint/ #物料图纸
+   stockPath: ${cabinet-service.filePath}/stock/ #库存邮件
+   
+   mail:
+      host: smtp.exmail.qq.com                                 # 邮箱服务器地址
+      port: 465                                                # 邮箱端口
+      protocol: smtp                                           # 邮箱协议
+      sender: toolbox@cnbaosi.com                              # 邮箱发件箱地址
+      senderName: 智能工具柜邮件提醒                            # 邮箱发件箱昵称
+      authcode: GEfLsM2xR3Zo6TUf                               # 邮箱授权码
+   
+   face:
+      ver: BSC-HR-20210804                                      # 厂内版本号
+      appId: 3FWHq3yTeuDS3bWg22wEQ8s7YqNCfHHaQq4xrrTLVp5K       # APP ID 官网注册
+      sdkKey: DaGJtCrSNiAE24oMioJCzJDVScuiVJiwKCahjwpLeYPq      # SDK KEY 官网注册
+      sdkLibPath: d:/arcsoft_lib                                # dll文件路径
+      passRate: 80                                              # 通过率

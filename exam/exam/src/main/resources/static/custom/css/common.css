@@ -1,0 +1,52 @@
+/* 
+.modal-body {
+    padding: 20px 30px 10px 30px;
+}
+ */
+
+/* 表格工具栏 */
+.tableToolBar {
+   margin-bottom: 10px;
+}
+
+/* 表格工具栏中的下拉框 */
+.tableToolBar .dropdown-menu{
+    min-width: 0
+}
+
+/* 模态框头部高度设定 */
+.inmodal .modal-header{
+	padding: 15px;
+}
+
+/* 时间范围选择插件  */
+.daterangePicker{
+	min-width: 260px !important;
+}
+
+/* jquery validator错误信息位置 */
+label.error{
+	margin-top:5px;
+}
+
+/* 表单提示信息 */
+.help-block{
+	margin-top:7px;
+}
+
+/* 表格上方搜索组件的名称 */
+.searchKeyBtn {
+	background-color:#EEE;
+}
+
+/* 单选框上浮调整 */
+.radio-inline input{
+	margin-top:1px !important;
+}
+
+/* 物料类别保存按钮 */
+.updateCategoryMapBtn{
+	float: right;
+	margin: 10px;
+}
+

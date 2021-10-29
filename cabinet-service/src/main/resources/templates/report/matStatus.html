@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head th:include="common/header.html :: common_header"></head>
+
+	<script th:src="@{/static/custom/js/report/matStatus.js}"></script>   
+	 
+	<body class="gray-bg">
+	    <div class="wrapper wrapper-content">
+	        <div class="ibox">
+	            <div class="ibox-title">
+	                <h5>物料状态查询</h5>
+	            </div>
+	           
+	            <div class="ibox-content">
+	                <div class="row">
+	                    <div class="col-sm-12">
+	                    	<div class="tableToolBar">
+								<form role="form" class="form-inline" onsubmit="return false;" id="matStockSearchForm">
+									<div class="input-group">
+									    <div class="input-group-btn">
+									        <div class="btn searchKeyBtn">物料</div>
+									    </div>
+									    <input type="text" name="text" class="form-control" placeholder="编码、刀片型号或图纸编号">
+									</div>
+		                            <div class="input-group">
+										<div class="input-group-btn">
+											<div class="btn searchKeyBtn">设备</div>
+										</div>
+										<select class="form-control cabinetList" name="cabinetId">
+											<option value="">全部</option>
+										</select>
+									</div>
+		                            <div class="input-group">
+										<div class="input-group-btn">
+											<div class="btn searchKeyBtn">状态</div>
+										</div>
+										<select class="form-control matStatus" name="status"></select>
+									</div>
+									<button class="btn btn-primary" id="matStockSearchBtn">查询</button>
+									<button class="btn btn-primary" id="matStockExportBtn">导出</button>
+		                        </form>	  
+	                        </div>                  	
+							<table id="matStatusTbl" data-mobile-responsive="true"></table>
+							
+	                    </div>
+	                </div>
+	            </div>
+			</div>	      
+        </div>
+	</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<!-- 我要取料 -->
+<div class="layer-title">
+	<div></div>
+	<h3>我要取料</h3>
+	<a href="javascript:void('0');" class="l-close"><img src="/static/images/l-close.jpg" alt=""></a>
+</div>
+<div class="jia_layer_main2" id="matInfo">
+	<div class="jia_dialog_left">
+		<img th:src="'data:img/png;base64,' + ${detail.pic}" onerror="imgerrorfun();" style="max-width: 375px; max-height: 235px;"/>
+	</div>
+	<div class="jia_dialog_right">
+		<ul>
+			<li>名称：<span th:text="${detail.matName}"></span></li>
+			<li>料号：<span th:text="${detail.barCode}"></span></li>
+			<li>规格/型号：<span th:text="${detail.spec}"></span></li>
+			<li>数量：<span th:text="${detail.remainNum}"></span></li>
+			<li>单位：<span th:text="${detail.borrowTypeName}"></span></li>
+			<li>取料： 
+				<a href="javascript:void('0');" style="margin-left: 2vw; width: 2.5vw; height: 2.5vw;" onclick="sub()">-</a>
+				<span id="num">1</span>
+				<a href="javascript:void('0');" style="margin-right: 2vw; width: 2.5vw; height: 2.5vw;" 
+					th:onclick="'add(\''+${detail.remainNum}+'\')'">+</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="jia_tip_btn2" style="clear: both" id="outSub">
+	<a href="javascript:void('0');" onclick="openSubBox()">确定取料</a>
+	<a href="javascript:void('0');" onclick="closeLayer()">取消</a>
+</div>
+<script th:inline="javascript">
+	var matId = [[${matId}]];
+	var subBoxId = [[${subBoxId}]];
+	var subCabinetId = [[${subCabinetId}]];
+	var boxIndex = [[${boxIndex}]];
+	var boardNo = [[${boardNo}]];
+	var lockIndex = [[${lockIndex}]];
+	
+	$(function() {
+		$(".l-close").click(function() {
+			closeLayer();
+		});
+		
+		//订阅后台消息
+        webSocket = stompClient.subscribe('/modbus/' + $("#mainCabinetId").val() + '/status', function(response){
+            var msg = JSON.parse(response.body);
+            if (msg.msgType == 'TEXT') {
+                layer.msg(msg.msgContent);
+            } else if (msg.msgType == 'SUB_UNRECEIVED') {
+            	$("#matInfo").css('pointer-events', 'auto');
+            	$("#outSub").css('pointer-events', 'auto');
+                layer.msg(msg.msgContent);
+            } else if (msg.msgType == 'SUB_OPEN_SUC') {
+            	console.log("SUB_OPEN_SUC");
+                layer.msg(msg.msgContent);
+                outStorAffirm();
+                webSocket.unsubscribe();
+            }
+        });
+	});
+	
+	/**
+	 * @description 添加
+	 */
+	function add(num) {
+		var curNum = parseInt($("#num").html()) + 1;
+		if (curNum <= num) {
+			$("#num").html(curNum);
+		}
+	}
+	
+	/**
+	 * @description 减少
+	 */
+	function sub() {
+		var curNum = parseInt($("#num").html()) - 1;
+		if (curNum > 0) {
+			$("#num").html(curNum);
+		}
+	}
+	
+	/**
+	 * @description 确定取料
+	 * @param subboxId 暂存盒子Id
+	 * @param matInfoId 物料Id
+	 */
+	function outStorAffirm() {
+		var url = "/cabinet/opSubBox";
+		$.ajax({
+			type : "post",
+			url : url,
+			data : {
+				"subBoxId" : subBoxId,
+				"matInfoId" : matId,
+				"num":parseInt($("#num").html())
+			},
+			dataType : "json",
+			success : function(data) {
+				layer.msg(data.message);
+				flushBusiness('subcabinet');
+				$(".layer").hide();
+				$(".l-cover").hide();
+			}
+		});
+	}
+	
+	/**
+     * @description 打开副柜
+     * @param boxIndex 盒子索引位
+     */
+    function openSubBox() {
+        var url = "/cabinet/openBox";
+        $.ajax({
+            type : "post",
+            url : url,
+            data : {
+            	"cabinetId" : subCabinetId,
+            	"boxIndex" : boxIndex,
+            	"boardNo" : boardNo,
+                "lockIndex" : lockIndex
+            },
+            dataType : "json",
+            success : function(data) {
+            	$("#matInfo").css('pointer-events', 'none');
+            	$("#outSub").css('pointer-events', 'none');
+            }
+        });
+    }
+	
+    function closeLayer(){
+        $(".layer").hide();
+        $(".l-cover").hide();
+        webSocket.unsubscribe();
+    }
+</script>
+</html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="CUSTOM_LOG_PATTERN"
+		value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread]%logger -%msg%n" />
+	<include
+		resource="org/springframework/boot/logging/logback/base.xml" />
+
+	<appender name="ROLLING-FILE-INFO"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		 <!-- 日志日常打印文件 -->
+        <file>logs/dosth-tool.log</file>
+        <!-- 配置日志所生成的目录以及生成文件名的规则 在logs/mylog-2017-06-31.0.log.zip -->        
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/dosth-tool-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- 如果按天来回滚，则最大保存时间为30天，30天之前的都将被清理掉 -->
+            <maxHistory>30</maxHistory>
+            <!-- 日志总保存量为10GB -->
+            <totalSizeCap>1GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大20MB时会被压缩和切割 -->
+                <maxFileSize>20MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+		<encoder>
+			<pattern>${CUSTOM_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ROLLING-FILE-WARN"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/dosth-tool-warn.log</file>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
+		<!-- 配置日志所生成的目录以及生成文件名的规则 在logs/mylog-2017-06-31.0.log.zip -->        
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/dosth-tool-warn-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- 如果按天来回滚，则最大保存时间为30天，30天之前的都将被清理掉 -->
+            <maxHistory>30</maxHistory>
+            <!-- 日志总保存量为10GB -->
+            <totalSizeCap>1GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大10MB时会被压缩和切割 -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+		<encoder>
+			<pattern>${CUSTOM_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="ROLLING-FILE-ERROR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/dosth-tool-error.log</file>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<!-- 配置日志所生成的目录以及生成文件名的规则 在logs/mylog-2017-06-31.0.log.zip -->        
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/dosth-tool-error-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- 如果按天来回滚，则最大保存时间为30天，30天之前的都将被清理掉 -->
+            <maxHistory>30</maxHistory>
+            <!-- 日志总保存量为10GB -->
+            <totalSizeCap>1GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大10MB时会被压缩和切割 -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+		<encoder>
+			<pattern>${CUSTOM_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com.dosth" level="WARN">
+		<appender-ref ref="ROLLING-FILE-WARN" />
+		<appender-ref ref="ROLLING-FILE-ERROR" />
+	</logger>
+
+	<root level="INFO">
+		<appender-ref ref="ROLLING-FILE-INFO" />
+		<appender-ref ref="ROLLING-FILE-WARN" />
+		<appender-ref ref="ROLLING-FILE-ERROR" />
+	</root>
+
+</configuration>

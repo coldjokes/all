@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<!-- 隐藏table滚动条 -->
+<style>
+::-webkit-scrollbar{
+    width: 0px;
+}
+</style>
+<div class="j_table" id="box2">
+	<div class="j_table-tr" style="width:932px; position: fixed;">
+           <div class="j_table-th" style="width: 40px;">序号</div>
+           <div class="j_table-th" style="width:150px;">图片</div>
+           <div class="j_table-th" style="width:250px; white-space: pre-wrap;">物料</div>
+           <div class="j_table-th" style="width:75px;">包装数量</div>
+           <div class="j_table-th" style="width:75px;">库存数量</div>
+           <div class="j_table-th" style="width:75px;">领取方式</div>
+           <div class="j_table-th" style="width:145px;">领取数量</div>
+           <div class="j_table-th" style="width:120px;">选择</div>
+       </div>
+       <div style="position:absolute; width:932px; height: 1520px; overflow-y: auto; top: 7.5vw;">
+	       <div class="j_table-tr2"  th:each="mat : ${matlist}" 
+	           th:name="${mat.matName} + ${mat.spec} + ${mat.barCode}" 
+	           th:if="${mat.remainNum} >0">
+	           <div class="j_table-td" th:text="${matStat.count}" style="font-size: 25px; width: 40px;"></div>
+	           <div class="j_table-td" th:id="${mat.matId}"  style="width:150px;">
+	              <span th:switch="${mat.pic}" style="width:12vw;" > 
+	                  <img class="img-zoomable" th:src="${mat.pic}" th:onclick="'viewMat(\''+${mat.matId}+'\')'"/>
+	              </span>
+	              <div class="layer pro-layer" th:id="'img_' + ${mat.matId}" style="display: none;">
+	              	<img th:src="${mat.pic}" style="width: 585px; height: 486px;"/>
+	              </div>
+	           </div>
+	           <div style="display: table-cell; height: 100%; text-align: left; vertical-align: middle; line-height: 2vw;width: 250px;">
+	               <div th:text="'名称：' + ${mat.matName}"></div>
+	               <div th:text="'编号：' + ${mat.barCode}"></div>
+	               <div th:text="'型号：' + ${mat.spec}"></div>
+	           </div>
+	           <div class="j_table-td" th:text="${mat.packNum}" style="width:75px;"></div>
+	           <div class="j_table-td jia_td_radio" style="width:75px;">
+	               <p>
+	                   <span th:text="${mat.remainNum}"></span> 
+	               </p>
+	               <p th:if="${mat.borrowTypeCode=='METER'}">
+	                   <span th:text="${mat.packNum * mat.remainNum}"></span> 
+	               </p>
+	           </div>
+	           <div class="j_table-td jia_td_radio" style="width:75px;">
+	               <p>
+	                   <span>盒</span> 
+	                   <input type="radio" th:name="${'borrowType_'+mat.matId}" value="PACK" checked="checked"
+	                       th:onclick="'packMat(\''+${mat.matId}+'\',\''+${mat.packNum}+'\',\''+${mat.remainNum}+'\',\''+${mat.borrowTypeCode}+'\')'">
+	               </p>
+	               <p th:if="${mat.borrowTypeCode=='METER'}">
+	                   <span>支</span> 
+	                   <input type="radio" th:name="${'borrowType_'+mat.matId}" value="METER">
+	               </p>
+	           </div>
+	           <div class="j_table-td_add_btn" style="width:145px;">
+	               <a style="margin-left: 0.5vw"
+	                   th:onclick="'subMat(\''+${mat.matId}+'\',\''+${mat.packNum}+'\',\''+${mat.remainNum}+'\',\''+${mat.borrowTypeCode}+'\')'">-</a>
+	               <input th:id="'num_'+${mat.matId}" type="text" disabled="disabled" value="1" size="1" style="text-align:center;"/> 
+	               <a style="margin-right: 0.5vw"
+	                   th:onclick="'addMat(\''+${mat.matId}+'\',\''+${mat.packNum}+'\',\''+${mat.remainNum}+'\',\''+${mat.borrowTypeCode}+'\')'">+</a>
+	           </div>
+	           <div class="j_table-td" style="width:120px;font-size:1.5vw;">
+	               <a href="javascript:void('0')"
+	                   th:onclick="'addCart(\''+${mat.matId}+'\',\''+${mat.borrowTypeCode}+'\',\''+${mat.remainNum}+'\')'">加入</a>
+	           </div>
+	          <input type="hidden" class="categoryTreeId" th:value="${mat.categoryTreeId}">
+	          <input type="hidden" class="categoryTreeIds" th:value="${mat.categoryTreeIds}">
+	       </div>
+       </div>
+</div>
+<script th:inline="javascript">
+ 
+    var matlist = [[${matlist}]];
+    
+    var layer;
+    //一般直接写在一个js文件中
+    layui.use([ 'layer' ], function() {
+        layer = layui.layer;
+    });
+    
+    function viewMat(matId) {
+    	$(".l-cover").show();
+		$("#opener").css("width", "60vw");
+    	$("#opener").html($("#img_"+matId).html());
+    	$("#opener").show();  
+    	$("#opener").bind("click", function() {
+        	$(".l-cover").hide();
+    		$("#opener").hide();
+    		$("#opener").unbind("click");
+    	});
+    }
+ 
+    // 加入购物车
+    function addCart(matId, borrowTypeCode, remainNum) {
+        var type = $('input:radio[name="borrowType_' + matId + '"]:checked').val();
+        var num = $("#num_" + matId).val();
+        var receiveType = $("#type").val();
+        var receiveInfo = $("#receiveInfo").val();
+        $.ajax({
+            url : 'cart/addCart',
+            type : 'post',
+            data : {
+                'matId' : matId,
+                'num' : num,
+                'type' : type,
+                'remainNum' : remainNum,
+                'receiveType' : receiveType,
+                'receiveInfo' : receiveInfo
+            },
+            success : function(data) {
+                if(data == 0){
+                    layer.msg("加入失败，库存物料已加入购物车！");
+                }else{
+                    $("#cartNum").html(data);
+                    layer.msg("加入成功！");
+                    $("#num_" + matId).val("1");
+                }
+                
+            },
+            error : function(err) {
+                layer.msg("加入失败！");
+            }
+        });
+    }
+    
+    // 切换到按包领取时大于最大库存量时设置最大数量为库存量
+    function packMat(matId, packNum, remainNum, borrowTypeCode) {
+        var num = parseInt($("#num_"+matId).val());
+        if (num > remainNum) {
+            $("#num_"+matId).val(remainNum);
+        }
+    }
+ 
+    // 减少数量
+    function subMat(matId, packNum, remainNum, borrowTypeCode) {
+        var val = $('input:radio[name="borrowType_' + matId + '"]:checked').val();
+        var num = parseInt($("#num_" + matId).val()) - 1;
+        // 按只统计的物料,取盒时最大数量按最大库存数量
+        if (borrowTypeCode == 'METER' && val == 'PACK' && num > remainNum) {
+            num = remainNum;
+        }
+        if (num > 0) {
+            $("#num_" + matId).val(num);
+        }
+    }
+ 
+    // 增加数量
+    function addMat(matId, packNum, remainNum, borrowTypeCode) {
+        var val = $('input:radio[name="borrowType_' + matId + '"]:checked').val();
+        var curNum = $("#num_" + matId).val();
+        var num = parseInt(curNum) + 1;
+        // 按只统计的物料,取片时按容积数量最大值计算
+        if (borrowTypeCode == 'METER' && val == 'METER') {
+            remainNum *= packNum;
+        }
+        if (num <= remainNum) {
+            $("#num_" + matId).val(num);
+        }
+    }
+</script>
+<script>
+    $(function() {
+        $(".layer-nav a").click(function() {
+             $(this).addClass("lay-nav-on").siblings().removeClass("lay-nav-on");
+             var index = $(this).index();
+             number = index;
+             $('.l-cabinet li').hide();
+             $('.l-cabinet li:eq(' + index + ')').show();
+         });
+    })
+</script>
+<script>
+    $(function() {
+        $("#l-cabinet").click(function() {
+            $(".layer").show();
+            $(".l-cover").show();
+        })
+    })
+</script>
+<script>
+    $(function() {
+        $(".l-close").click(function() {
+            $(".layer").hide();
+            $(".l-cover").hide();
+        })
+    })
+</script>
+</html>

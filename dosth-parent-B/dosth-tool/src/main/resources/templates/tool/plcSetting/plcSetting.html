@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>PLC设置</title>
+</head>
+<body>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>PLC设置</h5>
+					</div>
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-lg-12 col-sm-12">
+								<div class="row">
+									<div class="col-lg-10 col-sm-9">
+										<div class="row">
+											<div class="col-lg-4 col-sm-6">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">名称
+														</button>
+													</div>
+													<input type="text" class="form-control" id="plcName" placeholder="名称"> 
+												</div>
+											</div>
+											<div class="col-lg-4 col-sm-6">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">状态
+														</button>
+													</div>
+													<select class="form-control" id="status" name="status">
+														<option value="-1">全部</option>
+														<option
+															th:each="status : ${T(com.dosth.common.constant.UsingStatus).values()}"
+															th:value="${status}" th:text="${status.message}">
+														</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-2 col-sm-3">
+										<div class="row">
+											<div class="col-lg-12 col-sm-12">
+												<button type="button" class="btn btn-primary"
+													onclick="PlcSetting.search()" id="search">
+													<i class="fa fa-search"></i>&nbsp;搜索
+												</button>
+												<button type="button" class="btn btn-primary button-margin"
+													onclick="PlcSetting.resetSearch()" id="trash">
+													 <i class="fa fa-refresh"></i>&nbsp;重置
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="hidden-xs" id="managerTableToolbar1" role="group">
+									<shiro:hasAnyPermission name="/plcSetting/add">
+										<button type="button" class="btn btn-primary"
+											onclick="PlcSetting.openAddPlcSetting()" id="addPlcSetting">
+											<i class="fa fa-plus"></i>&nbsp;添加
+										</button>
+									</shiro:hasAnyPermission>
+									<shiro:hasAnyPermission name="/plcSetting/edit">
+										<button type="button" class="btn btn-primary button-margin"
+											onclick="PlcSetting.openChangePlcSetting()" id="changePlcSetting">
+											<i class="fa fa-edit"></i>&nbsp;修改
+										</button>
+									</shiro:hasAnyPermission>
+									<shiro:hasAnyPermission name="/plcSetting/delete">
+										<button type="button" class="btn btn-primary button-margin" 
+											onclick="PlcSetting.delPlcSetting()" id="delPlcSetting"
+											style = "display:none">
+										    <i class="fa fa-remove"></i>&nbsp;删除
+										</button>
+									</shiro:hasAnyPermission>
+									<shiro:hasAnyPermission name="/plcSetting/update">
+										<button type="button" class="btn btn-primary button-margin" 
+										onclick="PlcSetting.updatePlcSetting()" id="delMgr">
+										    <i class="fa fa-remove"></i>&nbsp;启用/停用
+										</button>
+									</shiro:hasAnyPermission>
+								</div>
+								<table id="managerTable">
+									<thead th:include="/common/thead.html :: common_thead">
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script th:src="@{/static/modular/tool/plcSetting/plcSetting.js}"></script>
+	
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>人脸识别绑定</title>
+<script th:src="@{/static/js/sockjs.min.js}"></script>
+<script th:src="@{/static/js/stomp.min.js}"></script>
+<script th:src="@{/static/js/jquery.min.js}"></script>
+<link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+<link th:href="@{/static/css/reset.css}" rel="stylesheet" />
+<link th:href="@{/static/css/jia_style.css}" rel="stylesheet" />
+<link th:href="@{/static/css/swiper.css}" rel="stylesheet" />
+<link th:href="@{/static/css/css.css}" rel="stylesheet" />
+<link th:href="@{/static/css/zTreeStyle.css}" rel="stylesheet" />
+<link
+	th:href="@{/static/css/font-awesome-4.7.0/css/font-awesome.min.css}"
+	rel="stylesheet">
+<script th:src="@{/static/js/jquery.ztree.all.min.js}"></script>
+</head>
+<style>
+.ztree li span {
+	font-size: 20px;
+}
+</style>
+<body>
+	<div class="layer-title">
+		<div></div>
+		<h3>人员设定</h3>
+		<a href="javascript:void('0');" class="l-close"> <img
+			src="/static/images/l-close.jpg" alt="">
+		</a>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="layui-col-xs5 layui-col-sm5 layui-col-md5"
+				style="height: 520px; overflow-y: auto;">
+				<ul id="treeContainer" class="ztree"></ul>
+			</div>
+			<div class="layui-col-xs7 layui-col-sm7 layui-col-md7"
+				style="height: 520px; overflow-y: auto;">
+				<div class="layui-col-xs2 layui-col-sm2 layui-col-md2">
+					<label class="layui-form-label" style="width: 100%;">IC卡号</label>
+				</div>
+				<div class="layui-col-xs6 layui-col-sm6 layui-col-md6"
+					style="text-align: left;">
+					<div class="layui-input-block">
+						<input type="text" id="cardNo" placeholder="请刷卡"
+							style="width: 260px;" readonly="readonly" class="layui-input"
+							autofocus="autofocus">
+					</div>
+				</div>
+
+				<div id=mainDiv style="display: none; margin-top: 60px;"></div>
+			</div>
+		</div>
+		<div class="row layui-form-item">
+			<div class="layui-col-xs2 layui-col-sm2 layui-col-md2"
+				style="margin-left: 42%;">
+				<button type="button" class="layui-btn layui-btn-primary" id="bind" 
+					style="background:#3476ee; color: #fff;"
+					onclick="bind()">绑定</button>
+			</div>
+		</div>
+	</div>
+	<script th:inline="javascript">
+	var tree;
+	var inputStr="";
+	var mediaStreamTrack1;
+	var mediaStreamTrack2;
+	var faceLogin = [[${faceLogin}]];
+	var webSocket = null;
+	
+    // 通过stompClient.subscribe（）订阅服务器的目标是'/user/' + userId + '/msg'接收一对一的推送消息,其中userId由服务端传递过来,用于表示唯一的用户,通过此值将消息精确推送给一个用户
+    webSocket = stompClient.subscribe('/modbus/' + $("#mainCabinetId").val() + '/status', function(response){
+        var msg = JSON.parse(response.body);	            
+        if (msg.msgType=='ICSWIPING') {
+            console.log('Recev ic_str : ' + msg.msgContent);
+            $("#cardNo").val(msg.msgContent);
+		}
+    });
+    
+	document.onkeydown=function(event){
+		var e = event || window.event || arguments.callee.caller.arguments[0];
+		if(inputStr.length > 1 && e && e.keyCode==13) { // enter键 
+			formSubmit();
+			inputStr="";
+		} else {
+		  	//累计数值
+			inputStr=inputStr+String.fromCharCode(e.keyCode);
+		}
+	};
+      
+	function formSubmit(){
+		document.getElementById("cardNo").value = inputStr;
+	}
+      
+	var setting = {
+		data : {
+			simpleData : {
+				enable : true
+			}
+		},
+		view : {
+			nameIsHTML : true,
+			showLine : true,
+			dblClick : false
+		},
+		callback : {
+			beforeClick:function(treeId, treeNode, clickFlag) {
+				if (treeNode.id.startsWith('d_')) {
+					return false;
+				}
+				return !treeNode.id.startsWith('d_');
+			},
+			onClick:function(event, treeId, treeNode) {
+				getIcCard(treeNode.id);
+			}
+		}
+	};
+	
+	function getIcCard(accountId){
+		$.ajax({
+			url : 'cabinet/getIcCard',
+			type : 'post',
+			data : {
+				"accountId" : accountId
+			},
+			success : function(data){
+				$("#cardNo").val(data);
+			},
+			error : function(err){
+				layer.msg(err);
+			}
+		});
+	}
+	
+	$(function() {
+		// 初始化人员树
+		loadTree();
+		
+		// 初始化摄像头
+		if(faceLogin){
+			$("#mainDiv").show();
+			initFaceView();
+		}
+		
+		// 关闭页面并关闭摄像头
+		$(".l-close").click(function() {
+			if(typeof(mediaStreamTrack1) != 'undefined' && typeof(mediaStreamTrack2) != 'undefined'){
+				mediaStreamTrack1.stop();
+				mediaStreamTrack2.stop();
+			}
+			$("#layerAdmin").hide();
+			$(".l-cover").hide();
+			revokeSession();
+			//取消订阅后台
+			webSocket.unsubscribe();
+			 $("#opener").hide();
+		});
+	});
+	
+	// 初始化摄像头
+	function initFaceView() {
+        $("#mainDiv").empty();
+        let videoComp = "<video muted='muted' id='video' autoplay='autoplay' style='margin-left: 20px'></video><canvas id='canvas' width='500px' height='500px' style='display: none;'></canvas>";
+        $("#mainDiv").append(videoComp);
+        let constraints = {
+            video: {width: 420, height: 420},
+            audio: true
+        };
+        let video = document.getElementById("video");
+        let promise = navigator.mediaDevices.getUserMedia(constraints);
+        promise.then(function (MediaStream) {
+        	mediaStreamTrack1 = MediaStream.getTracks()[0];
+        	mediaStreamTrack2 = MediaStream.getTracks()[1];
+            video.srcObject = MediaStream;
+            video.play();
+        }).catch(function(error) {
+        	$("#mainDiv").empty();
+        	$("#mainDiv").append("<i class='fa fa-picture-o fa-5x' style='margin-left:45%; margin-top:30%;'></i>");
+			layer.msg("摄像头开启失败");
+	 	});
+    }
+	
+	
+	
+	function bind(){
+		$("#bind").attr("disabled", true);
+		$("#bind").css('background', '#bfbfbf');
+		
+		var cardNo = $("#cardNo").val();
+		var accounts = tree.getSelectedNodes();
+		if (accounts.length < 1) {
+			$("#bind").attr("disabled", false);
+			$("#bind").css('background', '#3476ee');
+			layer.msg("请先选择绑定帐户");
+			return;
+		}
+		
+		if(faceLogin){
+			let mainComp = $("#mainDiv");
+			if(mainComp.has('video').length) {
+	            let video = document.getElementById("video");
+	            console.log(video);
+	            let canvas = document.getElementById("canvas");
+	            console.log(canvas);
+	            let ctx = canvas.getContext('2d');
+	            ctx.drawImage(video, 0, 0, 500, 500);
+	            var formData = new FormData();
+	            var base64File = canvas.toDataURL();
+	            formData.append("file", base64File);
+	            formData.append("cardNo", cardNo);
+	            formData.append("accountId", accounts[0].id);
+	            
+	            $.ajax({
+	    			url: "/cabinet/bind",
+	    			type: "post",
+	    			data: formData,
+	    			contentType: false,
+	    			processData: false,
+	    			async: false,
+	    			success: function (data) {
+	    				if(data.code == 200){
+	    					layer.msg(data.message);
+	    				} else {
+	    					layer.msg(data.message);
+	    				}
+	    			},
+	    			error: function (error) {
+	    				layer.msg(error);
+	    			}
+	    		});
+	        } else {
+	        	$.ajax({
+					url : '/cabinet/bind',
+					type : 'post',
+					data:{
+						"accountId":accounts[0].id,
+						"cardNo": cardNo,
+						"file": null
+					},
+					dataType : "json",
+					success : function(data) {
+						if(data.code == 200){
+							layer.msg(data.message);
+						} else {
+							layer.msg(data.message);
+						}
+					},
+					error : function(err) {//后台处理数据失败后的回调函数
+						layer.msg(err);
+					}
+				});
+	        }
+		} else {
+			$.ajax({
+				url : '/cabinet/bind',
+				type : 'post',
+				data:{
+					"accountId":accounts[0].id,
+					"cardNo": cardNo,
+					"file": null
+				},
+				dataType : "json",
+				success : function(data) {
+					if(data.code == 200){
+						layer.msg(data.message);
+					} else {
+						layer.msg(data.message);
+					}
+				},
+				error : function(err) {//后台处理数据失败后的回调函数
+					layer.msg(err);
+				}
+			});
+		}
+		
+		setTimeout(function (){
+			$("#bind").attr("disabled", false);
+			$("#bind").css('background', '#3476ee');
+		}, 2000);
+	}
+	
+	//初始化人员树
+	function loadTree() {
+		var url = "/cabinet/initAccountTree";
+		$.ajax({
+			type : "post",
+			url : url,
+			async : false,
+			dataType : "json",
+			success : function(data) {
+				tree = $.fn.zTree.init($("#treeContainer"), setting, data);
+			}
+		});
+		return tree;
+	}
+
+	/**
+	 * 消除session不过期标识
+	 */
+	function revokeSession() {
+		$.ajax({
+			url: '/cabinet/revokeSession',
+			type: 'post',
+			dataType: 'json',
+			success:function(data){
+				alert("DATA>>>" + data);
+			},
+			error:function(err){
+				
+			}
+		});
+	}
+</script>
+</body>
+</html>

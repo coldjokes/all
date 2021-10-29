@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header.html :: common_header(~{::title})">
+    <title>通知消息</title>
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="container-fluid" style="padding: 0 !important;">
+			<div class="row" style="display: none;">
+				<div class="col-sm-12">
+					<div class="alert alert-success alert-dismissable">
+						<button aria-hidden="true" data-dismiss="alert" class="close"
+							type="button">×</button>
+						通知文本
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="first" style="width: 100%;height:420px;" class="alert alert-success alert-dismissable">
+						图表
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="second" style="width: 100%;height:420px;" class="alert alert-success alert-dismissable">
+						图表
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="third" style="width: 100%;height:420px;" class="alert alert-success alert-dismissable">
+						图表
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="forth" style="width: 100%;height:420px;" class="alert alert-success alert-dismissable">
+						图表
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/js/plugins/echarts/echarts.min.js}"></script>
+</body>
+<script type="text/javascript">
+	var first = echarts.init(document.getElementById('first'));
+    first.setOption({
+ 	   title : {
+	   	text: '近三年刀具成本趋势',
+	   	subtext: '单位:元'
+	   },
+	   tooltip : {
+	   	trigger: 'axis'
+	   },   
+	   calculable : true,
+	   legend: {
+	   	data:[]
+	   },
+	   xAxis : [
+	   		{
+	    		type : 'category',
+	    		data : []
+	    	}
+	    ],
+	   yAxis : [
+	        {
+	            type : 'value',
+	            name : '总价'
+	        },
+	        {
+	            type : 'value',
+	            name : '平均消耗'
+	        }
+	    ],
+	    series : [
+	    ]
+	});
+    
+    $.get('/blackboard/getCompThrYear').done(function (data) {
+    	var legendData = [];
+    	var xAxisData = [];
+    	var seriesData = [];
+    	var groups = {};
+    	var i = 0;
+    	for (var year in data) {
+    		legendData.push(year);
+			var series = {'type':'bar'};
+			series.name = year;
+			var d = [];
+			for (var index in data[year]) {
+				if (i == 0) {
+					xAxisData.push(data[year][index].month);
+				}
+				d.push(data[year][index].cost);
+			}
+			series.data = d;
+			seriesData.push(series);
+    		i++;
+    	}
+    	
+		var avg = { name : '平均消耗', type : 'line', yAxisIndex : 1 };
+		var avgData = [];
+		for (var index = 0; index < xAxisData.length; index++) {
+			var sum = 0;
+			for (var year in data) {
+				sum += data[year][index].cost * 1;
+			}
+			avgData.push(Math.round(sum / legendData.length * 100)/100);
+		}
+		avg.data = avgData;
+		seriesData.push(avg);
+		first.setOption({
+			legend : {
+				data : legendData
+			},
+			xAxis : {
+				data : xAxisData
+			},
+			series : seriesData
+		});
+	});
+
+	var second = echarts.init(document.getElementById('second'));
+	$.get('/blackboard/getCurMonthPie').done(function(data) {
+		var legendData = [];
+		var seriesData = [];
+		var selected = {};
+		var i = 0;
+		for ( var key in data) {
+			legendData.push(key);
+			seriesData.push({
+				name : key,
+				value : data[key]
+			});
+			i++;
+			selected[key] = i < 10;
+		}
+		var option2 = {
+			title : {
+				text : '当月消耗数量统计',
+			   /* 	subtext: '按物料种类', */
+				x : 'left'
+			},
+			tooltip : {
+				trigger : 'item',
+				formatter : "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend : {
+				type : 'scroll',
+				orient : 'vertical',
+				right : 10,
+				top : 20,
+				bottom : 20,
+				data : legendData,
+				selected : selected
+			},
+			series : [ {
+				name : '物料',
+				type : 'pie',
+				radius : '55%',
+				center : [ '40%', '50%' ],
+				data : seriesData,
+				itemStyle : {
+					emphasis : {
+						shadowBlur : 10,
+						shadowOffsetX : 0,
+						shadowColor : 'rgba(0, 0, 0, 0.5)'
+					}
+				}
+			} ]
+		};
+		second.setOption(option2);
+	});
+
+	var third = echarts.init(document.getElementById('third'));
+	$.get('/blackboard/getThrYCntGroupByMatType').done(function(data) {
+		var legendData = [];
+		var yAxisData = [];
+		var seriesData = [];
+		var i = 0;
+		for (var key in data) {
+			legendData.push(key);
+			var series = {
+				'type' : 'bar'
+			};
+			series.name = key;
+			var d = [];
+			for (var typeKey in data[key]) {
+				if (i == 0) {
+					yAxisData.push(typeKey);
+				}
+				d.push(data[key][typeKey]);
+			}
+			series.data = d;
+			seriesData.push(series);
+			i++;
+		}
+		var option3 = {
+			title : {
+				text : '近三年刀具消耗量',
+				subtext : '单位:盒/支'
+			},
+			tooltip : {
+				trigger : 'axis'
+			},
+			legend : {
+				data : legendData
+			},
+			toolbox : {
+				show : false,
+				feature : {
+					mark : {
+						show : false
+					},
+					dataView : {
+						show : false,
+						readOnly : false
+					},
+					magicType : {
+						show : false,
+						type : [ 'line', 'bar' ]
+					},
+					restore : {
+						show : true
+					},
+					saveAsImage : {
+						show : false
+					}
+				}
+			},
+			calculable : true,
+			xAxis : [ {
+				type : 'category',
+				data : yAxisData
+			} ],
+			yAxis : [ {				
+				type : 'value',
+				boundaryGap : [ 0, 1 ]
+			} ],
+			series : seriesData
+		};
+		third.setOption(option3);
+	});
+	
+	var forth = echarts.init(document.getElementById('forth'));
+	$.get('/blackboard/getBorrowNumGroupByDept').done(function(data) {
+		var xAxisData = [];
+		var seriesData = [];
+		var selected = {};
+		var i = 0;
+		
+		for (var key in data) {
+			xAxisData[i] = key;
+			var series = {
+				'type' : 'bar'
+			};
+			series.name = key;
+			series.data = [data[key]];
+			seriesData.push(series);
+			selected[key] = i < 10;
+			i++;
+		}
+		
+		forth.setOption({
+            title:{
+                text:'部门消耗量',
+				subtext : '',
+				x: 'left'
+            },
+            tooltip:{},
+            legend:{
+                name:xAxisData
+            },
+            legend : {
+				type : 'scroll',
+				orient : 'vertical',
+				right : 10,
+				top : 20,
+				bottom : 20,
+				data : xAxisData,
+				selected : selected
+			},
+            xAxis:{
+            	type: 'category',            	
+            	name: '部门',
+                data:xAxisData
+            },
+            yAxis:{ 
+				type : 'value',
+            	name: '消耗量(盒/支)',
+				boundaryGap : [ 0, 1 ]
+            },
+            series: seriesData
+        });
+	});
+</script>
+</html>

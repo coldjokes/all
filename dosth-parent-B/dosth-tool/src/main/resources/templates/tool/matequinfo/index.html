@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common/header.html :: common_header(~{::title})">
+<title>物料/设备定义</title>
+</head>
+
+<body>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<div class="row row-lg">
+							<div class="col-lg-12 col-sm-12">
+								<div class="row">
+									<div class="col-lg-12 col-sm-12">
+										<div class="row" style="padding-top: 10px">
+											<div class="col-lg-3 col-sm-3">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">编号/名称
+														</button>
+													</div>
+													<input type="text" class="form-control" id="name"
+														placeholder="编号/名称" />
+												</div>
+											</div>
+											<div class="col-lg-3 col-sm-3">
+												<div class="input-group">
+													<div class="input-group-btn">
+														<button data-toggle="dropdown"
+															class="btn btn-white dropdown-toggle" type="button">状态
+														</button>
+													</div>
+													<select class="form-control" id="status" name="status">
+														<option value="-1">全部</option>
+														<option
+															th:each="status : ${T(com.dosth.common.constant.UsingStatus).values()}"
+															th:value="${status}" th:text="${status.message}">
+														</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-lg-3 col-sm-3">
+												<div class="row">
+													<div class="col-lg-12 col-sm-12">
+														<button type="button" class="btn btn-primary"
+															onclick="MgrMatEquInfo.search()" id="search">
+															<i class="fa fa-search"></i>&nbsp;搜索
+														</button>
+														&nbsp;&nbsp;
+														<button type="button"
+															class="btn btn-primary button-margin"
+															onclick="MgrMatEquInfo.resetSearch()" id="trash">
+															<i class="fa fa-refresh"></i>&nbsp;重置
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<hr />
+										<div id="managerTableToolbar1">
+											<button type="button" class="btn btn-primary"
+												onclick="MgrMatEquInfo.openAddMgr()" id="addMgr">
+												<i class="fa fa-plus"></i>&nbsp;添加
+											</button>
+											<button type="button" class="btn btn-primary btn-outline"
+												onclick="MgrMatEquInfo.openUpload()" id="upload">
+												<i class="fa fa-upload"></i>&nbsp;导入
+											</button>
+											<button type="button" class="btn btn-primary btn-outline"
+												onclick="MgrMatEquInfo.openExport()" id="export">
+												<i class="fa fa-download"></i>&nbsp;导出
+											</button>
+										</div>
+										<table id="managerTable">
+											<thead th:include="/common/thead.html :: common_thead">
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<script th:src="@{/static/modular/tool/matequinfo/index.js}"></script>
+			</div>
+</body>
+
+</html>

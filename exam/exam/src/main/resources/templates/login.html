@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="common/header.html :: common_header"></head>
+<script th:src="@{/static/custom/js/login.js}"></script>  
+
+	<body class="gray-bg">
+	    <div class="middle-box text-center loginscreen animated fadeInDown">
+	        <div>
+	            <h2>考试</h2>
+	            <h3>后台管理系统</h3>
+	
+	            <form id="loginForm">
+	                <div class="form-group">
+	                    <input type="text" name="username" class="form-control" placeholder="用户名"  value=""/>
+	                </div>
+	                <div class="form-group">
+	                    <input type="password" name="password" class="form-control" placeholder="密码"  value=""/>
+	                </div>
+	                <div class="form-group hide" id="errorMsgDiv">
+						错误信息
+	                </div>
+	                <button type="button" id="loginBtn" class="btn btn-primary block full-width" >登录</button>
+	            </form>
+	        </div>
+	    </div>
+	</body>
+</html>

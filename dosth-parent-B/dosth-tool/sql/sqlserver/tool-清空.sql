@@ -1,0 +1,22 @@
+﻿use tool;
+
+DELETE FROM sub_box;
+DELETE FROM sub_box_num_setting;
+DELETE FROM sub_cabinet;
+DELETE FROM feeding_detail;
+DELETE FROM feeding_list;
+DELETE FROM mat_use_bill;
+DELETE FROM equ_detail_sta;
+DELETE FROM equ_detail;
+DELETE FROM mat_association;
+DELETE FROM equ_setting;
+DELETE FROM mat_equ_info;
+DELETE FROM mat_equ_Type;
+DELETE FROM manufacturer;
+DELETE FROM plc_setting;
+DELETE FROM product;
+DELETE FROM proc_info;
+DELETE FROM parts;
+DELETE FROM custom;
+DELETE FROM restitution_type;
+DELETE FROM unit;

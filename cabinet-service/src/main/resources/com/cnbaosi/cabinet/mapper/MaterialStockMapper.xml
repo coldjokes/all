@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cnbaosi.cabinet.mapper.MaterialStockMapper">
+    <select id="getStockDetailDto" resultType="com.cnbaosi.cabinet.entity.modal.dto.StockDetailDto">
+		SELECT
+			material.id materialId,
+			material.name materialName,
+			material.no materialNo,
+			material.spec materialSpec,
+			material.picture materialPicture,
+			material.remark materialRemark,
+			material.warn_val materialWarnVal,
+			material.last_stock_operate_user_id lastStockOperateUserId,
+			material.last_stock_operate_user_fullname lastStockOperateUserFullname,
+			material.last_stock_operate_time lastStockOperateTime,
+			stock.stockId stockId,
+			stock.amount amount,
+			stock.computerId computerId,
+			stock.computerName computerName,
+			stock.cabinetId cabinetId,
+			stock.cabinetName cabinetName,
+			stock.computerPort computerPort,
+			stock.computerBaudRate computerBaudRate,
+			stock.cellId cellId,
+			stock.cellStack cellStack,
+			stock.cellName cellName,
+			stock.cellPin cellPin,
+			stock.cellSort cellSort
+		FROM bs_material material
+		LEFT JOIN (
+			SELECT 
+				stock.id stockId,
+				stock.material_id materialId,
+				stock.amount amount,
+				computer.id computerId,
+				computer.name computerName,
+				cabinet.id cabinetId,
+				cabinet.name cabinetName,
+				cabinet.computer_port computerPort,
+				cabinet.computer_baud_rate computerBaudRate,
+				cell.id cellId,
+				cell.stack cellStack,
+				cell.name cellName,
+				cell.pin cellPin,
+				cell.sort cellSort
+			FROM bs_stock stock
+			LEFT JOIN bs_computer computer on computer.id = stock.computer_id
+			LEFT JOIN bs_cabinet cabinet on cabinet.id = stock.cabinet_id
+			LEFT JOIN bs_cabinet_cell cell on cell.id = stock.cabinet_cell_id
+			WHERE 1 = 1
+				<if test="criteria.computerId != null and criteria.computerId !=''" >  
+			        AND stock.computer_id = #{criteria.computerId}
+			    </if>
+		) stock
+		ON material.id = stock.materialId
+		WHERE 1 = 1
+		AND material.delete_time IS NULL
+		<if test="criteria.text != null and criteria.text !=''">
+			AND (material.name LIKE '%${criteria.text}%'
+			OR material.no LIKE '%${criteria.text}%'
+			OR material.spec LIKE '%${criteria.text}%')
+		</if>
+		<if test="criteria.materialId != null and criteria.materialId !=''">
+			AND material.id = #{criteria.materialId}
+		</if>
+		<if test="criteria.cabinetId != null and criteria.cabinetId !=''" >  
+	        AND stock.cabinetId = #{criteria.cabinetId}
+	    </if>
+	    
+	    <if test="criteria.status != null and criteria.status !=''" >  
+	    	<if test='criteria.status == "0"' >  
+		        AND (stock.amount &lt;= 0 OR stock.amount IS NULL)
+		    </if>
+	    	<if test='criteria.status == "1"' >  
+		        AND stock.amount &gt; 0
+		    </if>
+	    </if>
+    </select>
+    
+</mapper>
